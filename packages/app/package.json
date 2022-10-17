@@ -1,0 +1,33 @@
+{
+  "name": "@terminalone/app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.preload.config.js"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.186",
+    "@types/node": "^18.7.23",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.24.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "shx": "^0.3.4",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "electron": "^21.0.1",
+    "electron-devtools-installer": "^3.2.0",
+    "fs-extra": "^10.1.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "update-electron-app": "^2.0.1",
+    "webpack": "^5.74.0"
+  }
+}
