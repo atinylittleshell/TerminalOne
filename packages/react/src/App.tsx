@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'xterm/css/xterm.css';
+
+import { useEffect, useRef } from 'react';
+import { Terminal } from 'xterm';
+
+let terminal: Terminal | null = null;
 
 function App() {
+  const terminalRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (terminalRef.current && !terminal) {
+      terminal = new Terminal();
+      terminal.open(terminalRef.current);
+      terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="w-screen h-screen absolute">
+      <div className="w-screen h-screen" ref={terminalRef} />
     </div>
   );
 }
