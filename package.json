@@ -1,82 +1,17 @@
 {
-  "name": "terminalone",
-  "version": "1.0.0",
-  "description": "Terminal One",
+  "private": true,
   "scripts": {
-    "dev:app": "cross-env NODE_ENV=development BROWSER=none concurrently -k \"cd packages/react && npm run dev:react\" \"wait-on -d 3000 -i 5000 http://localhost:3000 && npm run build:app && electron .\"",
-    "build:app": "npm run build:app --workspaces --if-present",
-    "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@fsouza/prettierd": "^0.22.3",
-    "@typescript-eslint/eslint-plugin": "^5.38.1",
-    "@typescript-eslint/parser": "^5.38.1",
-    "concurrently": "^7.4.0",
-    "cross-env": "^7.0.3",
-    "electron": "^21.0.1",
-    "electron-builder": "^23.3.3",
-    "eslint": "^8.24.0",
-    "eslint_d": "^12.2.1",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-import-resolver-node": "^0.3.6",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.6.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.31.8",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-simple-import-sort": "^8.0.0",
-    "prettier": "^2.7.1",
-    "shx": "^0.3.4",
-    "typescript": "^4.8.4",
-    "wait-on": "^6.0.1"
+    "eslint": "^7.32.0",
+    "eslint-config-custom": "workspace:*",
+    "prettier": "^2.5.1",
+    "turbo": "latest"
   },
-  "build": {
-    "appId": "app.terminalone",
-    "productName": "Terminal One",
-    "extends": null,
-    "files": [
-      "dist/**/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
-  },
-  "resolutions": {
-    "**/@typescript-eslint/eslint-plugin": "^5.38.1",
-    "**/@typescript-eslint/parser": "^5.38.1"
-  },
-  "main": "packages/app/dist/main.js",
-  "homepage": ".",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kunchenguid/TerminalOne.git"
-  },
-  "author": "Kun Chen <kunchenguid@gmail.com>",
-  "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ],
-  "engines": {
-    "node": ">=16",
-    "npm": ">=8.6.0"
-  },
-  "bugs": {
-    "url": "https://github.com/kunchenguid/TerminalOne/issues"
-  },
-  "browserslist": {
-    "production": [
-      "last 1 electron version"
-    ],
-    "development": [
-      "last 1 electron version"
-    ]
-  },
-  "prettier": {
-    "semi": true,
-    "trailingComma": "all",
-    "singleQuote": true,
-    "printWidth": 80,
-    "tabWidth": 2
-  }
+  "packageManager": "pnpm@7.15.0",
+  "name": "TerminalOne"
 }
