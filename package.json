@@ -1,18 +1,44 @@
 {
-  "private": true,
+  "name": "@terminalone/monorepo",
+  "version": "0.1.0",
+  "description": "A fast, elegant and intelligent cross-platform terminal.",
+  "author": "Kun Chen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kunchenguid/TerminalOne.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kunchenguid/TerminalOne/issues"
+  },
+  "keywords": [
+    "terminal",
+    "shell",
+    "xterm.js",
+    "ai"
+  ],
+  "engineStrict": true,
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "lint": "turbo run lint"
   },
   "devDependencies": {
+    "@terminalone/eslint-config-custom": "*",
     "eslint": "^7.32.0",
-    "eslint-config-custom": "*",
-    "prettier": "^2.5.1",
+    "prettier": "^2.8.7",
     "turbo": "latest"
   },
-  "name": "TerminalOne",
+  "prettier": {
+    "semi": true,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 120,
+    "tabWidth": 2
+  },
   "packageManager": "npm@9.2.0",
   "workspaces": [
     "apps/*",
