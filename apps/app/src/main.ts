@@ -1,15 +1,21 @@
+/* eslint-disable no-empty */
 import { app, BrowserWindow } from 'electron';
+import serve from 'electron-serve';
 import { autoUpdater } from 'electron-updater';
+import path = require('path');
 
 import { nativeBridgeRegistry } from './nativeBridge/registry';
 
-import path = require('path');
+if (!app || app.isPackaged) {
+  serve({ directory: path.join(__dirname, 'terminal') });
+}
 
-function createWindow() {
+async function createWindow() {
   const preloadScriptPath = path.join(__dirname, 'preload.bundle.js');
 
   const win = new BrowserWindow({
-    frame: false,
+    title: 'Terminal One',
+    titleBarStyle: 'hidden',
     backgroundColor: '#000000',
     width: 800,
     height: 600,
@@ -24,12 +30,6 @@ function createWindow() {
   win.setMinimumSize(400, 300);
   win.setMenuBarVisibility(false);
 
-  if (!app || app.isPackaged) {
-    win.loadURL(`file://${__dirname}/terminal/index.html`);
-  } else {
-    win.loadURL(`http://localhost:3000`);
-  }
-
   win.webContents.setWindowOpenHandler(() => {
     return { action: 'deny' };
   });
@@ -42,10 +42,16 @@ function createWindow() {
   });
 
   nativeBridgeRegistry.startListeners(win);
+
+  if (!app || app.isPackaged) {
+    await win.loadURL('app://-');
+  } else {
+    await win.loadURL(`http://localhost:3000`);
+  }
 }
 
-app.on('ready', () => {
-  createWindow();
+app.on('ready', async () => {
+  await createWindow();
 
   if (app.isPackaged) {
     autoUpdater.checkForUpdatesAndNotify();

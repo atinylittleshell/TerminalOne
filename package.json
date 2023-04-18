@@ -32,16 +32,16 @@
     "lint": "turbo run lint",
     "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps"
   },
-  "main": "packages/app/dist/main.bundle.js",
+  "main": "apps/app/dist/main.bundle.js",
   "build": {
     "appId": "io.terminalone.app",
     "productName": "Terminal One",
     "extends": null,
     "files": [
-      "packages/app/dist/**/*"
+      "apps/app/dist/**/*"
     ],
     "directories": {
-      "buildResources": "packages/app/assets"
+      "buildResources": "apps/app/assets"
     }
   },
   "devDependencies": {
