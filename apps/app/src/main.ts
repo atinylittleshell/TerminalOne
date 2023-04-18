@@ -1,5 +1,4 @@
 import { app, BrowserWindow } from 'electron';
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { autoUpdater } from 'electron-updater';
 
 import { nativeBridgeRegistry } from './nativeBridge/registry';
@@ -26,7 +25,7 @@ function createWindow() {
   win.setMenuBarVisibility(false);
 
   if (!app || app.isPackaged) {
-    win.loadURL(`file://${__dirname}/index.html`);
+    win.loadURL(`file://${__dirname}/terminal/index.html`);
   } else {
     win.loadURL(`http://localhost:3000`);
   }
@@ -38,7 +37,6 @@ function createWindow() {
   win.webContents.on('did-frame-finish-load', () => {
     if (!app.isPackaged && win) {
       // DevTools
-      installExtension(REACT_DEVELOPER_TOOLS);
       win.webContents.openDevTools({ mode: 'detach' });
     }
   });

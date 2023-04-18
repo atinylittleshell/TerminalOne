@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "build": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js && shx cp -r public dist/public",
+    "build": "npm run build:app && shx cp -r ../terminal/dist/. dist/terminal/",
     "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js && shx cp -r public dist/public"
   },
   "devDependencies": {
@@ -23,6 +23,7 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
+    "@terminalone/terminal": "*",
     "dayjs": "^1.11.7",
     "electron": "^24.1.2",
     "electron-devtools-installer": "^3.2.0",

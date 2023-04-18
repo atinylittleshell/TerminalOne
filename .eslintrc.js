@@ -4,7 +4,7 @@ module.exports = {
   extends: ['@terminalone/eslint-config-custom'],
   settings: {
     next: {
-      rootDir: ['apps/*/'],
+      rootDir: ['apps/terminal/'],
     },
   },
 };
