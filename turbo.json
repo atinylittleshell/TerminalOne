@@ -15,10 +15,15 @@
         "!.next/cache/**"
       ]
     },
-    "lint": {},
-    "dev": {
+    "build:app": {
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "dev:terminal": {
       "cache": false,
       "persistent": true
-    }
+    },
+    "lint": {}
   }
 }

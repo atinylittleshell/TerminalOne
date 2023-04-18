@@ -22,9 +22,15 @@
     "node": ">=16.0.0"
   },
   "scripts": {
+    "dev:app": "cross-env NODE_ENV=development BROWSER=none concurrently -k \"turbo run dev:terminal\" \"wait-on -d 3000 -i 5000 http://localhost:3000 && turbo run build:app && electron .\"",
+    "build:app:windows": "shx rm -rf dist && npm run build && electron-builder --win --publish=never",
+    "build:app:mac": "shx rm -rf dist && npm run build && electron-builder --mac --publish=never",
+    "publish:app:windows": "shx rm -rf dist && npm run build && electron-builder --win --publish=always",
+    "publish:app:mac": "shx rm -rf dist && npm run build && electron-builder --mac --publish=always",
+    "release:app": "git checkout releases/terminalone/app && git pull && git merge --no-edit --no-ff main && git push && git checkout main",
     "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps"
   },
   "build": {
     "appId": "io.terminalone.app",
@@ -39,11 +45,15 @@
   },
   "devDependencies": {
     "@terminalone/eslint-config-custom": "*",
+    "concurrently": "^8.0.1",
+    "cross-env": "^7.0.3",
     "electron": "^24.1.2",
     "electron-builder": "^23.6.0",
     "eslint": "^7.32.0",
     "prettier": "^2.8.7",
-    "turbo": "latest"
+    "shx": "^0.3.4",
+    "turbo": "latest",
+    "wait-on": "^7.0.1"
   },
   "prettier": {
     "semi": true,

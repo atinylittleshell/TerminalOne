@@ -1,0 +1,13 @@
+{
+  "extends": "@terminalone/tsconfig/base.json",
+  "compilerOptions": {
+    "experimentalDecorators": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
