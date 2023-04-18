@@ -26,8 +26,21 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint"
   },
+  "build": {
+    "appId": "io.terminalone.app",
+    "productName": "Terminal One",
+    "extends": null,
+    "files": [
+      "packages/app/dist/**/*"
+    ],
+    "directories": {
+      "buildResources": "packages/app/assets"
+    }
+  },
   "devDependencies": {
     "@terminalone/eslint-config-custom": "*",
+    "electron": "^24.1.2",
+    "electron-builder": "^23.6.0",
     "eslint": "^7.32.0",
     "prettier": "^2.8.7",
     "turbo": "latest"
@@ -39,6 +52,7 @@
     "printWidth": 120,
     "tabWidth": 2
   },
+  "homepage": ".",
   "packageManager": "npm@9.2.0",
   "workspaces": [
     "apps/*",
