@@ -1,4 +1,5 @@
 import './globals.css';
+import 'xterm/css/xterm.css';
 
 import { Metadata } from 'next/types';
 import { ReactNode } from 'react';

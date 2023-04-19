@@ -1,5 +1,11 @@
+import dynamic from 'next/dynamic';
+
+const Terminal = dynamic(() => import('../components/Terminal'), {
+  ssr: false,
+});
+
 const Page = () => {
-  return <div />;
+  return <Terminal />;
 };
 
 export default Page;
