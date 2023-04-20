@@ -15,6 +15,14 @@ function TitleBar(props: PropsWithChildren<{}>) {
     });
   }, []);
 
+  if (window.TerminalOne.platform === 'darwin') {
+    return (
+      <div className="flex flex-row item-center top-0 left-0 right-0 h-7 relative bg-neutral-900">
+        <div className={`block absolute -z-10 top-0 left-0 right-0 bottom-0 ${styles['title-bar-drag']}`} />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-row item-center top-0 left-0 right-0 h-10 relative bg-neutral-900">
       <div className={`block absolute -z-10 top-0 left-0 right-0 bottom-0 ${styles['title-bar-drag']}`} />
