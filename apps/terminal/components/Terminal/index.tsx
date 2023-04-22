@@ -12,24 +12,31 @@ const Terminal = () => {
       return;
     }
 
+    const terminalDiv = terminalRef.current;
+
     const terminal = new XTerm();
     const fitAddon = new FitAddon();
     terminal.loadAddon(fitAddon);
+    terminal.open(terminalDiv);
 
     window.setTimeout(() => {
       fitAddon.fit();
-    }, 1000);
-
-    terminal.open(terminalRef.current);
+    }, 1);
 
     terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
 
+    const resizeListener = () => {
+      fitAddon.fit();
+    };
+    window.addEventListener('resize', resizeListener);
+
     return () => {
+      window.removeEventListener('resize', resizeListener);
       terminal.dispose();
     };
   }, [terminalRef]);
 
-  return <div className="flex-1 w-full h-full relative" ref={terminalRef} />;
+  return <div className="flex-1 relative overflow-hidden" ref={terminalRef} />;
 };
 
 export default Terminal;
