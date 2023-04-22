@@ -1,3 +1,5 @@
+import { Config } from './config';
+
 type ElectronOpaqueEvent = {
   senderId: number;
 };
@@ -37,6 +39,7 @@ export type INativeBridge = {
   };
   links?: {
     openExternalURL: (_url: string) => Promise<void>;
+    openFile: (_path: string) => Promise<void>;
   };
   terminal?: {
     newTerminal: (_id: string, _cols: number, _rows: number) => Promise<void>;
@@ -44,5 +47,9 @@ export type INativeBridge = {
     killTerminal: (_id: string) => Promise<void>;
     writeTerminal: (_id: string, _data: string) => Promise<void>;
     onData: (_callback: (_event: ElectronOpaqueEvent, _id: string, _data: string) => void) => void;
+  };
+  config?: {
+    get: () => Promise<Config>;
+    getConfigPath: () => Promise<string>;
   };
 };

@@ -1,0 +1,17 @@
+{
+  "name": "@terminalone/types",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "lint": "eslint \"**/*.ts*\""
+  },
+  "devDependencies": {
+    "@terminalone/eslint-config-custom": "*",
+    "@terminalone/tsconfig": "*",
+    "eslint": "^7.32.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {}
+}

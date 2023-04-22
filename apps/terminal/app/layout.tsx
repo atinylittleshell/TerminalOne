@@ -1,13 +1,10 @@
 import './globals.css';
 import 'xterm/css/xterm.css';
 
-import dynamic from 'next/dynamic';
 import { Metadata } from 'next/types';
 import { ReactNode } from 'react';
 
-const TitleBar = dynamic(() => import('../components/TitleBar'), {
-  ssr: false,
-});
+import ClientSideProviders from '../components/ClientSideProviders';
 
 export const metadata: Metadata = {
   title: 'Terminal One',
@@ -15,13 +12,14 @@ export const metadata: Metadata = {
   icons: '/favicon.ico',
 };
 
-export default function Layout({ children }: { children: ReactNode }) {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en" data-theme="black">
       <body className="h-screen w-screen flex flex-col overflow-hidden bg-black">
-        <TitleBar />
-        <div className="flex-1 flex flex-col overflow-hidden">{children}</div>
+        <ClientSideProviders>{children}</ClientSideProviders>
       </body>
     </html>
   );
-}
+};
+
+export default Layout;

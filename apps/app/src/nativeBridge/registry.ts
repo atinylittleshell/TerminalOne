@@ -2,6 +2,7 @@ import { BrowserWindow, ipcMain, ipcRenderer, IpcRendererEvent } from 'electron'
 
 import { getModuleEventKey, getModuleFunctionKey, MODULE_METADATA, NativeBridgeModule } from './module';
 import { ApplicationModule } from './modules/applicationModule';
+import { ConfigModule } from './modules/configModule';
 import { ExternalLinksModule } from './modules/externalLinksModule';
 import { MainWindowModule } from './modules/mainWindowModule';
 import { TerminalModule } from './modules/terminalModule';
@@ -74,3 +75,4 @@ nativeBridgeRegistry.registerModule(ExternalLinksModule);
 nativeBridgeRegistry.registerModule(MainWindowModule);
 nativeBridgeRegistry.registerModule(ApplicationModule);
 nativeBridgeRegistry.registerModule(TerminalModule);
+nativeBridgeRegistry.registerModule(ConfigModule);

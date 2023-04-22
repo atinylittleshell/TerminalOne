@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@terminalone/types": "*",
     "@terminalone/ui": "*",
     "autoprefixer": "^10.4.14",
     "daisyui": "^2.51.5",
@@ -19,7 +20,8 @@
     "tailwindcss": "^3.3.1",
     "xterm": "^5.1.0",
     "xterm-addon-canvas": "^0.3.0",
-    "xterm-addon-fit": "^0.7.0"
+    "xterm-addon-fit": "^0.7.0",
+    "xterm-addon-webgl": "^0.14.0"
   },
   "devDependencies": {
     "@terminalone/eslint-config-custom": "*",

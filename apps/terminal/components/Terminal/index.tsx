@@ -2,12 +2,12 @@
 
 import { useEffect, useRef } from 'react';
 import { Terminal as XTerm } from 'xterm';
-import { CanvasAddon } from 'xterm-addon-canvas';
 import { FitAddon } from 'xterm-addon-fit';
+import { WebglAddon } from 'xterm-addon-webgl';
 
 let nextId = 0;
 
-const Terminal = () => {
+const Terminal = ({ active }: { active: boolean }) => {
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,18 +20,23 @@ const Terminal = () => {
     const terminal = new XTerm({
       scrollback: 0,
     });
-    terminal.loadAddon(new CanvasAddon());
+    terminal.loadAddon(new WebglAddon());
 
     const fitAddon = new FitAddon();
     terminal.loadAddon(fitAddon);
     terminal.open(terminalDiv);
 
-    window.setTimeout(() => {
-      fitAddon.fit();
-    }, 1);
+    fitAddon.fit();
+
+    window.TerminalOne.config.get().then((config) => {
+      terminal.options.fontSize = config.fontSize;
+      terminal.options.fontFamily = config.fontFamily;
+    });
 
     const terminalId = (nextId++).toString();
     window.TerminalOne.terminal?.newTerminal(terminalId, terminal.cols, terminal.rows).then(() => {
+      fitAddon.fit();
+
       terminal.onData((data) => {
         window.TerminalOne.terminal?.writeTerminal(terminalId, data);
       });
@@ -51,14 +56,38 @@ const Terminal = () => {
     };
     window.addEventListener('resize', resizeListener);
 
+    const focusListener = () => {
+      fitAddon.fit();
+      terminal.focus();
+    };
+    terminalDiv.addEventListener('focus', focusListener);
+
     return () => {
       window.removeEventListener('resize', resizeListener);
-      terminal.dispose();
+      terminalDiv.removeEventListener('focus', focusListener);
+
       window.TerminalOne.terminal?.killTerminal(terminalId);
+      terminal.dispose();
     };
   }, [terminalRef]);
 
-  return <div className="flex-1 relative overflow-hidden" ref={terminalRef} />;
+  useEffect(() => {
+    if (!terminalRef.current) {
+      return;
+    }
+
+    if (active) {
+      terminalRef.current.focus();
+    }
+  }, [terminalRef, active]);
+
+  return (
+    <div
+      className={`flex-1 relative overflow-hidden ${active ? 'visible' : 'invisible'}`}
+      tabIndex={1}
+      ref={terminalRef}
+    />
+  );
 };
 
 export default Terminal;
