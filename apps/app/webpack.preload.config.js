@@ -14,6 +14,10 @@ module.exports = {
   },
   plugins: [
     new webpack.NormalModuleReplacementPlugin(
+      /^node-pty$/,
+      path.resolve(__dirname, './dist/nativeBridge/emptyPolyfill.js'),
+    ),
+    new webpack.NormalModuleReplacementPlugin(
       /^fs-extra$/,
       path.resolve(__dirname, './dist/nativeBridge/emptyPolyfill.js'),
     ),

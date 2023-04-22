@@ -8,6 +8,7 @@ import { ReactNode } from 'react';
 const TitleBar = dynamic(() => import('../components/TitleBar'), {
   ssr: false,
 });
+
 export const metadata: Metadata = {
   title: 'Terminal One',
   viewport: 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no',

@@ -5,6 +5,8 @@ import { Terminal as XTerm } from 'xterm';
 import { CanvasAddon } from 'xterm-addon-canvas';
 import { FitAddon } from 'xterm-addon-fit';
 
+let nextId = 0;
+
 const Terminal = () => {
   const terminalRef = useRef<HTMLDivElement>(null);
 
@@ -28,7 +30,21 @@ const Terminal = () => {
       fitAddon.fit();
     }, 1);
 
-    terminal.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
+    const terminalId = (nextId++).toString();
+    window.TerminalOne.terminal?.newTerminal(terminalId, terminal.cols, terminal.rows).then(() => {
+      terminal.onData((data) => {
+        window.TerminalOne.terminal?.writeTerminal(terminalId, data);
+      });
+      terminal.onResize(({ cols, rows }) => {
+        window.TerminalOne.terminal?.resizeTerminal(terminalId, cols, rows);
+      });
+      window.TerminalOne.terminal?.onData((_e, id: string, data: string) => {
+        if (id !== terminalId) {
+          return;
+        }
+        terminal.write(data);
+      });
+    });
 
     const resizeListener = () => {
       fitAddon.fit();
@@ -38,6 +54,7 @@ const Terminal = () => {
     return () => {
       window.removeEventListener('resize', resizeListener);
       terminal.dispose();
+      window.TerminalOne.terminal?.killTerminal(terminalId);
     };
   }, [terminalRef]);
 

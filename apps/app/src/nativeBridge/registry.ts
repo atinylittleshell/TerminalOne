@@ -4,6 +4,7 @@ import { getModuleEventKey, getModuleFunctionKey, MODULE_METADATA, NativeBridgeM
 import { ApplicationModule } from './modules/applicationModule';
 import { ExternalLinksModule } from './modules/externalLinksModule';
 import { MainWindowModule } from './modules/mainWindowModule';
+import { TerminalModule } from './modules/terminalModule';
 
 export class NativeBridgeRegistry {
   private modules: NativeBridgeModule[] = [];
@@ -72,3 +73,4 @@ export const nativeBridgeRegistry = new NativeBridgeRegistry();
 nativeBridgeRegistry.registerModule(ExternalLinksModule);
 nativeBridgeRegistry.registerModule(MainWindowModule);
 nativeBridgeRegistry.registerModule(ApplicationModule);
+nativeBridgeRegistry.registerModule(TerminalModule);

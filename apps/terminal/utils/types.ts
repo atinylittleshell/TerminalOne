@@ -38,4 +38,11 @@ export type INativeBridge = {
   links?: {
     openExternalURL: (_url: string) => Promise<void>;
   };
+  terminal?: {
+    newTerminal: (_id: string, _cols: number, _rows: number) => Promise<void>;
+    resizeTerminal: (_id: string, _cols: number, _rows: number) => Promise<void>;
+    killTerminal: (_id: string) => Promise<void>;
+    writeTerminal: (_id: string, _data: string) => Promise<void>;
+    onData: (_callback: (_event: ElectronOpaqueEvent, _id: string, _data: string) => void) => void;
+  };
 };

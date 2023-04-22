@@ -7,6 +7,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
   },
+  externals: {
+    'node-pty': 'commonjs node-pty',
+  },
   entry: './dist/main.js',
   output: {
     filename: 'main.bundle.js',

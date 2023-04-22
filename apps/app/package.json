@@ -32,6 +32,7 @@
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.7",
+    "node-loader": "^2.0.0",
     "node-pty": "^0.10.1",
     "webpack": "^5.72.0"
   }

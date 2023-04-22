@@ -30,7 +30,8 @@
     "release:app": "git checkout releases/terminalone/app && git pull && git merge --no-edit --no-ff main && git push && git checkout main",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps"
+    "rebuild:node-pty": "electron-rebuild -f -o node-pty -m apps/app",
+    "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps && npm run rebuild:node-pty"
   },
   "main": "apps/app/dist/main.bundle.js",
   "build": {
@@ -45,6 +46,7 @@
     }
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.2.12",
     "@terminalone/eslint-config-custom": "*",
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
