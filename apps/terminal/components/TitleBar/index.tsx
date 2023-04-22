@@ -17,19 +17,19 @@ function TitleBar(props: PropsWithChildren<{}>) {
 
   if (window.TerminalOne.platform === 'darwin') {
     return (
-      <div className="flex flex-row item-center top-0 left-0 right-0 h-7 relative bg-neutral-900">
+      <div className="flex flex-row item-center top-0 left-0 right-0 h-7 relative bg-base-300">
         <div className={`block absolute -z-10 top-0 left-0 right-0 bottom-0 ${styles['title-bar-drag']}`} />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-row item-center top-0 left-0 right-0 h-10 relative bg-neutral-900">
+    <div className="flex flex-row item-center top-0 left-0 right-0 h-8 relative bg-base-300">
       <div className={`block absolute -z-10 top-0 left-0 right-0 bottom-0 ${styles['title-bar-drag']}`} />
       <div className="flex-1 flex">{props.children}</div>
       <div className={`flex flex-row text-white ${styles['title-bar-buttons']}`}>
         <button
-          className="p-3 bg-transparent hover:bg-neutral-700"
+          className="btn btn-sm btn-ghost btn-square"
           title="Minimize"
           onClick={() => {
             window.TerminalOne.win?.minimize();
@@ -38,7 +38,7 @@ function TitleBar(props: PropsWithChildren<{}>) {
           <FiMinus size="16" />
         </button>
         <button
-          className="p-3 bg-transparent hover:bg-neutral-700"
+          className="btn btn-sm btn-ghost btn-square"
           title="Maximize"
           onClick={() => {
             if (isMaximized) {
@@ -53,7 +53,7 @@ function TitleBar(props: PropsWithChildren<{}>) {
           {isMaximized ? <FiMinimize2 size="16" /> : <FiMaximize2 size="16" />}
         </button>
         <button
-          className="p-3 bg-transparent hover:bg-red-500"
+          className="btn btn-sm btn-ghost btn-square hover:bg-error"
           title="Close"
           onClick={async () => {
             flushSync(() => {

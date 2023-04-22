@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Terminal as XTerm } from 'xterm';
+import { CanvasAddon } from 'xterm-addon-canvas';
 import { FitAddon } from 'xterm-addon-fit';
 
 const Terminal = () => {
@@ -14,7 +15,11 @@ const Terminal = () => {
 
     const terminalDiv = terminalRef.current;
 
-    const terminal = new XTerm();
+    const terminal = new XTerm({
+      scrollback: 0,
+    });
+    terminal.loadAddon(new CanvasAddon());
+
     const fitAddon = new FitAddon();
     terminal.loadAddon(fitAddon);
     terminal.open(terminalDiv);
