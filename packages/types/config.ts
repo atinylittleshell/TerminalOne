@@ -5,6 +5,7 @@ import { PathReporter } from 'io-ts/PathReporter';
 const ShellConfigType = t.type({
   name: t.string,
   command: t.string,
+  startupDirectory: t.string,
 });
 
 export type ShellConfig = t.TypeOf<typeof ShellConfigType>;
@@ -85,7 +86,8 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   shells: [
     {
       name: 'Default',
-      command: '', // will auto detect system shell when command is empty
+      command: '', // will auto detect system shell when this is empty
+      startupDirectory: '', // will auto detect home directory when this is empty
     },
   ],
   defaultShellName: 'Default',

@@ -29,29 +29,36 @@ const Terminal = ({ active }: { active: boolean }) => {
 
     fitAddon.fit();
 
+    const terminalId = (nextId++).toString();
     window.TerminalOne.config.getConfig().then((config) => {
       terminal.options.fontSize = config.fontSize;
       terminal.options.fontFamily = config.fontFamily;
       terminal.options.fontWeight = config.fontWeight;
       terminal.options.fontWeightBold = config.fontWeightBold;
-    });
 
-    const terminalId = (nextId++).toString();
-    window.TerminalOne.terminal?.newTerminal(terminalId, terminal.cols, terminal.rows).then(() => {
-      fitAddon.fit();
+      const activeShellConfig = config.shells.find((s) => s.name === config.defaultShellName);
+      // when the following values are empty, they will be auto determined based on system defaults
+      const shellCommand = activeShellConfig ? activeShellConfig.command : '';
+      const startupDirectory = activeShellConfig ? activeShellConfig.startupDirectory : '';
 
-      terminal.onData((data) => {
-        window.TerminalOne.terminal?.writeTerminal(terminalId, data);
-      });
-      terminal.onResize(({ cols, rows }) => {
-        window.TerminalOne.terminal?.resizeTerminal(terminalId, cols, rows);
-      });
-      window.TerminalOne.terminal?.onData((_e, id: string, data: string) => {
-        if (id !== terminalId) {
-          return;
-        }
-        terminal.write(data);
-      });
+      window.TerminalOne.terminal
+        ?.newTerminal(terminalId, terminal.cols, terminal.rows, shellCommand, startupDirectory)
+        .then(() => {
+          fitAddon.fit();
+
+          terminal.onData((data) => {
+            window.TerminalOne.terminal?.writeTerminal(terminalId, data);
+          });
+          terminal.onResize(({ cols, rows }) => {
+            window.TerminalOne.terminal?.resizeTerminal(terminalId, cols, rows);
+          });
+          window.TerminalOne.terminal?.onData((_e, id: string, data: string) => {
+            if (id !== terminalId) {
+              return;
+            }
+            terminal.write(data);
+          });
+        });
     });
 
     const resizeListener = () => {

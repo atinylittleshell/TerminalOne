@@ -1,6 +1,9 @@
 import { BrowserWindow } from 'electron';
+import { existsSync, readFileSync, writeFile } from 'fs-extra';
+import path from 'path';
 
 import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import { getAppDirs } from './common';
 
 @nativeBridgeModule('win')
 export class MainWindowModule extends NativeBridgeModule {
@@ -58,14 +61,62 @@ export class MainWindowModule extends NativeBridgeModule {
   }
 
   public onRegistered(mainWindow: BrowserWindow): void {
+    const [w, h] = mainWindow.getSize();
+    const [x, y] = mainWindow.getPosition();
+
+    let latestState = {
+      x,
+      y,
+      w,
+      h,
+    };
+    let savedState = {
+      ...latestState,
+    };
+
+    const stateFilePath = path.join(getAppDirs().config, 'window.json');
+    if (existsSync(stateFilePath)) {
+      const stateFromFile = JSON.parse(readFileSync(stateFilePath, { encoding: 'utf8' }));
+      latestState = {
+        x: stateFromFile.x ?? x,
+        y: stateFromFile.y ?? y,
+        w: stateFromFile.w ?? w,
+        h: stateFromFile.h ?? h,
+      };
+
+      mainWindow.setSize(latestState.w, latestState.h);
+      mainWindow.setPosition(latestState.x, latestState.y);
+
+      savedState = {
+        ...latestState,
+      };
+    }
+
     mainWindow.on('resize', () => {
       const [w, h] = mainWindow.getSize();
+      latestState = { ...latestState, w, h };
       this.onWindowResized(mainWindow, w, h);
     });
     mainWindow.on('move', () => {
       const [x, y] = mainWindow.getPosition();
+      latestState = { ...latestState, x, y };
       this.onWindowMoved(mainWindow, x, y);
     });
+
+    setInterval(() => {
+      if (
+        latestState.x !== savedState.x ||
+        latestState.y !== savedState.y ||
+        latestState.w !== savedState.w ||
+        latestState.h !== savedState.h
+      ) {
+        writeFile(stateFilePath, JSON.stringify(latestState)).then(() => {
+          savedState = {
+            ...latestState,
+          };
+        });
+      }
+    }, 1000);
   }
 
   @moduleEvent('on')

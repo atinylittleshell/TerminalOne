@@ -1,11 +1,11 @@
 import { DEFAULT_CONFIG, resolveConfig, ResolvedConfig } from '@terminalone/types';
-import appDirs from 'appdirsjs';
 import { BrowserWindow } from 'electron';
 import { existsSync, readFileSync, writeFileSync } from 'fs-extra';
 import path from 'path';
 import vm from 'vm';
 
 import { moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import { getAppDirs } from './common';
 
 @nativeBridgeModule('config')
 export class ConfigModule extends NativeBridgeModule {
@@ -18,13 +18,11 @@ export class ConfigModule extends NativeBridgeModule {
 
   @moduleFunction()
   public async getConfigPath(_mainWindow: BrowserWindow): Promise<string> {
-    const dirs = appDirs({ appName: 'TerminalOne' });
-    return path.join(dirs.config, 'config.js');
+    return path.join(getAppDirs().config, 'config.js');
   }
 
   public onRegistered(_mainWindow: BrowserWindow): void {
-    const dirs = appDirs({ appName: 'TerminalOne' });
-    const configPath = path.join(dirs.config, 'config.js');
+    const configPath = path.join(getAppDirs().config, 'config.js');
     if (!existsSync(configPath)) {
       writeFileSync(configPath, 'module.exports = {};');
     }

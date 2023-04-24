@@ -42,7 +42,13 @@ export type INativeBridge = {
     openFile: (_path: string) => Promise<void>;
   };
   terminal?: {
-    newTerminal: (_id: string, _cols: number, _rows: number) => Promise<void>;
+    newTerminal: (
+      _id: string,
+      _cols: number,
+      _rows: number,
+      _shellCommand: string,
+      _startupDirectory: string,
+    ) => Promise<void>;
     resizeTerminal: (_id: string, _cols: number, _rows: number) => Promise<void>;
     killTerminal: (_id: string) => Promise<void>;
     writeTerminal: (_id: string, _data: string) => Promise<void>;

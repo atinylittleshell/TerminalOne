@@ -1,5 +1,6 @@
 import { BrowserWindow } from 'electron';
 import { IPty } from 'node-pty';
+import os from 'os';
 
 import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
 
@@ -8,15 +9,19 @@ class PTYInstance {
 
   public readonly id: string;
 
-  constructor(id: string, cols: number, rows: number) {
+  constructor(id: string, cols: number, rows: number, shellCommand: string, startupDirectory: string) {
     this.id = id;
 
-    const shell = process.platform === 'win32' ? 'powershell.exe' : 'bash';
+    const shell =
+      shellCommand || process.env[process.platform === 'win32' ? 'COMSPEC' : 'SHELL'] || process.platform === 'win32'
+        ? 'cmd.exe'
+        : '/bin/bash';
+
     this.ptyProcess = require('node-pty').spawn(shell, [], {
       name: 'xterm-color',
       cols: cols,
       rows: rows,
-      cwd: process.cwd(),
+      cwd: startupDirectory || os.homedir() || process.cwd(),
     });
   }
 
@@ -42,8 +47,15 @@ export class TerminalModule extends NativeBridgeModule {
   private ptyInstances: { [id: string]: PTYInstance } = {};
 
   @moduleFunction()
-  public async newTerminal(_mainWindow: BrowserWindow, id: string, cols: number, rows: number): Promise<void> {
-    const ptyInstance = new PTYInstance(id, cols, rows);
+  public async newTerminal(
+    _mainWindow: BrowserWindow,
+    id: string,
+    cols: number,
+    rows: number,
+    shellCommand: string,
+    startupDirectory: string,
+  ): Promise<void> {
+    const ptyInstance = new PTYInstance(id, cols, rows, shellCommand, startupDirectory);
     ptyInstance.onData((data: string) => {
       this.onData(_mainWindow, ptyInstance.id, data);
     });
