@@ -1,4 +1,4 @@
-import { Config } from './config';
+import { ResolvedConfig } from './config';
 
 type ElectronOpaqueEvent = {
   senderId: number;
@@ -49,7 +49,7 @@ export type INativeBridge = {
     onData: (_callback: (_event: ElectronOpaqueEvent, _id: string, _data: string) => void) => void;
   };
   config?: {
-    get: () => Promise<Config>;
+    getConfig: () => Promise<ResolvedConfig>;
     getConfigPath: () => Promise<string>;
   };
 };

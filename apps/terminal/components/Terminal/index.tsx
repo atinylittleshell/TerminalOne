@@ -17,6 +17,7 @@ const Terminal = ({ active }: { active: boolean }) => {
 
     const terminalDiv = terminalRef.current;
 
+    // TODO: refactor this into multiple effects
     const terminal = new XTerm({
       scrollback: 0,
     });
@@ -28,9 +29,11 @@ const Terminal = ({ active }: { active: boolean }) => {
 
     fitAddon.fit();
 
-    window.TerminalOne.config.get().then((config) => {
+    window.TerminalOne.config.getConfig().then((config) => {
       terminal.options.fontSize = config.fontSize;
       terminal.options.fontFamily = config.fontFamily;
+      terminal.options.fontWeight = config.fontWeight;
+      terminal.options.fontWeightBold = config.fontWeightBold;
     });
 
     const terminalId = (nextId++).toString();

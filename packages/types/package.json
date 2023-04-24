@@ -13,5 +13,8 @@
     "eslint": "^7.32.0",
     "typescript": "^5.0.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "fp-ts": "^2.14.0",
+    "io-ts": "^2.2.20"
+  }
 }

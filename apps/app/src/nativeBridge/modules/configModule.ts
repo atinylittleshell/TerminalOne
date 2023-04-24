@@ -1,4 +1,4 @@
-import { Config, DEFAULT_CONFIG } from '@terminalone/types';
+import { DEFAULT_CONFIG, resolveConfig, ResolvedConfig } from '@terminalone/types';
 import appDirs from 'appdirsjs';
 import { BrowserWindow } from 'electron';
 import { existsSync, readFileSync, writeFileSync } from 'fs-extra';
@@ -9,10 +9,10 @@ import { moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../modul
 
 @nativeBridgeModule('config')
 export class ConfigModule extends NativeBridgeModule {
-  private config: Config = DEFAULT_CONFIG;
+  private config: ResolvedConfig = DEFAULT_CONFIG;
 
   @moduleFunction()
-  public async get(_mainWindow: BrowserWindow): Promise<Config> {
+  public async getConfig(_mainWindow: BrowserWindow): Promise<ResolvedConfig> {
     return this.config;
   }
 
@@ -36,15 +36,13 @@ export class ConfigModule extends NativeBridgeModule {
       const mod: Record<string, any> = {};
       script.runInNewContext({ mod });
       if (!mod.exports) {
-        throw new Error('Error reading configuration: `module.exports` not set');
+        throw new Error('Invalid config: `module.exports` not set');
       }
 
-      this.config = {
-        ...this.config,
-        ...mod.exports,
-      };
+      const resolved = resolveConfig(mod.exports);
+      this.config = resolved;
     } catch (_err) {
-      // TODO: log error
+      // TODO: report error
     }
   }
 }

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
+import { useConfigContext } from '../hooks/ConfigContext';
 
 const TitleBar = dynamic(() => import('../components/TitleBar'), {
   ssr: false,
@@ -15,6 +16,7 @@ const Terminal = dynamic(() => import('../components/Terminal'), {
 });
 
 const Page = () => {
+  const { config } = useConfigContext();
   const [tabId, setTabId] = useState<string>('TerminalOne');
   const [userTabIds, _setUserTabIds] = useState<string[]>(['1']);
 
@@ -43,7 +45,15 @@ const Page = () => {
           ))}
         </div>
       </TitleBar>
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div
+        className="flex-1 flex flex-col overflow-hidden"
+        style={{
+          paddingTop: config.tabContentPadding.top,
+          paddingRight: config.tabContentPadding.right,
+          paddingBottom: config.tabContentPadding.bottom,
+          paddingLeft: config.tabContentPadding.left,
+        }}
+      >
         {tabId === 'TerminalOne' && <SettingsPage />}
         {userTabIds.map((userTabId) => (
           <Terminal key={userTabId} active={tabId === userTabId} />

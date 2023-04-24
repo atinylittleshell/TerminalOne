@@ -1,8 +1,8 @@
-import { Config, DEFAULT_CONFIG } from '@terminalone/types';
+import { DEFAULT_CONFIG, ResolvedConfig } from '@terminalone/types';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface IConfigContextData {
-  config: Config;
+  config: ResolvedConfig;
   configPath: string;
 }
 
@@ -12,13 +12,13 @@ const ConfigContext = createContext<IConfigContextData>({
 });
 
 export const ConfigContextProvider = (props: React.PropsWithChildren<{}>) => {
-  const [config, setConfig] = useState<Config>(DEFAULT_CONFIG);
+  const [config, setConfig] = useState<ResolvedConfig>(DEFAULT_CONFIG);
   const [configPath, setConfigPath] = useState<string>('');
 
   useEffect(() => {
     if (window && window.TerminalOne) {
-      window.TerminalOne.config.get().then((config) => {
-        setConfig(config);
+      window.TerminalOne.config.getConfig().then((cfg) => {
+        setConfig(cfg);
       });
       window.TerminalOne.config.getConfigPath().then((path) => {
         setConfigPath(path);
