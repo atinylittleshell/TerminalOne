@@ -1,6 +1,6 @@
 import { DEFAULT_CONFIG, resolveConfig, ResolvedConfig } from '@terminalone/types';
 import { BrowserWindow } from 'electron';
-import { existsSync, readFileSync, writeFileSync } from 'fs-extra';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs-extra';
 import path from 'path';
 import vm from 'vm';
 
@@ -22,8 +22,10 @@ export class ConfigModule extends NativeBridgeModule {
   }
 
   public onRegistered(_mainWindow: BrowserWindow): void {
-    const configPath = path.join(getAppDirs().config, 'config.js');
+    const configDir = getAppDirs().config;
+    const configPath = path.join(configDir, 'config.js');
     if (!existsSync(configPath)) {
+      mkdirSync(configDir, { recursive: true });
       writeFileSync(configPath, 'module.exports = {};');
     }
 
