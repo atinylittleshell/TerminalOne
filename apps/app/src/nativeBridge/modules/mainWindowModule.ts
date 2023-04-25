@@ -1,5 +1,5 @@
 import { BrowserWindow } from 'electron';
-import { existsSync, readFileSync, writeFile } from 'fs-extra';
+import { existsSync, mkdirSync, readFileSync, writeFile } from 'fs-extra';
 import path from 'path';
 
 import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
@@ -74,7 +74,8 @@ export class MainWindowModule extends NativeBridgeModule {
       ...latestState,
     };
 
-    const stateFilePath = path.join(getAppDirs().config, 'window.json');
+    const configDir = getAppDirs().config;
+    const stateFilePath = path.join(configDir, 'window.json');
     if (existsSync(stateFilePath)) {
       const stateFromFile = JSON.parse(readFileSync(stateFilePath, { encoding: 'utf8' }));
       latestState = {
@@ -90,6 +91,8 @@ export class MainWindowModule extends NativeBridgeModule {
       savedState = {
         ...latestState,
       };
+    } else {
+      mkdirSync(configDir, { recursive: true });
     }
 
     mainWindow.on('resize', () => {
