@@ -22,7 +22,7 @@ function TitleBar(props: PropsWithChildren<{}>) {
       }`}
     >
       <div className={`block absolute -z-10 top-0 left-0 right-0 bottom-0 ${styles['title-bar-drag']}`} />
-      <div className={`${styles['title-bar-buttons']}`}>{props.children}</div>
+      <div className={`flex items-center ${styles['title-bar-buttons']}`}>{props.children}</div>
       <div className="flex-1" />
       {window.TerminalOne.platform === 'darwin' ? null : (
         <div className={`flex flex-row text-white ${styles['title-bar-buttons']}`}>

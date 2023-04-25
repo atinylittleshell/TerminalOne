@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
+import _ from 'lodash';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { FiMenu } from 'react-icons/fi';
+import { FiMenu, FiMinus, FiPlus } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
 import { useConfigContext } from '../hooks/ConfigContext';
@@ -17,17 +18,17 @@ const Terminal = dynamic(() => import('../components/Terminal'), {
 
 const Page = () => {
   const { config } = useConfigContext();
-  const [tabId, setTabId] = useState<string>('TerminalOne');
-  const [userTabIds, _setUserTabIds] = useState<string[]>(['1']);
+  const [tabId, setTabId] = useState<number>(0);
+  const [userTabIds, setUserTabIds] = useState<number[]>([1]);
 
   return (
     <>
       <TitleBar>
         <div className="tabs">
           <a
-            className={`tab tab-lifted ${tabId === 'TerminalOne' ? 'tab-active' : ''}`}
+            className={`tab tab-lifted ${tabId === 0 ? 'tab-active' : ''}`}
             onClick={() => {
-              setTabId('TerminalOne');
+              setTabId(0);
             }}
           >
             <FiMenu />
@@ -44,9 +45,33 @@ const Page = () => {
             </a>
           ))}
         </div>
+        <button
+          className="btn btn-sm btn-ghost btn-square"
+          disabled={tabId === 0}
+          onClick={() => {
+            if (tabId === 0) {
+              return;
+            }
+            const newTabs = _.without(userTabIds, tabId);
+            setUserTabIds(newTabs);
+            setTabId(_.max(newTabs) || 0);
+          }}
+        >
+          <FiMinus />
+        </button>
+        <button
+          className="btn btn-sm btn-ghost btn-square"
+          onClick={() => {
+            const newTabId = (_.max(userTabIds) || 0) + 1;
+            setUserTabIds([...userTabIds, newTabId]);
+            setTabId(newTabId);
+          }}
+        >
+          <FiPlus />
+        </button>
       </TitleBar>
       <div
-        className="flex-1 flex flex-col overflow-hidden"
+        className="flex-1 flex overflow-hidden"
         style={{
           paddingTop: config.tabContentPadding.top,
           paddingRight: config.tabContentPadding.right,
@@ -54,10 +79,12 @@ const Page = () => {
           paddingLeft: config.tabContentPadding.left,
         }}
       >
-        {tabId === 'TerminalOne' && <SettingsPage />}
-        {userTabIds.map((userTabId) => (
-          <Terminal key={userTabId} active={tabId === userTabId} />
-        ))}
+        <div className="flex-1 relative overflow-hidden">
+          {tabId === 0 && <SettingsPage />}
+          {userTabIds.map((userTabId) => (
+            <Terminal key={userTabId} active={tabId === userTabId} />
+          ))}
+        </div>
       </div>
     </>
   );

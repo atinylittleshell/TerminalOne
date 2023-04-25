@@ -93,7 +93,7 @@ const Terminal = ({ active }: { active: boolean }) => {
 
   return (
     <div
-      className={`flex-1 relative overflow-hidden ${active ? 'visible' : 'invisible'}`}
+      className={`flex-1 w-full h-full absolute overflow-hidden ${active ? 'visible' : 'invisible'}`}
       tabIndex={1}
       ref={terminalRef}
     />
