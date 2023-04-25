@@ -1,5 +1,6 @@
 'use client';
 
+import { DEFAULT_CONFIG } from '@terminalone/types';
 import { useEffect, useRef } from 'react';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
@@ -7,7 +8,7 @@ import { WebglAddon } from 'xterm-addon-webgl';
 
 let nextId = 0;
 
-const Terminal = ({ active }: { active: boolean }) => {
+const Terminal = ({ active, shellName }: { active: boolean; shellName: string }) => {
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,15 +32,17 @@ const Terminal = ({ active }: { active: boolean }) => {
 
     const terminalId = (nextId++).toString();
     window.TerminalOne.config.getConfig().then((config) => {
+      const activeShellConfig = config.shells.find((s) => s.name === shellName) || DEFAULT_CONFIG.shells[0];
+      // when the following values are empty, they will be auto determined based on system defaults
+      const shellCommand = activeShellConfig.command;
+      const startupDirectory = activeShellConfig.startupDirectory;
+      const theme = config.themes.find((t) => t.name === activeShellConfig.themeName) || DEFAULT_CONFIG.themes[0];
+
       terminal.options.fontSize = config.fontSize;
       terminal.options.fontFamily = config.fontFamily;
       terminal.options.fontWeight = config.fontWeight;
       terminal.options.fontWeightBold = config.fontWeightBold;
-
-      const activeShellConfig = config.shells.find((s) => s.name === config.defaultShellName);
-      // when the following values are empty, they will be auto determined based on system defaults
-      const shellCommand = activeShellConfig ? activeShellConfig.command : '';
-      const startupDirectory = activeShellConfig ? activeShellConfig.startupDirectory : '';
+      terminal.options.theme = theme;
 
       window.TerminalOne.terminal
         ?.newTerminal(terminalId, terminal.cols, terminal.rows, shellCommand, startupDirectory)

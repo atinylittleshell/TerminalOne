@@ -34,7 +34,7 @@ export class ConfigModule extends NativeBridgeModule {
     try {
       const script = new vm.Script(configContent, { filename: 'config.js', displayErrors: true });
       const mod: Record<string, any> = {};
-      script.runInNewContext({ mod });
+      script.runInNewContext({ module: mod });
       if (!mod.exports) {
         throw new Error('Invalid config: `module.exports` not set');
       }
@@ -43,6 +43,7 @@ export class ConfigModule extends NativeBridgeModule {
       this.config = resolved;
     } catch (_err) {
       // TODO: report error
+      console.log(_err);
     }
   }
 }

@@ -6,6 +6,7 @@ const ShellConfigType = t.type({
   name: t.string,
   command: t.string,
   startupDirectory: t.string,
+  themeName: t.string,
 });
 
 export type ShellConfig = t.TypeOf<typeof ShellConfigType>;
@@ -19,12 +20,42 @@ const PaddingType = t.type({
 
 export type Padding = t.TypeOf<typeof PaddingType>;
 
+const ThemeConfigType = t.type({
+  name: t.string,
+  background: t.string,
+  foreground: t.string,
+  cursor: t.string,
+  cursorAccent: t.string,
+  selectionBackground: t.string,
+  selectionForeground: t.string,
+  selectionInactiveBackground: t.string,
+  black: t.string,
+  white: t.string,
+  red: t.string,
+  green: t.string,
+  blue: t.string,
+  yellow: t.string,
+  cyan: t.string,
+  magenta: t.string,
+  brightBlack: t.string,
+  brightWhite: t.string,
+  brightRed: t.string,
+  brightGreen: t.string,
+  brightBlue: t.string,
+  brightYellow: t.string,
+  brightCyan: t.string,
+  brightMagenta: t.string,
+});
+
+export type ThemeConfig = t.TypeOf<typeof ThemeConfigType>;
+
 const ConfigTypeContent = {
   fontSize: t.number,
   fontFamily: t.string,
   fontWeight: t.number,
   fontWeightBold: t.number,
   tabContentPadding: PaddingType,
+  themes: t.array(ThemeConfigType),
   shells: t.array(ShellConfigType),
   defaultShellName: t.string,
 };
@@ -83,11 +114,40 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
     bottom: 8,
     left: 8,
   },
+  themes: [
+    {
+      name: 'Default',
+      background: '#000000',
+      foreground: '#ffffff',
+      cursor: '#ffffff',
+      cursorAccent: '#000000',
+      selectionBackground: '#ffffff',
+      selectionForeground: '#000000',
+      selectionInactiveBackground: '#ffffff',
+      black: '#000000',
+      white: '#ffffff',
+      red: '#ff0000',
+      green: '#00ff00',
+      blue: '#0000ff',
+      yellow: '#ffff00',
+      cyan: '#00ffff',
+      magenta: '#ff00ff',
+      brightBlack: '#808080',
+      brightWhite: '#ffffff',
+      brightRed: '#ff0000',
+      brightGreen: '#00ff00',
+      brightBlue: '#0000ff',
+      brightYellow: '#ffff00',
+      brightCyan: '#00ffff',
+      brightMagenta: '#ff00ff',
+    },
+  ],
   shells: [
     {
       name: 'Default',
       command: '', // will auto detect system shell when this is empty
       startupDirectory: '', // will auto detect home directory when this is empty
+      themeName: 'Default',
     },
   ],
   defaultShellName: 'Default',

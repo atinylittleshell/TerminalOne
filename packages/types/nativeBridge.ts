@@ -1,4 +1,4 @@
-import { ResolvedConfig } from './config';
+import { ResolvedConfig, ThemeConfig } from './config';
 
 type ElectronOpaqueEvent = {
   senderId: number;

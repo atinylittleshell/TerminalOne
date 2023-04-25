@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
+import { DEFAULT_CONFIG } from '@terminalone/types';
 import _ from 'lodash';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -16,10 +17,28 @@ const Terminal = dynamic(() => import('../components/Terminal'), {
   ssr: false,
 });
 
+type UserTab = {
+  tabId: number;
+  shellName: string;
+};
+
 const Page = () => {
   const { config } = useConfigContext();
+
   const [tabId, setTabId] = useState<number>(0);
-  const [userTabIds, setUserTabIds] = useState<number[]>([1]);
+  const [userTabs, setUserTabs] = useState<UserTab[]>([
+    {
+      tabId: 1,
+      shellName: config.defaultShellName,
+    },
+  ]);
+
+  const activeShellName = userTabs.find((t) => t.tabId === tabId)?.shellName || config.defaultShellName;
+  const activeShellConfig = config.shells.find((s) => s.name === activeShellName) || DEFAULT_CONFIG.shells[0];
+  const activeThemeConfig =
+    tabId === 0
+      ? DEFAULT_CONFIG.themes[0]
+      : config.themes.find((t) => t.name === activeShellConfig.themeName) || DEFAULT_CONFIG.themes[0];
 
   return (
     <>
@@ -33,15 +52,18 @@ const Page = () => {
           >
             <FiMenu />
           </a>
-          {userTabIds.map((userTabId) => (
+          {userTabs.map((userTab) => (
             <a
-              key={userTabId}
-              className={`tab tab-lifted ${tabId === userTabId ? 'tab-active' : ''}`}
+              key={userTab.tabId}
+              className={`tab tab-lifted ${tabId === userTab.tabId ? 'tab-active' : ''}`}
+              style={{
+                backgroundColor: tabId === userTab.tabId ? activeThemeConfig.background : undefined,
+              }}
               onClick={() => {
-                setTabId(userTabId);
+                setTabId(userTab.tabId);
               }}
             >
-              {userTabId}
+              {userTab.tabId}
             </a>
           ))}
         </div>
@@ -52,9 +74,9 @@ const Page = () => {
             if (tabId === 0) {
               return;
             }
-            const newTabs = _.without(userTabIds, tabId);
-            setUserTabIds(newTabs);
-            setTabId(_.max(newTabs) || 0);
+            const newTabs = userTabs.filter((t) => t.tabId !== tabId);
+            setUserTabs(newTabs);
+            setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
           }}
         >
           <FiMinus />
@@ -62,8 +84,14 @@ const Page = () => {
         <button
           className="btn btn-sm btn-ghost btn-square"
           onClick={() => {
-            const newTabId = (_.max(userTabIds) || 0) + 1;
-            setUserTabIds([...userTabIds, newTabId]);
+            const newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
+            setUserTabs([
+              ...userTabs,
+              {
+                tabId: newTabId,
+                shellName: config.defaultShellName,
+              },
+            ]);
             setTabId(newTabId);
           }}
         >
@@ -77,12 +105,13 @@ const Page = () => {
           paddingRight: config.tabContentPadding.right,
           paddingBottom: config.tabContentPadding.bottom,
           paddingLeft: config.tabContentPadding.left,
+          backgroundColor: activeThemeConfig.background,
         }}
       >
         <div className="flex-1 relative overflow-hidden">
           {tabId === 0 && <SettingsPage />}
-          {userTabIds.map((userTabId) => (
-            <Terminal key={userTabId} active={tabId === userTabId} />
+          {userTabs.map((userTab) => (
+            <Terminal key={userTab.tabId} active={tabId === userTab.tabId} shellName={userTab.shellName} />
           ))}
         </div>
       </div>
