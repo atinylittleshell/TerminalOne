@@ -17,7 +17,7 @@ export type INativeBridge = {
     | 'win32'
     | 'cygwin'
     | 'netbsd';
-  win?: {
+  win: {
     onWindowResized: (_callback: (_event: ElectronOpaqueEvent, _w: number, _h: number) => void) => void;
     onWindowMoved: (_callback: (_event: ElectronOpaqueEvent, _x: number, _y: number) => void) => void;
     setWindowSize: (_width: number, _height: number) => Promise<void>;
@@ -30,18 +30,18 @@ export type INativeBridge = {
     isMaximized: () => Promise<boolean>;
     hideToSystemTray?: () => Promise<void>;
   };
-  app?: {
+  app: {
     quit: () => Promise<void>;
     setOpenAtLogin: (_openAtLogin: boolean) => Promise<void>;
     getIsPackaged: () => Promise<boolean>;
     getVersion?: () => Promise<string>;
     clearStorage?: () => Promise<void>;
   };
-  links?: {
+  links: {
     openExternalURL: (_url: string) => Promise<void>;
     openFile: (_path: string) => Promise<void>;
   };
-  terminal?: {
+  terminal: {
     newTerminal: (
       _id: string,
       _cols: number,
@@ -54,7 +54,7 @@ export type INativeBridge = {
     writeTerminal: (_id: string, _data: string) => Promise<void>;
     onData: (_callback: (_event: ElectronOpaqueEvent, _id: string, _data: string) => void) => void;
   };
-  config?: {
+  config: {
     getConfig: () => Promise<ResolvedConfig>;
     getConfigPath: () => Promise<string>;
   };

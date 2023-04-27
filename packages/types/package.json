@@ -6,7 +6,7 @@
   "types": "./index.ts",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
-    "test": "jest"
+    "test": "jest --colors"
   },
   "devDependencies": {
     "@terminalone/eslint-config-custom": "*",

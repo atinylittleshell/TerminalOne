@@ -5,7 +5,7 @@ module.exports = {
   passWithNoTests: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.{ts,tsx}',
+    '**/src/*.{ts,tsx}',
     '!**/tests/**',
     '!**/*.d.ts',
     '!**/node_modules/**',

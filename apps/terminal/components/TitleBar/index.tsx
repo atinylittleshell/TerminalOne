@@ -10,7 +10,7 @@ function TitleBar(props: PropsWithChildren<{}>) {
   const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
-    window.TerminalOne.win?.isMaximized().then((value) => {
+    window.TerminalOne?.win.isMaximized().then((value) => {
       setIsMaximized(value);
     });
   }, []);
@@ -18,19 +18,19 @@ function TitleBar(props: PropsWithChildren<{}>) {
   return (
     <div
       className={`flex flex-row item-center relative bg-base-300 ${
-        window.TerminalOne.platform === 'darwin' ? 'h-16 pt-8' : 'h-8'
+        window.TerminalOne?.platform === 'darwin' ? 'h-16 pt-8' : 'h-8'
       }`}
     >
       <div className={`block absolute -z-10 top-0 left-0 right-0 bottom-0 ${styles['title-bar-drag']}`} />
       <div className={`flex items-center ${styles['title-bar-buttons']}`}>{props.children}</div>
       <div className="flex-1" />
-      {window.TerminalOne.platform === 'darwin' ? null : (
+      {window.TerminalOne?.platform === 'darwin' ? null : (
         <div className={`flex flex-row text-white ${styles['title-bar-buttons']}`}>
           <button
             className="btn btn-sm btn-ghost btn-square"
             title="Minimize"
             onClick={() => {
-              window.TerminalOne.win?.minimize();
+              window.TerminalOne?.win.minimize();
             }}
           >
             <FiMinus size="16" />
@@ -40,10 +40,10 @@ function TitleBar(props: PropsWithChildren<{}>) {
             title="Maximize"
             onClick={() => {
               if (isMaximized) {
-                window.TerminalOne.win?.maximize(false);
+                window.TerminalOne?.win.maximize(false);
                 setIsMaximized(false);
               } else {
-                window.TerminalOne.win?.maximize(true);
+                window.TerminalOne?.win.maximize(true);
                 setIsMaximized(true);
               }
             }}
@@ -55,7 +55,7 @@ function TitleBar(props: PropsWithChildren<{}>) {
             title="Close"
             onClick={async () => {
               flushSync(() => {
-                window.TerminalOne.app?.quit();
+                window.TerminalOne?.app?.quit();
               });
             }}
           >

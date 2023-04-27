@@ -6,7 +6,7 @@
     "dev:terminal": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest --colors"
   },
   "dependencies": {
     "@terminalone/types": "*",

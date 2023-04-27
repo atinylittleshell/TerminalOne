@@ -23,5 +23,5 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['node_modules', '.next', '.turbo', 'dist', 'public'],
+  ignorePatterns: ['node_modules', '.next', '.turbo', 'dist', 'public', 'coverage'],
 };

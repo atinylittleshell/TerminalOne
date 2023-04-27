@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "build": "npm run build:app && shx cp -r ../terminal/dist/. dist/terminal/",
-    "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js && shx cp -r public dist/public"
+    "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js && shx cp -r public dist/public",
+    "test": "jest --colors"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
@@ -15,11 +16,14 @@
     "@terminalone/eslint-config-custom": "*",
     "@terminalone/tsconfig": "*",
     "@types/fs-extra": "^11.0.1",
+    "@types/jest": "^29.5.1",
     "@types/lodash": "^4.14.182",
     "@types/node": "^17.0.23",
     "@types/node-fetch": "^2.6.2",
     "babel-loader": "^8.2.5",
+    "jest": "^29.5.0",
     "shx": "^0.3.4",
+    "ts-jest": "^29.1.0",
     "typescript": "^5.0.4",
     "webpack-cli": "^4.9.2"
   },

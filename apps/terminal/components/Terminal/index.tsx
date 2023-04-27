@@ -15,6 +15,9 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     if (!terminalRef.current) {
       return;
     }
+    if (!window || !window.TerminalOne) {
+      return;
+    }
 
     const terminalDiv = terminalRef.current;
 
@@ -44,18 +47,18 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
       terminal.options.fontWeightBold = config.fontWeightBold;
       terminal.options.theme = theme;
 
-      window.TerminalOne.terminal
-        ?.newTerminal(terminalId, terminal.cols, terminal.rows, shellCommand, startupDirectory)
+      window.TerminalOne?.terminal
+        .newTerminal(terminalId, terminal.cols, terminal.rows, shellCommand, startupDirectory)
         .then(() => {
           fitAddon.fit();
 
           terminal.onData((data) => {
-            window.TerminalOne.terminal?.writeTerminal(terminalId, data);
+            window.TerminalOne?.terminal?.writeTerminal(terminalId, data);
           });
           terminal.onResize(({ cols, rows }) => {
-            window.TerminalOne.terminal?.resizeTerminal(terminalId, cols, rows);
+            window.TerminalOne?.terminal?.resizeTerminal(terminalId, cols, rows);
           });
-          window.TerminalOne.terminal?.onData((_e, id: string, data: string) => {
+          window.TerminalOne?.terminal?.onData((_e, id: string, data: string) => {
             if (id !== terminalId) {
               return;
             }
@@ -79,7 +82,7 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
       window.removeEventListener('resize', resizeListener);
       terminalDiv.removeEventListener('focus', focusListener);
 
-      window.TerminalOne.terminal?.killTerminal(terminalId);
+      window.TerminalOne?.terminal?.killTerminal(terminalId);
       terminal.dispose();
     };
   }, [terminalRef, shellName]);
