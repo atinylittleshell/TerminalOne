@@ -25,7 +25,7 @@ type UserTab = {
 const Page = () => {
   const { config } = useConfigContext();
 
-  const [tabId, setTabId] = useState<number>(0);
+  const [tabId, setTabId] = useState<number>(1);
   const [userTabs, setUserTabs] = useState<UserTab[]>([
     {
       tabId: 1,

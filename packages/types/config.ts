@@ -50,6 +50,14 @@ const ThemeConfigType = t.type({
 export type ThemeConfig = t.TypeOf<typeof ThemeConfigType>;
 
 const ConfigTypeContent = {
+  cursorBlink: t.boolean,
+  cursorStyle: t.keyof({
+    block: null,
+    underline: null,
+    bar: null,
+  }),
+  cursorWidth: t.number,
+  scrollback: t.number,
   fontSize: t.number,
   fontFamily: t.string,
   fontWeight: t.number,
@@ -70,6 +78,9 @@ export const validateConfig = (config: unknown): Config => {
   }
 
   const result = decoded.right;
+  if (result.scrollback !== undefined && result.scrollback < 0) {
+    throw Error(`Invalid scrollback value: ${result.scrollback}`);
+  }
   if (result.fontSize !== undefined && (result.fontSize <= 0 || result.fontSize > 128)) {
     throw Error(`Invalid font size: ${result.fontSize}`);
   }
@@ -104,6 +115,10 @@ export const validateConfig = (config: unknown): Config => {
 };
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
+  scrollback: 10000,
+  cursorBlink: false,
+  cursorStyle: 'block',
+  cursorWidth: 1,
   fontSize: 15,
   fontFamily: 'Consolas, Menlo, monospace',
   fontWeight: 500,

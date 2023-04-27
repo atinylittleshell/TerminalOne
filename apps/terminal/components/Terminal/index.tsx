@@ -22,9 +22,7 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     const terminalDiv = terminalRef.current;
 
     // TODO: refactor this into multiple effects
-    const terminal = new XTerm({
-      scrollback: 0,
-    });
+    const terminal = new XTerm();
     terminal.loadAddon(new WebglAddon());
 
     const fitAddon = new FitAddon();
@@ -41,6 +39,10 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
       const startupDirectory = activeShellConfig.startupDirectory;
       const theme = config.themes.find((t) => t.name === activeShellConfig.themeName) || DEFAULT_CONFIG.themes[0];
 
+      terminal.options.cursorBlink = config.cursorBlink;
+      terminal.options.cursorStyle = config.cursorStyle;
+      terminal.options.cursorWidth = config.cursorWidth;
+      terminal.options.scrollback = config.scrollback;
       terminal.options.fontSize = config.fontSize;
       terminal.options.fontFamily = config.fontFamily;
       terminal.options.fontWeight = config.fontWeight;
