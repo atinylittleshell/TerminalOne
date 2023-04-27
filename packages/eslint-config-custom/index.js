@@ -18,4 +18,10 @@ module.exports = {
       presets: [require.resolve('next/babel')],
     },
   },
+  env: {
+    browser: true,
+    node: true,
+    jest: true,
+  },
+  ignorePatterns: ['node_modules', '.next', '.turbo', 'dist', 'public'],
 };

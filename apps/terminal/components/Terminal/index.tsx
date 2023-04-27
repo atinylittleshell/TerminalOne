@@ -82,7 +82,7 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
       window.TerminalOne.terminal?.killTerminal(terminalId);
       terminal.dispose();
     };
-  }, [terminalRef]);
+  }, [terminalRef, shellName]);
 
   useEffect(() => {
     if (!terminalRef.current) {

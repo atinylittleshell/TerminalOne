@@ -24,6 +24,7 @@
       "cache": false,
       "persistent": true
     },
-    "lint": {}
+    "lint": {},
+    "test": {}
   }
 }
