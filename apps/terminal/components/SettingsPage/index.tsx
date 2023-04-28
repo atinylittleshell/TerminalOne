@@ -11,11 +11,9 @@ const SettingsPage = () => {
   const configContext = useConfigContext();
 
   useEffect(() => {
-    if (window && window.TerminalOne) {
-      window.TerminalOne.app.getVersion().then((version) => {
-        setAppVersion(version);
-      });
-    }
+    window.TerminalOne?.app.getVersion().then((version) => {
+      setAppVersion(version);
+    });
   }, []);
 
   return (
@@ -36,7 +34,7 @@ const SettingsPage = () => {
           <button
             className="btn btn-primary btn-square"
             onClick={() => {
-              window.TerminalOne.links.openFile(configContext.configPath);
+              window.TerminalOne?.links.openFile(configContext.configPath);
             }}
           >
             <FiSettings />

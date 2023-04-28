@@ -34,7 +34,7 @@ export type INativeBridge = {
     quit: () => Promise<void>;
     setOpenAtLogin: (_openAtLogin: boolean) => Promise<void>;
     getIsPackaged: () => Promise<boolean>;
-    getVersion?: () => Promise<string>;
+    getVersion: () => Promise<string>;
     clearStorage?: () => Promise<void>;
   };
   links: {
