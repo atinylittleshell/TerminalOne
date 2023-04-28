@@ -1,6 +1,7 @@
+import { Logger, LogLevel } from '@terminalone/types';
 import { app, BrowserWindow, session } from 'electron';
 
-import { moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
 
 @nativeBridgeModule('app')
 export class ApplicationModule extends NativeBridgeModule {
@@ -33,5 +34,21 @@ export class ApplicationModule extends NativeBridgeModule {
   @moduleFunction()
   public async clearStorage(_mainWindow: BrowserWindow) {
     await session.defaultSession.clearStorageData();
+  }
+
+  @moduleFunction()
+  public async log(_mainWindow: BrowserWindow, level: LogLevel, message: string): Promise<void> {
+    Logger.getInstance().log(level, message);
+  }
+
+  @moduleEvent('on')
+  public onLog(_mainWindow: BrowserWindow, _level: LogLevel, _message: string): void {
+    return;
+  }
+
+  public onRegistered(mainWindow: BrowserWindow): void {
+    Logger.getInstance().on('logged', (level, message) => {
+      this.onLog(mainWindow, level, message);
+    });
   }
 }

@@ -9,6 +9,7 @@ import { FiMenu, FiMinus, FiPlus } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
 import { useConfigContext } from '../hooks/ConfigContext';
+import { useLogContext } from '../hooks/LogContext';
 
 const TitleBar = dynamic(() => import('../components/TitleBar'), {
   ssr: false,
@@ -24,6 +25,7 @@ type UserTab = {
 
 const Page = () => {
   const { config } = useConfigContext();
+  const { unreadErrorCount, markAsRead } = useLogContext();
 
   const [tabId, setTabId] = useState<number>(1);
   const [userTabs, setUserTabs] = useState<UserTab[]>([
@@ -45,12 +47,14 @@ const Page = () => {
       <TitleBar>
         <div className="tabs">
           <a
-            className={`tab tab-lifted ${tabId === 0 ? 'tab-active' : ''}`}
+            className={`tab tab-lifted ${tabId === 0 ? 'tab-active' : ''} flex items-center gap-1`}
             onClick={() => {
+              markAsRead();
               setTabId(0);
             }}
           >
             <FiMenu />
+            {unreadErrorCount > 0 && <span className="badge badge-xs badge-error">{unreadErrorCount}</span>}
           </a>
           {userTabs.map((userTab) => (
             <a

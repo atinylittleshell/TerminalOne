@@ -1,4 +1,5 @@
 import { ResolvedConfig } from './config';
+import { LogLevel } from './logger';
 
 type ElectronOpaqueEvent = {
   senderId: number;
@@ -28,14 +29,15 @@ export type INativeBridge = {
     maximize: (_maximize?: boolean) => Promise<void>;
     isMinimized: () => Promise<boolean>;
     isMaximized: () => Promise<boolean>;
-    hideToSystemTray?: () => Promise<void>;
   };
   app: {
     quit: () => Promise<void>;
     setOpenAtLogin: (_openAtLogin: boolean) => Promise<void>;
     getIsPackaged: () => Promise<boolean>;
     getVersion: () => Promise<string>;
-    clearStorage?: () => Promise<void>;
+    clearStorage: () => Promise<void>;
+    log: (_level: LogLevel, _message: string) => Promise<void>;
+    onLog: (_callback: (_event: ElectronOpaqueEvent, _level: LogLevel, _message: string) => void) => void;
   };
   links: {
     openExternalURL: (_url: string) => Promise<void>;
