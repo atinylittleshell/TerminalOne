@@ -4,11 +4,14 @@
 
 <h1 align="center">TerminalOne</h1>
 
+<p align="center">
+A fast, elegant and intelligent cross-platform terminal emulator and multiplexer.
+</p>
+
 ## Overview
 
 [![build](https://github.com/kunchenguid/TerminalOne/actions/workflows/build.yml/badge.svg)](https://github.com/kunchenguid/TerminalOne/actions/workflows/build.yml)
 
-A fast, elegant and intelligent cross-platform terminal emulator and multiplexer.
 * Not written in Rust, yet still blazing fast.
 * GPU-accelerated rendering using [Xterm.js](https://xtermjs.org/).
 * (WIP) Multi-chord key bindings.
