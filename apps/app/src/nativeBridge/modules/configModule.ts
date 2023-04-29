@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, Logger, resolveConfig, ResolvedConfig } from '@terminalone/types';
+import { DEFAULT_CONFIG, resolveConfig, ResolvedConfig } from '@terminalone/types';
 import { BrowserWindow } from 'electron';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs-extra';
 import path from 'path';
@@ -6,6 +6,7 @@ import vm from 'vm';
 
 import { moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
 import { getAppDirs } from './common';
+import { Logger } from './common/logger';
 
 @nativeBridgeModule('config')
 export class ConfigModule extends NativeBridgeModule {
@@ -42,7 +43,7 @@ export class ConfigModule extends NativeBridgeModule {
       const resolved = resolveConfig(mod.exports);
       this.config = resolved;
     } catch (err: any) {
-      Logger.getInstance().error(JSON.stringify(err));
+      Logger.getInstance().log('error', JSON.stringify(err));
     }
   }
 }

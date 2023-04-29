@@ -1,7 +1,8 @@
-import { Logger, LogLevel } from '@terminalone/types';
+import { LogLevel } from '@terminalone/types';
 import { app, BrowserWindow, session } from 'electron';
 
 import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import { Logger } from './common/logger';
 
 @nativeBridgeModule('app')
 export class ApplicationModule extends NativeBridgeModule {

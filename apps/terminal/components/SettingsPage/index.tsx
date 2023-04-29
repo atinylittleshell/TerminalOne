@@ -2,15 +2,13 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
-import { FiAlertTriangle, FiSettings } from 'react-icons/fi';
+import { FiSettings } from 'react-icons/fi';
 
 import { useConfigContext } from '../../hooks/ConfigContext';
-import { useLogContext } from '../../hooks/LogContext';
 
 const SettingsPage = () => {
   const [appVersion, setAppVersion] = useState<string>('0.1.0');
   const configContext = useConfigContext();
-  const { logs } = useLogContext();
 
   useEffect(() => {
     window.TerminalOne?.app.getVersion().then((version) => {
@@ -20,20 +18,6 @@ const SettingsPage = () => {
 
   return (
     <div className="flex-1 w-full h-full relative flex flex-col items-center gap-4 px-4">
-      {logs.filter((l) => l.level === 'ERROR').length > 0 && (
-        <div className="flex flex-col gap-2 w-full mt-2">
-          {logs
-            .filter((l) => l.level === 'ERROR')
-            .map((log) => (
-              <div key={log.id} className="alert alert-error">
-                <div>
-                  <FiAlertTriangle />
-                  <span>{log.message}</span>
-                </div>
-              </div>
-            ))}
-        </div>
-      )}
       <img src="/logo.png" alt="Terminal One" className="w-48 h-48" />
       <div className="text-2xl font-bold mb-4">TerminalOne v{appVersion}</div>
       <div className="form-control w-full max-w-lg">
