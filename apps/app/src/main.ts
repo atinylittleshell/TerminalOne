@@ -4,6 +4,7 @@ import serve from 'electron-serve';
 import { autoUpdater } from 'electron-updater';
 import path = require('path');
 
+import { Logger } from './nativeBridge/modules/common/logger';
 import { nativeBridgeRegistry } from './nativeBridge/registry';
 
 if (!app || app.isPackaged) {
@@ -48,6 +49,8 @@ async function createWindow() {
   } else {
     await win.loadURL(`http://localhost:3000`);
   }
+
+  Logger.getInstance().log('info', 'app started');
 }
 
 app.on('ready', async () => {
