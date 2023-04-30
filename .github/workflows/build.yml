@@ -16,7 +16,7 @@ jobs:
           - macos
           - windows
         node-version:
-          - "16.x"
+          - '16.x'
 
     name: build
     runs-on: ${{ matrix.os }}-latest
@@ -35,3 +35,5 @@ jobs:
         run: npm run lint
       - name: run test
         run: npm run test
+      - name: upload coverage reports to codecov
+        uses: codecov/codecov-action@v3

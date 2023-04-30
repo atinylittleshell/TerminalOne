@@ -25,5 +25,6 @@ Download installers from the [releases](https://github.com/kunchenguid/TerminalO
 ## Contributing
 
 [![build](https://github.com/kunchenguid/TerminalOne/actions/workflows/build.yml/badge.svg)](https://github.com/kunchenguid/TerminalOne/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/kunchenguid/TerminalOne/branch/main/graph/badge.svg?token=2TEJYGL994)](https://codecov.io/gh/kunchenguid/TerminalOne)
 
 Terminal One is open-source with MIT license. See [CONTRIBUTING.md](CONTRIBUTING.md) if you'd like to contribute to this project.
