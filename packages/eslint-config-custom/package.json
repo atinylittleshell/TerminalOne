@@ -1,0 +1,19 @@
+{
+  "name": "@terminalone/eslint-config-custom",
+  "private": true,
+  "version": "0.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "eslint-config-next": "^13.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-turbo": "latest",
+    "eslint-import-resolver-node": "^0.3.7",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "7.28.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
