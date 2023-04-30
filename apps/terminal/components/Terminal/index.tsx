@@ -25,17 +25,15 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
       return;
     }
 
-    const terminalDiv = terminalRef.current;
+    const xtermDiv = terminalRef.current;
 
     // TODO: refactor this into multiple effects
-    const terminal = new XTerm();
-    terminal.loadAddon(new WebglAddon());
+    const xterm = new XTerm();
+    xterm.loadAddon(new WebglAddon());
 
     const fitAddon = new FitAddon();
-    terminal.loadAddon(fitAddon);
-    terminal.open(terminalDiv);
-
-    fitAddon.fit();
+    xterm.loadAddon(fitAddon);
+    xterm.open(xtermDiv);
 
     const terminalId = (nextId++).toString();
     const activeShellConfig = config.shells.find((s) => s.name === shellName) || DEFAULT_CONFIG.shells[0];
@@ -44,33 +42,34 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     const startupDirectory = activeShellConfig.startupDirectory;
     const theme = config.themes.find((t) => t.name === activeShellConfig.themeName) || DEFAULT_CONFIG.themes[0];
 
-    terminal.options.cursorBlink = config.cursorBlink;
-    terminal.options.cursorStyle = config.cursorStyle;
-    terminal.options.cursorWidth = config.cursorWidth;
-    terminal.options.scrollback = config.scrollback;
-    terminal.options.fontSize = config.fontSize;
-    terminal.options.fontFamily = config.fontFamily;
-    terminal.options.fontWeight = config.fontWeight;
-    terminal.options.fontWeightBold = config.fontWeightBold;
-    terminal.options.theme = theme;
+    xterm.options.cursorBlink = config.cursorBlink;
+    xterm.options.cursorStyle = config.cursorStyle;
+    xterm.options.cursorWidth = config.cursorWidth;
+    xterm.options.scrollback = config.scrollback;
+    xterm.options.fontSize = config.fontSize;
+    xterm.options.fontFamily = config.fontFamily;
+    xterm.options.fontWeight = config.fontWeight;
+    xterm.options.fontWeightBold = config.fontWeightBold;
+    xterm.options.theme = theme;
 
     window.TerminalOne?.terminal
-      .newTerminal(terminalId, terminal.cols, terminal.rows, shellCommand, startupDirectory)
+      .newTerminal(terminalId, xterm.cols, xterm.rows, shellCommand, startupDirectory)
       .then(() => {
-        fitAddon.fit();
-
-        terminal.onData((data) => {
+        xterm.onData((data) => {
           window.TerminalOne?.terminal?.writeTerminal(terminalId, data);
         });
-        terminal.onResize(({ cols, rows }) => {
+        xterm.onResize(({ cols, rows }) => {
           window.TerminalOne?.terminal?.resizeTerminal(terminalId, cols, rows);
         });
         window.TerminalOne?.terminal?.onData((_e, id: string, data: string) => {
           if (id !== terminalId) {
             return;
           }
-          terminal.write(data);
+          xterm.write(data);
         });
+
+        // make backend pty size consistent with xterm on the frontend
+        window.TerminalOne?.terminal?.resizeTerminal(terminalId, xterm.cols, xterm.rows);
       });
 
     const resizeListener = () => {
@@ -80,16 +79,16 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
 
     const focusListener = () => {
       fitAddon.fit();
-      terminal.focus();
+      xterm.focus();
     };
-    terminalDiv.addEventListener('focus', focusListener);
+    xtermDiv.addEventListener('focus', focusListener);
 
     return () => {
       window.removeEventListener('resize', resizeListener);
-      terminalDiv.removeEventListener('focus', focusListener);
+      xtermDiv.removeEventListener('focus', focusListener);
 
       window.TerminalOne?.terminal?.killTerminal(terminalId);
-      terminal.dispose();
+      xterm.dispose();
     };
   }, [terminalRef, shellName, config, loading]);
 
