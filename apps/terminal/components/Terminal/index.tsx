@@ -35,8 +35,6 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     terminal.loadAddon(fitAddon);
     terminal.open(terminalDiv);
 
-    fitAddon.fit();
-
     const terminalId = (nextId++).toString();
     const activeShellConfig = config.shells.find((s) => s.name === shellName) || DEFAULT_CONFIG.shells[0];
     // when the following values are empty, they will be auto determined based on system defaults
@@ -57,8 +55,6 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     window.TerminalOne?.terminal
       .newTerminal(terminalId, terminal.cols, terminal.rows, shellCommand, startupDirectory)
       .then(() => {
-        fitAddon.fit();
-
         terminal.onData((data) => {
           window.TerminalOne?.terminal?.writeTerminal(terminalId, data);
         });
@@ -71,6 +67,9 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
           }
           terminal.write(data);
         });
+
+        // make backend pty size consistent with xterm on the frontend
+        window.TerminalOne?.terminal?.resizeTerminal(terminalId, terminal.cols, terminal.rows);
       });
 
     const resizeListener = () => {
