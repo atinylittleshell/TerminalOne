@@ -1,15 +1,17 @@
-# Contributing to TerminalOne
+# Contributing to Terminal One
 
-TerminalOne is open source with MIT license. Any contribution is highly appreciated!
+Terminal One is open-source with MIT license. Any contribution is highly appreciated!
 
 ## Setting up
 
 Once you've cloned the repo, first run the following command to install dependencies.
+
 ```bash
 npm ci
 ```
 
-To start the app locally, run 
+To start the app locally, run
+
 ```bash
 npm run dev:app
 ```
