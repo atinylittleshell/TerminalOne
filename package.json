@@ -42,6 +42,7 @@
     "files": [
       "apps/app/dist/**/*"
     ],
+    "includeSubNodeModules": true,
     "directories": {
       "buildResources": "apps/app/assets"
     }

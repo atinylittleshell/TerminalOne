@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "build": "npm run build:app && shx cp -r ../terminal/dist/. dist/terminal/",
-    "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js && shx cp -r public dist/public",
+    "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js",
     "test": "jest --colors"
   },
   "devDependencies": {
@@ -31,6 +31,7 @@
     "@terminalone/terminal": "*",
     "@terminalone/types": "*",
     "appdirsjs": "^1.2.7",
+    "copy-webpack-plugin": "^11.0.0",
     "dayjs": "^1.11.7",
     "electron": "^24.1.2",
     "electron-devtools-installer": "^3.2.0",
