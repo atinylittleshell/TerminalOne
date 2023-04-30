@@ -2,12 +2,12 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
-import { FiSettings } from 'react-icons/fi';
+import { FiFileText, FiSettings } from 'react-icons/fi';
 
 import { useConfigContext } from '../../hooks/ConfigContext';
 
 const SettingsPage = () => {
-  const [appVersion, setAppVersion] = useState<string>('0.1.0');
+  const [appVersion, setAppVersion] = useState<string>('0.0.0');
   const configContext = useConfigContext();
 
   useEffect(() => {
@@ -21,6 +21,9 @@ const SettingsPage = () => {
       <img src="/logo.png" alt="Terminal One" className="w-48 h-48" />
       <div className="text-2xl font-bold mb-4">TerminalOne v{appVersion}</div>
       <div className="form-control w-full max-w-lg">
+        <label className="label">
+          <span className="label-text">Configuration</span>
+        </label>
         <div className="input-group">
           <input
             type="text"
@@ -38,6 +41,30 @@ const SettingsPage = () => {
             }}
           >
             <FiSettings />
+          </button>
+        </div>
+      </div>
+      <div className="form-control w-full max-w-lg">
+        <label className="label">
+          <span className="label-text">Logs</span>
+        </label>
+        <div className="input-group">
+          <input
+            type="text"
+            readOnly
+            className="input input-bordered w-full"
+            value={configContext.logPath}
+            onFocus={(e) => {
+              e.target.select();
+            }}
+          />
+          <button
+            className="btn btn-primary btn-square"
+            onClick={() => {
+              window.TerminalOne?.links.openFile(configContext.logPath);
+            }}
+          >
+            <FiFileText />
           </button>
         </div>
       </div>

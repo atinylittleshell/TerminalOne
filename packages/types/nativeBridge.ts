@@ -36,6 +36,7 @@ export type INativeBridge = {
     getIsPackaged: () => Promise<boolean>;
     getVersion: () => Promise<string>;
     clearStorage: () => Promise<void>;
+    getLogPath: () => Promise<string>;
     log: (_level: LogLevel, _message: string) => Promise<void>;
     onLog: (_callback: (_event: ElectronOpaqueEvent, _level: LogLevel, _message: string) => void) => void;
   };
