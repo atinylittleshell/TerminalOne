@@ -4,7 +4,7 @@
 import { DEFAULT_CONFIG } from '@terminalone/types';
 import _ from 'lodash';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiMenu, FiMinus, FiPlus } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
@@ -23,15 +23,26 @@ type UserTab = {
 };
 
 const Page = () => {
-  const { config } = useConfigContext();
+  const { config, loading } = useConfigContext();
 
-  const [tabId, setTabId] = useState<number>(1);
-  const [userTabs, setUserTabs] = useState<UserTab[]>([
-    {
-      tabId: 1,
-      shellName: config.defaultShellName,
-    },
-  ]);
+  const [tabId, setTabId] = useState<number>(0);
+  const [userTabs, setUserTabs] = useState<UserTab[]>([]);
+
+  useEffect(() => {
+    if (!loading && userTabs.length === 0) {
+      setTabId(1);
+      setUserTabs([
+        {
+          tabId: 1,
+          shellName: config.defaultShellName,
+        },
+      ]);
+    }
+  }, [loading, config, userTabs]);
+
+  if (loading) {
+    return <div />;
+  }
 
   const activeShellName = userTabs.find((t) => t.tabId === tabId)?.shellName || config.defaultShellName;
   const activeShellConfig = config.shells.find((s) => s.name === activeShellName) || DEFAULT_CONFIG.shells[0];
@@ -110,9 +121,9 @@ const Page = () => {
       >
         <div className="flex-1 relative overflow-hidden">
           {tabId === 0 && <SettingsPage />}
-          {userTabs.map((userTab) => (
-            <Terminal key={userTab.tabId} active={tabId === userTab.tabId} shellName={userTab.shellName} />
-          ))}
+          {userTabs.map((userTab) => {
+            return <Terminal key={userTab.tabId} active={tabId === userTab.tabId} shellName={userTab.shellName} />;
+          })}
         </div>
       </div>
     </>
