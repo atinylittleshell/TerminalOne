@@ -16,15 +16,17 @@
       ]
     },
     "build:app": {
-      "outputs": [
-        "dist/**"
-      ]
+      "cache": false
     },
     "dev:terminal": {
       "cache": false,
       "persistent": true
     },
     "lint": {},
-    "test": {}
+    "test": {
+      "outputs": [
+        "coverage/**"
+      ]
+    }
   }
 }

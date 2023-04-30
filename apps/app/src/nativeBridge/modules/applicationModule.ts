@@ -42,6 +42,11 @@ export class ApplicationModule extends NativeBridgeModule {
     Logger.getInstance().log(level, message);
   }
 
+  @moduleFunction()
+  public async getLogPath(_mainWindow: BrowserWindow): Promise<string> {
+    return Logger.getInstance().getLogPath();
+  }
+
   @moduleEvent('on')
   public onLog(_mainWindow: BrowserWindow, _level: LogLevel, _message: string): void {
     return;

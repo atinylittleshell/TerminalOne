@@ -1,6 +1,7 @@
 {
   "name": "@terminalone/monorepo",
-  "version": "0.1.3",
+  "productName": "Terminal One",
+  "version": "0.2.0",
   "description": "A fast, elegant and intelligent cross-platform terminal.",
   "author": "Kun Chen",
   "license": "MIT",
@@ -13,9 +14,12 @@
   },
   "keywords": [
     "terminal",
-    "shell",
-    "xterm.js",
-    "ai"
+    "terminal-emulator",
+    "terminal-multiplexer",
+    "tmux",
+    "cross-platform",
+    "electron",
+    "xterm.js"
   ],
   "engineStrict": true,
   "engines": {

@@ -21,17 +21,22 @@ export class Logger extends EventEmitter {
       }),
     );
 
+    this.logPath = path.join(getAppDirs().data, 'logs.log');
     this.winstonLogger = winston.createLogger({
       level: 'info',
       format: logFormat,
       transports: app.isPackaged
         ? [
             new winston.transports.File({
-              filename: path.join(getAppDirs().data, 'logs.log'),
+              filename: this.logPath,
               format: winston.format.combine(logFormat, winston.format.json()),
             }),
           ]
         : [
+            new winston.transports.File({
+              filename: this.logPath,
+              format: winston.format.combine(logFormat, winston.format.json()),
+            }),
             new winston.transports.Console({
               format: winston.format.combine(
                 winston.format.colorize(),
@@ -52,10 +57,15 @@ export class Logger extends EventEmitter {
     return Logger.instance;
   }
 
+  private logPath: string;
   private winstonLogger: winston.Logger;
 
   log(level: LogLevel, message: string): void {
     this.winstonLogger.log(level, message);
     this.emit('log', level, message);
+  }
+
+  getLogPath(): string {
+    return this.logPath;
   }
 }

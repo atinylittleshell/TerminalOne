@@ -6,12 +6,14 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 interface IConfigContextData {
   config: ResolvedConfig;
   configPath: string;
+  logPath: string;
   loading?: boolean;
 }
 
 const DEFAULT_CONFIG_CONTEXT_DATA: IConfigContextData = {
   config: DEFAULT_CONFIG,
   configPath: '',
+  logPath: '',
   loading: true,
 };
 
@@ -21,14 +23,19 @@ export const ConfigContextProvider = (props: React.PropsWithChildren<{}>) => {
   const [data, setData] = useState<IConfigContextData>(DEFAULT_CONFIG_CONTEXT_DATA);
 
   useEffect(() => {
-    window.TerminalOne?.config.getConfig().then((cfg) => {
-      window.TerminalOne?.config.getConfigPath().then((path) => {
+    Promise.all([
+      window.TerminalOne?.config.getConfig(),
+      window.TerminalOne?.config.getConfigPath(),
+      window.TerminalOne?.app.getLogPath(),
+    ]).then(([cfg, path, logPath]) => {
+      if (cfg && path && logPath) {
         setData({
           config: cfg,
           configPath: path,
+          logPath: logPath,
           loading: false,
         });
-      });
+      }
     });
   }, []);
 
