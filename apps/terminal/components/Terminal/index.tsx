@@ -29,7 +29,9 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
 
     // TODO: refactor this into multiple effects
     const xterm = new XTerm();
-    xterm.loadAddon(new WebglAddon());
+
+    const webglAddon = new WebglAddon();
+    xterm.loadAddon(webglAddon);
 
     const fitAddon = new FitAddon();
     xterm.loadAddon(fitAddon);
@@ -50,6 +52,8 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     xterm.options.fontFamily = config.fontFamily;
     xterm.options.fontWeight = config.fontWeight;
     xterm.options.fontWeightBold = config.fontWeightBold;
+    xterm.options.letterSpacing = config.letterSpacing;
+    xterm.options.lineHeight = config.lineHeight;
     xterm.options.theme = theme;
 
     window.TerminalOne?.terminal

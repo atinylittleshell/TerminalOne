@@ -62,6 +62,8 @@ const ConfigTypeContent = {
   fontFamily: t.string,
   fontWeight: t.number,
   fontWeightBold: t.number,
+  letterSpacing: t.number,
+  lineHeight: t.number,
   tabContentPadding: PaddingType,
   themes: t.array(ThemeConfigType),
   shells: t.array(ShellConfigType),
@@ -89,6 +91,12 @@ export const validateConfig = (config: unknown): Config => {
   }
   if (result.fontWeightBold !== undefined && (result.fontWeightBold <= 0 || result.fontWeightBold > 1000)) {
     throw Error(`Invalid font weight bold: ${result.fontWeightBold}`);
+  }
+  if (result.letterSpacing !== undefined && (result.letterSpacing < 0 || result.letterSpacing > 2)) {
+    throw Error(`Invalid letter spacing: ${result.letterSpacing}`);
+  }
+  if (result.lineHeight !== undefined && (result.lineHeight <= 0 || result.lineHeight > 4)) {
+    throw Error(`Invalid line height: ${result.lineHeight}`);
   }
   if (result.tabContentPadding !== undefined) {
     if (result.tabContentPadding.top < 0 || result.tabContentPadding.top > 128) {
@@ -119,10 +127,12 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   cursorBlink: false,
   cursorStyle: 'block',
   cursorWidth: 1,
-  fontSize: 15,
+  fontSize: 16,
   fontFamily: 'Consolas, Menlo, monospace',
-  fontWeight: 500,
+  fontWeight: 400,
   fontWeightBold: 700,
+  letterSpacing: 1,
+  lineHeight: 1,
   tabContentPadding: {
     top: 8,
     right: 8,

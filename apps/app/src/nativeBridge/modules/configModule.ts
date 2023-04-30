@@ -40,6 +40,8 @@ export class ConfigModule extends NativeBridgeModule {
         throw new Error('Invalid config: `module.exports` not set');
       }
 
+      Logger.getInstance().log('info', `Loaded config from ${configPath}}: ${JSON.stringify(mod.exports)}`);
+
       const resolved = resolveConfig(mod.exports);
       this.config = resolved;
     } catch (err: any) {
