@@ -5,7 +5,7 @@
 <h1 align="center">Terminal One</h1>
 
 <p align="center">
-Everything you need from a terminal - all in one. 
+Everything you want from a terminal - all in one. 
 </p>
 
 ## Overview
@@ -14,6 +14,7 @@ A fast, elegant and intelligent cross-platform terminal emulator and multiplexer
 
 - Not written in Rust, yet still blazing fast.
 - GPU-accelerated rendering using [Xterm.js](https://xtermjs.org/).
+- Consistent experience across platforms using [Electron](https://www.electronjs.org/).
 - (WIP) Multi-chord key bindings.
 - (WIP) Built-in tmux-like multiplexer.
 
