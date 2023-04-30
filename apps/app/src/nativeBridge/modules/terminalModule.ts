@@ -3,6 +3,7 @@ import { IPty } from 'node-pty';
 import os from 'os';
 
 import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import { Logger } from './common/logger';
 
 class PTYInstance {
   private ptyProcess: IPty;
@@ -13,9 +14,9 @@ class PTYInstance {
     this.id = id;
 
     const shell =
-      shellCommand || process.env[process.platform === 'win32' ? 'COMSPEC' : 'SHELL'] || process.platform === 'win32'
-        ? 'cmd.exe'
-        : '/bin/bash';
+      shellCommand ||
+      process.env[process.platform === 'win32' ? 'COMSPEC' : 'SHELL'] ||
+      (process.platform === 'win32' ? 'cmd.exe' : '/bin/bash');
 
     this.ptyProcess = require('node-pty').spawn(shell, [], {
       name: 'xterm-color',
@@ -55,6 +56,8 @@ export class TerminalModule extends NativeBridgeModule {
     shellCommand: string,
     startupDirectory: string,
   ): Promise<void> {
+    Logger.getInstance().log('info', `creating new terminal with id: ${id}, shell: ${shellCommand}`);
+
     const ptyInstance = new PTYInstance(id, cols, rows, shellCommand, startupDirectory);
     ptyInstance.onData((data: string) => {
       this.onData(_mainWindow, ptyInstance.id, data);
@@ -77,6 +80,9 @@ export class TerminalModule extends NativeBridgeModule {
     if (ptyInstance) {
       ptyInstance.kill();
       delete this.ptyInstances[id];
+      Logger.getInstance().log('info', `killed terminal with id: ${id}`);
+    } else {
+      Logger.getInstance().log('warn', `could not find terminal with id: ${id}`);
     }
   }
 

@@ -1,41 +1,38 @@
+'use client';
+
 import { DEFAULT_CONFIG, ResolvedConfig } from '@terminalone/types';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface IConfigContextData {
   config: ResolvedConfig;
   configPath: string;
+  loading?: boolean;
 }
 
-const ConfigContext = createContext<IConfigContextData>({
+const DEFAULT_CONFIG_CONTEXT_DATA: IConfigContextData = {
   config: DEFAULT_CONFIG,
   configPath: '',
-});
+  loading: true,
+};
+
+const ConfigContext = createContext<IConfigContextData>(DEFAULT_CONFIG_CONTEXT_DATA);
 
 export const ConfigContextProvider = (props: React.PropsWithChildren<{}>) => {
-  const [config, setConfig] = useState<ResolvedConfig>(DEFAULT_CONFIG);
-  const [configPath, setConfigPath] = useState<string>('');
+  const [data, setData] = useState<IConfigContextData>(DEFAULT_CONFIG_CONTEXT_DATA);
 
   useEffect(() => {
-    if (window && window.TerminalOne) {
-      window.TerminalOne.config.getConfig().then((cfg) => {
-        setConfig(cfg);
+    window.TerminalOne?.config.getConfig().then((cfg) => {
+      window.TerminalOne?.config.getConfigPath().then((path) => {
+        setData({
+          config: cfg,
+          configPath: path,
+          loading: false,
+        });
       });
-      window.TerminalOne.config.getConfigPath().then((path) => {
-        setConfigPath(path);
-      });
-    }
+    });
   }, []);
 
-  return (
-    <ConfigContext.Provider
-      value={{
-        config: config,
-        configPath: configPath,
-      }}
-    >
-      {props.children}
-    </ConfigContext.Provider>
-  );
+  return <ConfigContext.Provider value={data}>{props.children}</ConfigContext.Provider>;
 };
 
 export const useConfigContext = () => {
