@@ -24,14 +24,19 @@ class PTYInstance {
       rows: rows,
       cwd: startupDirectory || os.homedir() || process.cwd(),
     });
+
+    Logger.getInstance().log('info', `Created new terminal with id: ${id}, size: ${cols}x${rows}, shell: ${shell}`);
   }
 
   public resize(cols: number, rows: number): void {
     this.ptyProcess.resize(cols, rows);
+
+    Logger.getInstance().log('info', `Resized terminal to ${cols}x${rows}`);
   }
 
   public kill(): void {
     this.ptyProcess.kill();
+    Logger.getInstance().log('info', `Killed terminal with id: ${this.id}`);
   }
 
   public write(data: string): void {
@@ -56,8 +61,6 @@ export class TerminalModule extends NativeBridgeModule {
     shellCommand: string,
     startupDirectory: string,
   ): Promise<void> {
-    Logger.getInstance().log('info', `creating new terminal with id: ${id}, shell: ${shellCommand}`);
-
     const ptyInstance = new PTYInstance(id, cols, rows, shellCommand, startupDirectory);
     ptyInstance.onData((data: string) => {
       this.onData(_mainWindow, ptyInstance.id, data);
@@ -80,9 +83,8 @@ export class TerminalModule extends NativeBridgeModule {
     if (ptyInstance) {
       ptyInstance.kill();
       delete this.ptyInstances[id];
-      Logger.getInstance().log('info', `killed terminal with id: ${id}`);
     } else {
-      Logger.getInstance().log('warn', `could not find terminal with id: ${id}`);
+      Logger.getInstance().log('warn', `Could not find terminal with id: ${id}`);
     }
   }
 
