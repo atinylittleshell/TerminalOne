@@ -124,8 +124,8 @@ export const validateConfig = (config: unknown): Config => {
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
   scrollback: 10000,
-  cursorBlink: false,
-  cursorStyle: 'block',
+  cursorBlink: true,
+  cursorStyle: 'bar',
   cursorWidth: 1,
   fontSize: 16,
   fontFamily: 'Consolas, Menlo, monospace',

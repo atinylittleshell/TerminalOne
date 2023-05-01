@@ -1,6 +1,7 @@
-import { BrowserWindow } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { IPty } from 'node-pty';
 import os from 'os';
+import { osLocaleSync } from 'os-locale';
 
 import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
 import { Logger } from './common/logger';
@@ -19,10 +20,18 @@ class PTYInstance {
       (process.platform === 'win32' ? 'cmd.exe' : '/bin/bash');
 
     this.ptyProcess = require('node-pty').spawn(shell, [], {
-      name: 'xterm-color',
+      name: 'xterm-256color',
       cols: cols,
       rows: rows,
       cwd: startupDirectory || os.homedir() || process.cwd(),
+      env: {
+        ...process.env,
+        LANG: `${osLocaleSync().replace(/-/, '_')}.UTF-8`,
+        TERM: 'xterm-256color',
+        COLORTERM: 'truecolor',
+        TERM_PROGRAM: app.name,
+        TERM_PROGRAM_VERSION: app.getVersion(),
+      },
     });
 
     Logger.getInstance().log('info', `Created new terminal with id: ${id}, size: ${cols}x${rows}, shell: ${shell}`);
