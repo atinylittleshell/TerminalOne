@@ -4,6 +4,7 @@ import { DEFAULT_CONFIG } from '@terminalone/types';
 import { useEffect, useRef } from 'react';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { Unicode11Addon } from 'xterm-addon-unicode11';
 import { WebglAddon } from 'xterm-addon-webgl';
 
 import { useConfigContext } from '../../hooks/ConfigContext';
@@ -28,13 +29,19 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     const xtermDiv = terminalRef.current;
 
     // TODO: refactor this into multiple effects
-    const xterm = new XTerm();
+    const xterm = new XTerm({
+      allowProposedApi: true,
+    });
 
     const webglAddon = new WebglAddon();
     xterm.loadAddon(webglAddon);
 
     const fitAddon = new FitAddon();
     xterm.loadAddon(fitAddon);
+
+    xterm.loadAddon(new Unicode11Addon());
+    xterm.unicode.activeVersion = '11';
+
     xterm.open(xtermDiv);
 
     const terminalId = (nextId++).toString();
