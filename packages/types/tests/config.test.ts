@@ -1,4 +1,5 @@
-import { DEFAULT_CONFIG, resolveConfig, validateConfig } from '../config';
+import { resolveConfig, validateConfig } from '../config';
+import { DEFAULT_CONFIG } from '../defaultConfig';
 
 describe('config', () => {
   it('should throw when given invalid configs', () => {
