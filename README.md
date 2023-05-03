@@ -22,6 +22,20 @@ A fast, elegant and intelligent cross-platform terminal emulator and multiplexer
 
 Download installers from the [releases](https://github.com/kunchenguid/TerminalOne/releases) page.
 
+## Configuration
+
+Terminal One can be customized through a `config.js` file located at the path shown in the menu tab.
+
+`config.js` should contain Javascript code that produces a configuration object by assigning it to module.exports.
+
+```typescript
+module.exports = {
+  // config values...
+};
+```
+
+The structure of the configuration object and default values can be found [here](https://github.com/kunchenguid/TerminalOne/blob/main/packages/types/defaultConfig.ts).
+
 ## Contributing
 
 [![build](https://github.com/kunchenguid/TerminalOne/actions/workflows/build.yml/badge.svg)](https://github.com/kunchenguid/TerminalOne/actions/workflows/build.yml)

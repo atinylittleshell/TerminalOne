@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { Unicode11Addon } from 'xterm-addon-unicode11';
+import { WebLinksAddon } from 'xterm-addon-web-links';
 import { WebglAddon } from 'xterm-addon-webgl';
 
 import { useConfigContext } from '../../hooks/ConfigContext';
@@ -32,6 +33,11 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     const xterm = new XTerm({
       allowProposedApi: true,
     });
+    xterm.loadAddon(
+      new WebLinksAddon((_e, url) => {
+        window.TerminalOne?.links.openExternalURL(url);
+      }),
+    );
 
     const webglAddon = new WebglAddon();
     xterm.loadAddon(webglAddon);

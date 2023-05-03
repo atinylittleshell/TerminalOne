@@ -2,6 +2,8 @@ import { isLeft } from 'fp-ts/Either';
 import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/PathReporter';
 
+import { DEFAULT_CONFIG } from './defaultConfig';
+
 const ShellConfigType = t.type({
   name: t.string,
   command: t.string,
@@ -120,62 +122,6 @@ export const validateConfig = (config: unknown): Config => {
   }
 
   return result;
-};
-
-export const DEFAULT_CONFIG: ResolvedConfig = {
-  scrollback: 10000,
-  cursorBlink: true,
-  cursorStyle: 'bar',
-  cursorWidth: 1,
-  fontSize: 16,
-  fontFamily: 'Consolas, Menlo, monospace',
-  fontWeight: 400,
-  fontWeightBold: 700,
-  letterSpacing: 1,
-  lineHeight: 1,
-  tabContentPadding: {
-    top: 8,
-    right: 8,
-    bottom: 8,
-    left: 8,
-  },
-  themes: [
-    {
-      name: 'Default',
-      background: '#000000',
-      foreground: '#ffffff',
-      cursor: '#ffffff',
-      cursorAccent: '#000000',
-      selectionBackground: '#ffffff',
-      selectionForeground: '#000000',
-      selectionInactiveBackground: '#ffffff',
-      black: '#000000',
-      white: '#ffffff',
-      red: '#ff0000',
-      green: '#00ff00',
-      blue: '#0000ff',
-      yellow: '#ffff00',
-      cyan: '#00ffff',
-      magenta: '#ff00ff',
-      brightBlack: '#808080',
-      brightWhite: '#ffffff',
-      brightRed: '#ff0000',
-      brightGreen: '#00ff00',
-      brightBlue: '#0000ff',
-      brightYellow: '#ffff00',
-      brightCyan: '#00ffff',
-      brightMagenta: '#ff00ff',
-    },
-  ],
-  shells: [
-    {
-      name: 'Default',
-      command: '', // will auto detect system shell when this is empty
-      startupDirectory: '', // will auto detect home directory when this is empty
-      themeName: 'Default',
-    },
-  ],
-  defaultShellName: 'Default',
 };
 
 const ResolvedConfigType = t.type(ConfigTypeContent);
