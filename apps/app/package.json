@@ -30,7 +30,6 @@
   "dependencies": {
     "@terminalone/terminal": "*",
     "@terminalone/types": "*",
-    "appdirsjs": "^1.2.7",
     "copy-webpack-plugin": "^11.0.0",
     "dayjs": "^1.11.7",
     "electron": "^24.1.2",
