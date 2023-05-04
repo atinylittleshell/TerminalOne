@@ -5,7 +5,7 @@ module.exports = {
   passWithNoTests: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/src/*.{ts,tsx}',
+    '**/src/*.{ts}',
     '!**/tests/**',
     '!**/*.d.ts',
     '!**/node_modules/**',
@@ -13,4 +13,5 @@ module.exports = {
     '!**/.turbo/**',
     '!**/dist/**',
   ],
+  testPathIgnorePatterns: ['/node_modules/', '/.turbo/', '/dist/'],
 };
