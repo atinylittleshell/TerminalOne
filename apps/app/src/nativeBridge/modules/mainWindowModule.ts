@@ -74,7 +74,7 @@ export class MainWindowModule extends NativeBridgeModule {
       ...latestState,
     };
 
-    const configDir = getAppDirs().config;
+    const configDir = getAppDirs().userData;
     const stateFilePath = path.join(configDir, 'window.json');
     if (existsSync(stateFilePath)) {
       const stateFromFile = JSON.parse(readFileSync(stateFilePath, { encoding: 'utf8' }));

@@ -1,5 +1,7 @@
-import appDirs from 'appdirsjs';
+import { app } from 'electron';
 
 export const getAppDirs = () => {
-  return appDirs({ appName: 'TerminalOne' });
+  return {
+    userData: app.getPath('userData'),
+  };
 };

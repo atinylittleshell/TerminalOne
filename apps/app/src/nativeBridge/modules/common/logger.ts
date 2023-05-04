@@ -21,7 +21,7 @@ export class Logger extends EventEmitter {
       }),
     );
 
-    this.logPath = path.join(getAppDirs().data, 'logs.log');
+    this.logPath = path.join(getAppDirs().userData, 'logs.log');
     this.winstonLogger = winston.createLogger({
       level: 'info',
       format: logFormat,
