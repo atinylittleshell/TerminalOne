@@ -10,7 +10,7 @@ const config = {
   passWithNoTests: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.{ts,tsx}',
+    '**/*.{ts}',
     '!**/*.d.ts',
     '!**/node_modules/**',
     '!**/.next/**',
