@@ -19,11 +19,11 @@ export class ConfigModule extends NativeBridgeModule {
 
   @moduleFunction()
   public async getConfigPath(_mainWindow: BrowserWindow): Promise<string> {
-    return path.join(getAppDirs().config, 'config.js');
+    return path.join(getAppDirs().userData, 'config.js');
   }
 
   public onRegistered(_mainWindow: BrowserWindow): void {
-    const configDir = getAppDirs().config;
+    const configDir = getAppDirs().userData;
     const configPath = path.join(configDir, 'config.js');
     if (!existsSync(configPath)) {
       mkdirSync(configDir, { recursive: true });

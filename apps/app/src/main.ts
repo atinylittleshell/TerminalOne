@@ -9,6 +9,8 @@ import { nativeBridgeRegistry } from './nativeBridge/registry';
 
 if (!app || app.isPackaged) {
   serve({ directory: path.join(__dirname, 'terminal') });
+} else {
+  app.setName('Terminal One Dev');
 }
 
 async function createWindow() {
