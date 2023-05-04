@@ -16,6 +16,7 @@ jest.mock('appdirsjs', () => {
 
 jest.mock('electron', () => {
   return {
+    __esModule: true,
     app: {
       isPackaged: false,
     },
