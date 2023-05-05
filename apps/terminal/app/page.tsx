@@ -5,7 +5,7 @@ import { DEFAULT_CONFIG } from '@terminalone/types';
 import _ from 'lodash';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { FiMenu, FiMinus, FiPlus } from 'react-icons/fi';
+import { FiMenu, FiPlus, FiX } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
 import { useConfigContext } from '../hooks/ConfigContext';
@@ -69,29 +69,31 @@ const Page = () => {
               className={`tab tab-lifted ${tabId === userTab.tabId ? 'tab-active' : ''}`}
               style={{
                 backgroundColor: tabId === userTab.tabId ? activeThemeConfig.background : undefined,
+                paddingRight: tabId === userTab.tabId ? '0' : undefined,
               }}
               onClick={() => {
+                if (tabId === userTab.tabId) {
+                  return;
+                }
                 setTabId(userTab.tabId);
               }}
             >
               {userTab.tabId}
+              {userTab.tabId === tabId && (
+                <button
+                  className="btn btn-ghost btn-square btn-sm text-gray-500 hover:text-error-content hover:bg-error ml-2"
+                  onClick={() => {
+                    const newTabs = userTabs.filter((t) => t.tabId !== userTab.tabId);
+                    setUserTabs(newTabs);
+                    setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
+                  }}
+                >
+                  <FiX />
+                </button>
+              )}
             </a>
           ))}
         </div>
-        <button
-          className="btn btn-sm btn-ghost btn-square"
-          disabled={tabId === 0}
-          onClick={() => {
-            if (tabId === 0) {
-              return;
-            }
-            const newTabs = userTabs.filter((t) => t.tabId !== tabId);
-            setUserTabs(newTabs);
-            setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
-          }}
-        >
-          <FiMinus />
-        </button>
         <button
           className="btn btn-sm btn-ghost btn-square"
           onClick={() => {
