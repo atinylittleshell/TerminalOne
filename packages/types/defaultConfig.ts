@@ -7,6 +7,9 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   // Number of lines to keep in the scrollback buffer.
   scrollback: 10000,
 
+  // Whether to copy text to the clipboard on selection.
+  copyOnSelect: true,
+
   // Whether to blink the cursor.
   cursorBlink: true,
 

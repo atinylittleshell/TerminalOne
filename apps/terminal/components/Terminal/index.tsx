@@ -100,9 +100,28 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     };
     xtermDiv.addEventListener('focus', focusListener);
 
+    const mouseUpListener = () => {
+      if (config.copyOnSelect && xterm.hasSelection()) {
+        const selectedText = xterm.getSelection();
+        navigator.clipboard.writeText(selectedText);
+      }
+    };
+    xtermDiv.addEventListener('mouseup', mouseUpListener);
+
+    const contextMenuListener = () => {
+      navigator.clipboard.readText().then((text) => {
+        if (text) {
+          xterm.paste(text);
+        }
+      });
+    };
+    xtermDiv.addEventListener('contextmenu', contextMenuListener);
+
     return () => {
       window.removeEventListener('resize', resizeListener);
       xtermDiv.removeEventListener('focus', focusListener);
+      xtermDiv.removeEventListener('mouseup', mouseUpListener);
+      xtermDiv.removeEventListener('contextmenu', contextMenuListener);
 
       window.TerminalOne?.terminal?.killTerminal(terminalId);
       xterm.dispose();
