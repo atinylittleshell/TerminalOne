@@ -60,6 +60,7 @@ const ConfigTypeContent = {
   }),
   cursorWidth: t.number,
   scrollback: t.number,
+  copyOnSelect: t.boolean,
   fontSize: t.number,
   fontFamily: t.string,
   fontWeight: t.number,
