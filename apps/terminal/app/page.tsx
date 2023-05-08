@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { FiMenu, FiPlus, FiX } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
+import ShellSelector from '../components/ShellSelector';
 import { useConfigContext } from '../hooks/ConfigContext';
 
 const TitleBar = dynamic(() => import('../components/TitleBar'), {
@@ -19,7 +20,7 @@ const Terminal = dynamic(() => import('../components/Terminal'), {
 
 type UserTab = {
   tabId: number;
-  shellName: string;
+  shellName: string | null;
 };
 
 const Page = () => {
@@ -66,10 +67,10 @@ const Page = () => {
           {userTabs.map((userTab) => (
             <a
               key={userTab.tabId}
-              className={`tab tab-lifted ${tabId === userTab.tabId ? 'tab-active' : ''}`}
+              className={`tab tab-lifted items-center ${tabId === userTab.tabId ? 'tab-active' : ''}`}
               style={{
                 backgroundColor: tabId === userTab.tabId ? activeThemeConfig.background : undefined,
-                paddingRight: tabId === userTab.tabId ? '0' : undefined,
+                paddingRight: tabId === userTab.tabId ? 0 : undefined,
               }}
               onClick={() => {
                 if (tabId === userTab.tabId) {
@@ -81,7 +82,7 @@ const Page = () => {
               {userTab.tabId}
               {userTab.tabId === tabId && (
                 <button
-                  className="btn btn-ghost btn-square btn-sm text-gray-500 hover:text-error-content hover:bg-error ml-2"
+                  className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
                   onClick={() => {
                     const newTabs = userTabs.filter((t) => t.tabId !== userTab.tabId);
                     setUserTabs(newTabs);
@@ -93,23 +94,23 @@ const Page = () => {
               )}
             </a>
           ))}
+          <a
+            className="tab tab-lifted"
+            onClick={() => {
+              const newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
+              setUserTabs([
+                ...userTabs,
+                {
+                  tabId: newTabId,
+                  shellName: config.shells.length === 1 ? config.defaultShellName : null,
+                },
+              ]);
+              setTabId(newTabId);
+            }}
+          >
+            <FiPlus />
+          </a>
         </div>
-        <button
-          className="btn btn-sm btn-ghost btn-square"
-          onClick={() => {
-            const newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
-            setUserTabs([
-              ...userTabs,
-              {
-                tabId: newTabId,
-                shellName: config.defaultShellName,
-              },
-            ]);
-            setTabId(newTabId);
-          }}
-        >
-          <FiPlus />
-        </button>
       </TitleBar>
       <div
         className="flex-1 flex overflow-hidden"
@@ -124,7 +125,27 @@ const Page = () => {
         <div className="flex-1 relative overflow-hidden">
           {tabId === 0 && <SettingsPage />}
           {userTabs.map((userTab) => {
-            return <Terminal key={userTab.tabId} active={tabId === userTab.tabId} shellName={userTab.shellName} />;
+            if (userTab.shellName) {
+              return <Terminal key={userTab.tabId} active={tabId === userTab.tabId} shellName={userTab.shellName} />;
+            } else {
+              return (
+                <ShellSelector
+                  key={userTab.tabId}
+                  onShellSelected={(shellName) => {
+                    const newTabs = userTabs.map((t) => {
+                      if (t.tabId === userTab.tabId) {
+                        return {
+                          ...t,
+                          shellName,
+                        };
+                      }
+                      return t;
+                    });
+                    setUserTabs(newTabs);
+                  }}
+                />
+              );
+            }
           })}
         </div>
       </div>

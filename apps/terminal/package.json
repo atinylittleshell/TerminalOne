@@ -9,6 +9,7 @@
     "test": "jest --colors"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "@terminalone/types": "*",
     "@terminalone/ui": "*",
     "autoprefixer": "^10.4.14",
