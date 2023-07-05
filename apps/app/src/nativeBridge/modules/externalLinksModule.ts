@@ -9,7 +9,8 @@ export class ExternalLinksModule extends NativeBridgeModule {
   public async openExternalURL(_mainWindow: BrowserWindow, url: string) {
     // Security ref: https://benjamin-altpeter.de/shell-openexternal-dangers/
     if (typeof url !== 'string') throw new Error('openExternalURL limited to strings');
-    if (!url.startsWith('https://')) throw new Error('openExternalURL limited to https protocol');
+    if (!url.startsWith('http://') && !url.startsWith('https://'))
+      throw new Error('openExternalURL limited to http and https protocol');
     return shell.openExternal(url);
   }
 
