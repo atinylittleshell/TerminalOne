@@ -1,6 +1,7 @@
 import { DEFAULT_CONFIG, resolveConfig, ResolvedConfig } from '@terminalone/types';
 import { BrowserWindow } from 'electron';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs-extra';
+import os from 'os';
 import path from 'path';
 import vm from 'vm';
 
@@ -35,7 +36,15 @@ export class ConfigModule extends NativeBridgeModule {
     try {
       const script = new vm.Script(configContent, { filename: 'config.js', displayErrors: true });
       const mod: Record<string, any> = {};
-      script.runInNewContext({ module: mod });
+      script.runInNewContext({
+        module: mod,
+        require: (moduleName: string) => {
+          if (moduleName === 'os') {
+            return os;
+          }
+          return undefined;
+        },
+      });
       if (!mod.exports) {
         throw new Error('Invalid config: `module.exports` not set');
       }
