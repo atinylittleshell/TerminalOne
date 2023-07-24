@@ -1,9 +1,9 @@
 {
   "name": "@terminalone/monorepo",
   "productName": "Terminal One",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "A fast, elegant and intelligent cross-platform terminal.",
-  "author": "Kun Chen",
+  "author": "atinylittleshell <shell@atinylittleshell.me>",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -29,8 +29,10 @@
     "dev:app": "cross-env NODE_ENV=development BROWSER=none concurrently -k \"turbo run dev:terminal\" \"wait-on -d 3000 -i 5000 http://localhost:3000 && turbo run build:app && electron .\"",
     "build:app:windows": "shx rm -rf dist && npm run build && electron-builder --win --publish=never",
     "build:app:mac": "shx rm -rf dist && npm run build && electron-builder --mac --publish=never",
+    "build:app:linux": "shx rm -rf dist && npm run build && electron-builder --linux --publish=never",
     "publish:app:windows": "shx rm -rf dist && npm run build && electron-builder --win --publish=always",
     "publish:app:mac": "shx rm -rf dist && npm run build && electron-builder --mac --publish=always",
+    "publish:app:linux": "shx rm -rf dist && npm run build && electron-builder --linux --publish=always",
     "release:app": "git checkout releases/terminalone/app && git pull && git merge --no-edit --no-ff main && git push && git checkout main",
     "build": "turbo run build",
     "lint": "turbo run lint",
@@ -42,6 +44,7 @@
   "build": {
     "appId": "io.terminalone.app",
     "productName": "Terminal One",
+    "artifactName": "TerminalOne-${version}.${ext}",
     "extends": null,
     "files": [
       "apps/app/dist/**/*"
@@ -49,6 +52,11 @@
     "includeSubNodeModules": true,
     "directories": {
       "buildResources": "apps/app/assets"
+    },
+    "linux": {
+      "category": "Development",
+      "target": "deb",
+      "icon": "icon.icns"
     }
   },
   "devDependencies": {
@@ -71,7 +79,7 @@
     "printWidth": 120,
     "tabWidth": 2
   },
-  "homepage": ".",
+  "homepage": "https://github.com/atinylittleshell/TerminalOne",
   "packageManager": "npm@9.2.0",
   "workspaces": [
     "apps/*",

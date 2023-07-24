@@ -58,3 +58,27 @@ jobs:
         run: npm i dmg-license
       - name: build for mac
         run: npm run publish:app:mac
+  build_on_mac:
+    runs-on: ubuntu-latest
+    env:
+      CI: false
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: install node-gyp
+        run: npm i -g node-gyp@latest
+      - name: clean npm cache
+        run: npm cache clean -f
+      - name: install dependencies
+        run: npm ci
+      - name: build for linux
+        run: npm run publish:app:linux
