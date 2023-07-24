@@ -58,7 +58,7 @@ jobs:
         run: npm i dmg-license
       - name: build for mac
         run: npm run publish:app:mac
-  build_on_mac:
+  build_on_linux:
     runs-on: ubuntu-latest
     env:
       CI: false
