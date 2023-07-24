@@ -15,6 +15,7 @@ jobs:
         os:
           - macos
           - windows
+          - ubuntu
         node-version:
           - '16.x'
 
