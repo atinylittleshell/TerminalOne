@@ -6,7 +6,7 @@ import { FiMaximize2, FiMinimize2, FiMinus, FiX } from 'react-icons/fi';
 
 import styles from './index.module.css';
 
-function TitleBar(props: PropsWithChildren<{}>) {
+function TitleBar(props: PropsWithChildren) {
   const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
