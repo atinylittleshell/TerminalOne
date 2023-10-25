@@ -1,10 +1,16 @@
 module.exports = {
-  extends: ['next', 'turbo', 'eslint:recommended', 'plugin:prettier/recommended'],
+  extends: [
+    'next',
+    'turbo',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
   plugins: ['simple-import-sort'],
   rules: {
     '@next/next/no-html-link-for-pages': 'off',
     'simple-import-sort/imports': 'warn',
-    'no-unused-vars': [
+    '@typescript-eslint/no-unused-vars': [
       'error',
       {
         argsIgnorePattern: '^_',

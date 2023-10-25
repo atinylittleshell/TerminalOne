@@ -19,6 +19,7 @@ class PTYInstance {
       process.env[process.platform === 'win32' ? 'COMSPEC' : 'SHELL'] ||
       (process.platform === 'win32' ? 'cmd.exe' : '/bin/bash');
 
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     this.ptyProcess = require('node-pty').spawn(shell, [], {
       name: 'xterm-256color',
       cols: cols,
