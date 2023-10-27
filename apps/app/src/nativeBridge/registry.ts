@@ -15,7 +15,7 @@ export class NativeBridgeRegistry {
     this.modules.push(mod);
   }
 
-  public generateAPIObject(): Object {
+  public generateAPIObject(): Record<string, unknown> {
     return Object.assign(
       {},
       ...this.modules.map((module) => {
@@ -25,16 +25,16 @@ export class NativeBridgeRegistry {
           throw new Error('module metadata not found');
         }
 
-        const moduleApi: Record<string, Object> = {};
+        const moduleApi: Record<string, unknown> = {};
 
         Object.values(moduleMetadata.functions).forEach((func) => {
-          moduleApi[func.name] = (...args: any[]) => {
+          moduleApi[func.name] = (...args: unknown[]) => {
             return ipcRenderer.invoke(getModuleFunctionKey(moduleMetadata.name, func.name), ...args);
           };
         });
 
         Object.values(moduleMetadata.events).forEach((evt) => {
-          moduleApi[evt.name] = (callback: (_event: IpcRendererEvent, ..._args: any[]) => void) =>
+          moduleApi[evt.name] = (callback: (_event: IpcRendererEvent, ..._args: unknown[]) => void) =>
             evt.type === 'on'
               ? ipcRenderer.on(getModuleEventKey(moduleMetadata.name, evt.name), callback)
               : ipcRenderer.once(getModuleEventKey(moduleMetadata.name, evt.name), callback);

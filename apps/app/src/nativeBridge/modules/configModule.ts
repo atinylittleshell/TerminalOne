@@ -35,7 +35,7 @@ export class ConfigModule extends NativeBridgeModule {
 
     try {
       const script = new vm.Script(configContent, { filename: 'config.js', displayErrors: true });
-      const mod: Record<string, any> = {};
+      const mod: Record<string, unknown> = {};
       script.runInNewContext({
         module: mod,
         require: (moduleName: string) => {
@@ -53,7 +53,7 @@ export class ConfigModule extends NativeBridgeModule {
 
       const resolved = resolveConfig(mod.exports);
       this.config = resolved;
-    } catch (err: any) {
+    } catch (err: unknown) {
       Logger.getInstance().log('error', JSON.stringify(err));
     }
   }

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { BrowserWindow } from 'electron';
 
 type ModuleFunction = {
   name: string;
-  value: (_mainWindow: BrowserWindow, ..._args: any[]) => Promise<any>;
+  value: (_mainWindow: BrowserWindow, ..._args: unknown[]) => Promise<unknown>;
 };
 
 type ModuleEventType = 'on' | 'once';
@@ -61,6 +62,7 @@ export function getModuleEventKey(moduleName: string, eventName: string): string
 }
 
 export function moduleFunction(nameOverride?: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
     if (!target.constructor) {
       throw new Error('@moduleFunction must be used within a class');
@@ -75,6 +77,7 @@ export function moduleFunction(nameOverride?: string) {
 }
 
 export function moduleEvent(type: ModuleEventType, nameOverride?: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
     if (!target.constructor) {
       throw new Error('@moduleEvent must be used within a class');
@@ -86,7 +89,7 @@ export function moduleEvent(type: ModuleEventType, nameOverride?: string) {
       name: nameOverride || key,
     };
 
-    descriptor.value = (mainWindow: BrowserWindow, ...args: any[]) => {
+    descriptor.value = (mainWindow: BrowserWindow, ...args: unknown[]) => {
       const eventKey = `${getModuleKey(mod.name)}:${key}`;
       mainWindow.webContents.send(eventKey, ...args);
     };

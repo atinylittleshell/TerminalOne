@@ -4,12 +4,13 @@
 import { DEFAULT_CONFIG } from '@terminalone/types';
 import _ from 'lodash';
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FiMenu, FiPlus, FiX } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
 import ShellSelector from '../components/ShellSelector';
 import { useConfigContext } from '../hooks/ConfigContext';
+import { useKeybindContext } from '../hooks/KeybindContext';
 
 const TitleBar = dynamic(() => import('../components/TitleBar'), {
   ssr: false,
@@ -25,9 +26,38 @@ type UserTab = {
 
 const Page = () => {
   const { config, loading } = useConfigContext();
+  const { commands } = useKeybindContext();
 
   const [tabId, setTabId] = useState<number>(0);
   const [userTabs, setUserTabs] = useState<UserTab[]>([]);
+
+  const createTab = useCallback(() => {
+    const newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
+    setUserTabs([
+      ...userTabs,
+      {
+        tabId: newTabId,
+        shellName: config.shells.length === 1 ? config.defaultShellName : null,
+      },
+    ]);
+    setTabId(newTabId);
+  }, [userTabs, config]);
+
+  const closeTab = useCallback(() => {
+    const newTabs = userTabs.filter((t) => t.tabId !== tabId);
+    setUserTabs(newTabs);
+    setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
+  }, [userTabs, tabId]);
+
+  useEffect(() => {
+    commands.on('createTab', createTab);
+    commands.on('closeTab', closeTab);
+
+    return () => {
+      commands.off('createTab', createTab);
+      commands.off('closeTab', closeTab);
+    };
+  }, [commands, createTab, closeTab]);
 
   useEffect(() => {
     if (!loading && userTabs.length === 0) {
@@ -84,9 +114,7 @@ const Page = () => {
                 <button
                   className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
                   onClick={() => {
-                    const newTabs = userTabs.filter((t) => t.tabId !== userTab.tabId);
-                    setUserTabs(newTabs);
-                    setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
+                    closeTab();
                   }}
                 >
                   <FiX />
@@ -97,15 +125,7 @@ const Page = () => {
           <a
             className="tab tab-lifted"
             onClick={() => {
-              const newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
-              setUserTabs([
-                ...userTabs,
-                {
-                  tabId: newTabId,
-                  shellName: config.shells.length === 1 ? config.defaultShellName : null,
-                },
-              ]);
-              setTabId(newTabId);
+              createTab();
             }}
           >
             <FiPlus />
