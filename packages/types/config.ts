@@ -51,6 +51,11 @@ const ThemeConfigType = t.type({
 
 export type ThemeConfig = t.TypeOf<typeof ThemeConfigType>;
 
+const Keybinds = {
+  createTab: t.string,
+  closeTab: t.string,
+};
+
 const ConfigTypeContent = {
   cursorBlink: t.boolean,
   cursorStyle: t.keyof({
@@ -71,10 +76,14 @@ const ConfigTypeContent = {
   themes: t.array(ThemeConfigType),
   shells: t.array(ShellConfigType),
   defaultShellName: t.string,
+  keybindLeader: t.string,
+  keybinds: t.partial(Keybinds),
 };
 
 const ConfigType = t.partial(ConfigTypeContent);
 export type Config = t.TypeOf<typeof ConfigType>;
+
+export type KeybindCommand = keyof typeof Keybinds;
 
 export const validateConfig = (config: unknown): Config => {
   const decoded = ConfigType.decode(config);

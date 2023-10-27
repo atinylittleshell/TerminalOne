@@ -9,11 +9,13 @@ import { WebLinksAddon } from 'xterm-addon-web-links';
 import { WebglAddon } from 'xterm-addon-webgl';
 
 import { useConfigContext } from '../../hooks/ConfigContext';
+import { useKeybindContext } from '../../hooks/KeybindContext';
 
 let nextId = 0;
 
 const Terminal = ({ active, shellName }: { active: boolean; shellName: string }) => {
   const { config, loading } = useConfigContext();
+  const keybindContext = useKeybindContext();
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -117,6 +119,10 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     };
     xtermDiv.addEventListener('contextmenu', contextMenuListener);
 
+    xterm.attachCustomKeyEventHandler((event) => {
+      return keybindContext.handleKey(event);
+    });
+
     return () => {
       window.removeEventListener('resize', resizeListener);
       xtermDiv.removeEventListener('focus', focusListener);
@@ -126,7 +132,7 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
       window.TerminalOne?.terminal?.killTerminal(terminalId);
       xterm.dispose();
     };
-  }, [terminalRef, shellName, config, loading]);
+  }, [terminalRef, shellName, config, loading, keybindContext]);
 
   useEffect(() => {
     if (!terminalRef.current) {

@@ -19,7 +19,7 @@ const DEFAULT_CONFIG_CONTEXT_DATA: IConfigContextData = {
 
 const ConfigContext = createContext<IConfigContextData>(DEFAULT_CONFIG_CONTEXT_DATA);
 
-export const ConfigContextProvider = (props: React.PropsWithChildren<{}>) => {
+export const ConfigContextProvider = (props: React.PropsWithChildren) => {
   const [data, setData] = useState<IConfigContextData>(DEFAULT_CONFIG_CONTEXT_DATA);
 
   useEffect(() => {
