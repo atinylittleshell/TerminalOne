@@ -94,4 +94,15 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
 
   // Name of the default shell to use. This must match one of the names defined in "shells".
   defaultShellName: 'Default',
+
+  // The keybind to use as the leader key. This keybind will be used to trigger all other keybinds.
+  // Pressing this keybind twice will "escape" the leader and send the key into the terminal.
+  keybindLeader: 'ctrl+b',
+
+  // Keybinds to use for the terminal.
+  // These keybinds will be active only within 1 second after the leader key is pressed.
+  keybinds: {
+    createTab: 'c',
+    closeTab: 'shift+&',
+  },
 };
