@@ -23,21 +23,23 @@ export class Logger extends EventEmitter {
 
     this.logPath = path.join(getAppDirs().userData, 'logs.log');
     this.winstonLogger = winston.createLogger({
-      level: 'info',
       format: logFormat,
       transports: app.isPackaged
         ? [
             new winston.transports.File({
+              level: 'info',
               filename: this.logPath,
               format: winston.format.combine(logFormat, winston.format.json()),
             }),
           ]
         : [
             new winston.transports.File({
+              level: 'info',
               filename: this.logPath,
               format: winston.format.combine(logFormat, winston.format.json()),
             }),
             new winston.transports.Console({
+              level: 'debug',
               format: winston.format.combine(
                 winston.format.colorize(),
                 logFormat,

@@ -15,7 +15,7 @@ let nextId = 0;
 
 const Terminal = ({ active, shellName }: { active: boolean; shellName: string }) => {
   const { config, loading } = useConfigContext();
-  const keybindContext = useKeybindContext();
+  const { handleKey } = useKeybindContext();
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     xtermDiv.addEventListener('contextmenu', contextMenuListener);
 
     xterm.attachCustomKeyEventHandler((event) => {
-      return keybindContext.handleKey(event);
+      return handleKey(event);
     });
 
     return () => {
@@ -132,7 +132,7 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
       window.TerminalOne?.terminal?.killTerminal(terminalId);
       xterm.dispose();
     };
-  }, [terminalRef, shellName, config, loading, keybindContext]);
+  }, [terminalRef, shellName, config, loading, handleKey]);
 
   useEffect(() => {
     if (!terminalRef.current) {
