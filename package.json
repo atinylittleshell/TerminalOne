@@ -72,6 +72,9 @@
     "turbo": "^1.10.16",
     "wait-on": "^7.0.1"
   },
+  "optionalDependencies": {
+    "dmg-license": "^1.0.11"
+  },
   "prettier": {
     "semi": true,
     "trailingComma": "all",
