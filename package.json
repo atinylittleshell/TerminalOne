@@ -64,6 +64,7 @@
     "@terminalone/eslint-config-custom": "*",
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
+    "dmg-license": "^1.0.11",
     "electron": "^24.1.2",
     "electron-builder": "^24.2.1",
     "eslint": "^7.32.0",

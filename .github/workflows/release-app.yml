@@ -54,8 +54,6 @@ jobs:
         run: npm cache clean -f
       - name: install dependencies
         run: npm ci
-      - name: install dmg-license
-        run: npm i dmg-license
       - name: build for mac
         run: npm run publish:app:mac
   build_on_linux:
