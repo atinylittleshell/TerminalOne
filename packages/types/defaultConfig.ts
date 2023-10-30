@@ -104,5 +104,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   keybinds: {
     createTab: 'c',
     closeTab: 'shift+&',
+    nextTab: 'n',
+    previousTab: 'p',
   },
 };

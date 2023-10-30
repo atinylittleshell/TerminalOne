@@ -54,6 +54,8 @@ export type ThemeConfig = t.TypeOf<typeof ThemeConfigType>;
 const Keybinds = {
   createTab: t.string,
   closeTab: t.string,
+  nextTab: t.string,
+  previousTab: t.string,
 };
 
 const ConfigTypeContent = {

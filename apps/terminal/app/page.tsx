@@ -32,14 +32,22 @@ const Page = () => {
   const [userTabs, setUserTabs] = useState<UserTab[]>([]);
 
   const createTab = useCallback(() => {
-    const newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
-    setUserTabs([
-      ...userTabs,
-      {
-        tabId: newTabId,
-        shellName: config.shells.length === 1 ? config.defaultShellName : null,
-      },
-    ]);
+    let newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
+    for (let i = 0; i < userTabs.length - 1; i++) {
+      if (userTabs[i + 1].tabId > userTabs[i].tabId + 1) {
+        newTabId = userTabs[i].tabId + 1;
+        break;
+      }
+    }
+    setUserTabs(
+      [
+        ...userTabs,
+        {
+          tabId: newTabId,
+          shellName: config.shells.length === 1 ? config.defaultShellName : null,
+        },
+      ].sort((a, b) => a.tabId - b.tabId),
+    );
     setTabId(newTabId);
   }, [userTabs, config]);
 
@@ -49,15 +57,47 @@ const Page = () => {
     setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
   }, [userTabs, tabId]);
 
+  const nextTab = useCallback(() => {
+    const currentTabIndex = userTabs.findIndex((t) => t.tabId === tabId);
+    if (currentTabIndex === -1) {
+      return;
+    }
+    let nextTabIndex = currentTabIndex + 1;
+    if (nextTabIndex >= userTabs.length) {
+      nextTabIndex = 0;
+    }
+
+    const nextTabId = userTabs[nextTabIndex].tabId;
+    setTabId(nextTabId);
+  }, [userTabs, tabId]);
+
+  const previousTab = useCallback(() => {
+    const currentTabIndex = userTabs.findIndex((t) => t.tabId === tabId);
+    if (currentTabIndex === -1) {
+      return;
+    }
+    let prevTabIndex = currentTabIndex - 1;
+    if (prevTabIndex < 0) {
+      prevTabIndex = userTabs.length - 1;
+    }
+
+    const prevTabId = userTabs[prevTabIndex].tabId;
+    setTabId(prevTabId);
+  }, [userTabs, tabId]);
+
   useEffect(() => {
     commands.on('createTab', createTab);
     commands.on('closeTab', closeTab);
+    commands.on('nextTab', nextTab);
+    commands.on('previousTab', previousTab);
 
     return () => {
       commands.off('createTab', createTab);
       commands.off('closeTab', closeTab);
+      commands.off('nextTab', nextTab);
+      commands.off('previousTab', previousTab);
     };
-  }, [commands, createTab, closeTab]);
+  }, [commands, createTab, closeTab, nextTab, previousTab]);
 
   useEffect(() => {
     if (!loading && userTabs.length === 0) {
