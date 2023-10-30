@@ -56,6 +56,15 @@ const Keybinds = {
   closeTab: t.string,
   nextTab: t.string,
   previousTab: t.string,
+  tab1: t.string,
+  tab2: t.string,
+  tab3: t.string,
+  tab4: t.string,
+  tab5: t.string,
+  tab6: t.string,
+  tab7: t.string,
+  tab8: t.string,
+  tab9: t.string,
 };
 
 const ConfigTypeContent = {
