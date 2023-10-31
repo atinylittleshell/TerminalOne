@@ -85,6 +85,7 @@ const keyHandler = (event: KeyboardEvent, config: KeybindConfig) => {
       if (command) {
         // the key event maps to a known keybind. we should emit the command and not pass the key to the terminal.
         keybindCommandEmitter.emit(command);
+        lastLeaderKeyEvent = null;
         logDebug('HOST', 'keybind');
         return false;
       } else {
@@ -98,6 +99,7 @@ const keyHandler = (event: KeyboardEvent, config: KeybindConfig) => {
       // leader key was not active, which means we should not trigger any other keybinds yet.
       // we should pass the key to the terminal.
       keyState[key] = true;
+      lastLeaderKeyEvent = null;
       logDebug('TERM', 'leader inactive');
       return true;
     }
