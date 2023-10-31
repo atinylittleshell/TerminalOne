@@ -1,7 +1,7 @@
 {
   "name": "@terminalone/monorepo",
   "productName": "Terminal One",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A fast, elegant and intelligent cross-platform terminal.",
   "author": "atinylittleshell <shell@atinylittleshell.me>",
   "license": "MIT",
@@ -71,6 +71,9 @@
     "shx": "^0.3.4",
     "turbo": "^1.10.16",
     "wait-on": "^7.0.1"
+  },
+  "optionalDependencies": {
+    "dmg-license": "^1.0.11"
   },
   "prettier": {
     "semi": true,

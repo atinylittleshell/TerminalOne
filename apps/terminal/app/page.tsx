@@ -32,14 +32,22 @@ const Page = () => {
   const [userTabs, setUserTabs] = useState<UserTab[]>([]);
 
   const createTab = useCallback(() => {
-    const newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
-    setUserTabs([
-      ...userTabs,
-      {
-        tabId: newTabId,
-        shellName: config.shells.length === 1 ? config.defaultShellName : null,
-      },
-    ]);
+    let newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
+    for (let i = 0; i < userTabs.length - 1; i++) {
+      if (userTabs[i + 1].tabId > userTabs[i].tabId + 1) {
+        newTabId = userTabs[i].tabId + 1;
+        break;
+      }
+    }
+    setUserTabs(
+      [
+        ...userTabs,
+        {
+          tabId: newTabId,
+          shellName: config.shells.length === 1 ? config.defaultShellName : null,
+        },
+      ].sort((a, b) => a.tabId - b.tabId),
+    );
     setTabId(newTabId);
   }, [userTabs, config]);
 
@@ -49,15 +57,121 @@ const Page = () => {
     setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
   }, [userTabs, tabId]);
 
+  const nextTab = useCallback(() => {
+    const currentTabIndex = userTabs.findIndex((t) => t.tabId === tabId);
+    if (currentTabIndex === -1) {
+      return;
+    }
+    let nextTabIndex = currentTabIndex + 1;
+    if (nextTabIndex >= userTabs.length) {
+      nextTabIndex = 0;
+    }
+
+    const nextTabId = userTabs[nextTabIndex].tabId;
+    setTabId(nextTabId);
+  }, [userTabs, tabId]);
+
+  const previousTab = useCallback(() => {
+    const currentTabIndex = userTabs.findIndex((t) => t.tabId === tabId);
+    if (currentTabIndex === -1) {
+      return;
+    }
+    let prevTabIndex = currentTabIndex - 1;
+    if (prevTabIndex < 0) {
+      prevTabIndex = userTabs.length - 1;
+    }
+
+    const prevTabId = userTabs[prevTabIndex].tabId;
+    setTabId(prevTabId);
+  }, [userTabs, tabId]);
+
+  const switchToTab = useCallback(
+    (targetTabId: number) => {
+      if (targetTabId === 0 || targetTabId === tabId) {
+        return;
+      }
+
+      if (!userTabs.some((t) => t.tabId === targetTabId)) {
+        return;
+      }
+      setTabId(targetTabId);
+    },
+    [userTabs, tabId],
+  );
+  const switchToTab1 = useCallback(() => {
+    switchToTab(1);
+  }, [switchToTab]);
+  const switchToTab2 = useCallback(() => {
+    switchToTab(2);
+  }, [switchToTab]);
+  const switchToTab3 = useCallback(() => {
+    switchToTab(3);
+  }, [switchToTab]);
+  const switchToTab4 = useCallback(() => {
+    switchToTab(4);
+  }, [switchToTab]);
+  const switchToTab5 = useCallback(() => {
+    switchToTab(5);
+  }, [switchToTab]);
+  const switchToTab6 = useCallback(() => {
+    switchToTab(6);
+  }, [switchToTab]);
+  const switchToTab7 = useCallback(() => {
+    switchToTab(7);
+  }, [switchToTab]);
+  const switchToTab8 = useCallback(() => {
+    switchToTab(8);
+  }, [switchToTab]);
+  const switchToTab9 = useCallback(() => {
+    switchToTab(9);
+  }, [switchToTab]);
+
   useEffect(() => {
     commands.on('createTab', createTab);
     commands.on('closeTab', closeTab);
+    commands.on('nextTab', nextTab);
+    commands.on('previousTab', previousTab);
+    commands.on('tab1', switchToTab1);
+    commands.on('tab2', switchToTab2);
+    commands.on('tab3', switchToTab3);
+    commands.on('tab4', switchToTab4);
+    commands.on('tab5', switchToTab5);
+    commands.on('tab6', switchToTab6);
+    commands.on('tab7', switchToTab7);
+    commands.on('tab8', switchToTab8);
+    commands.on('tab9', switchToTab9);
 
     return () => {
       commands.off('createTab', createTab);
       commands.off('closeTab', closeTab);
+      commands.off('nextTab', nextTab);
+      commands.off('previousTab', previousTab);
+      commands.off('tab1', switchToTab1);
+      commands.off('tab2', switchToTab2);
+      commands.off('tab3', switchToTab3);
+      commands.off('tab4', switchToTab4);
+      commands.off('tab5', switchToTab5);
+      commands.off('tab6', switchToTab6);
+      commands.off('tab7', switchToTab7);
+      commands.off('tab8', switchToTab8);
+      commands.off('tab9', switchToTab9);
     };
-  }, [commands, createTab, closeTab]);
+  }, [
+    commands,
+    createTab,
+    closeTab,
+    nextTab,
+    previousTab,
+    switchToTab1,
+    switchToTab2,
+    switchToTab3,
+    switchToTab4,
+    switchToTab5,
+    switchToTab6,
+    switchToTab7,
+    switchToTab8,
+    switchToTab9,
+  ]);
 
   useEffect(() => {
     if (!loading && userTabs.length === 0) {
