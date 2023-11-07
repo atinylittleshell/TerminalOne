@@ -37,43 +37,49 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   // Line height relative to font size.
   lineHeight: 1,
 
-  // Padding within each tab in pixels.
-  tabContentPadding: {
+  // Padding within each terminal in pixels.
+  terminalContentPadding: {
     top: 8,
     right: 8,
     bottom: 8,
     left: 8,
   },
 
-  // Configuration for all themes to be used in the terminal.
-  themes: [
-    {
-      name: 'Default',
-      background: '#000000',
-      foreground: '#ffffff',
-      cursor: '#ffffff',
-      cursorAccent: '#000000',
-      selectionBackground: '#ffffff',
-      selectionForeground: '#000000',
-      selectionInactiveBackground: '#ffffff',
-      black: '#000000',
-      white: '#ffffff',
-      red: '#ff0000',
-      green: '#00ff00',
-      blue: '#0000ff',
-      yellow: '#ffff00',
-      cyan: '#00ffff',
-      magenta: '#ff00ff',
-      brightBlack: '#808080',
-      brightWhite: '#ffffff',
-      brightRed: '#ff0000',
-      brightGreen: '#00ff00',
-      brightBlue: '#0000ff',
-      brightYellow: '#ffff00',
-      brightCyan: '#00ffff',
-      brightMagenta: '#ff00ff',
-    },
-  ],
+  // Border width of each terminal in pixels.
+  terminalBorderWidth: 1,
+
+  // Border color of each terminal when it is active.
+  terminalBorderColorActive: 'foreground',
+
+  // Border color of each terminal when it is inactive.
+  terminalBorderColorInactive: 'background',
+
+  // Configuration for the color scheme
+  colorScheme: {
+    background: '#000000',
+    foreground: '#ffffff',
+    cursor: '#ffffff',
+    cursorAccent: '#000000',
+    selectionBackground: '#ffffff',
+    selectionForeground: '#000000',
+    selectionInactiveBackground: '#ffffff',
+    black: '#000000',
+    white: '#ffffff',
+    red: '#ff0000',
+    green: '#00ff00',
+    blue: '#0000ff',
+    yellow: '#ffff00',
+    cyan: '#00ffff',
+    magenta: '#ff00ff',
+    brightBlack: '#808080',
+    brightWhite: '#ffffff',
+    brightRed: '#ff0000',
+    brightGreen: '#00ff00',
+    brightBlue: '#0000ff',
+    brightYellow: '#ffff00',
+    brightCyan: '#00ffff',
+    brightMagenta: '#ff00ff',
+  },
 
   // Configuration for all shells to be used in the terminal.
   shells: [
@@ -86,9 +92,6 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
 
       // Path to the directory where the shell should be launched. Will auto detect home directory when this is empty
       startupDirectory: '',
-
-      // Name of the theme to use for this shell. This must match one of the names defined in "themes".
-      themeName: 'Default',
     },
   ],
 
@@ -115,5 +118,12 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
     tab7: '7',
     tab8: '8',
     tab9: '9',
+    splitHorizontal: 'shift+%',
+    splitVertical: 'shift+"',
+    focusPaneLeft: 'h',
+    focusPaneRight: 'l',
+    focusPaneUp: 'k',
+    focusPaneDown: 'j',
+    closePane: 'x',
   },
 };

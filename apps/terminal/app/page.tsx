@@ -1,27 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { DEFAULT_CONFIG } from '@terminalone/types';
 import _ from 'lodash';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from 'react';
 import { FiMenu, FiPlus, FiX } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
-import ShellSelector from '../components/ShellSelector';
 import { useConfigContext } from '../hooks/ConfigContext';
 import { useKeybindContext } from '../hooks/KeybindContext';
 
 const TitleBar = dynamic(() => import('../components/TitleBar'), {
   ssr: false,
 });
-const Terminal = dynamic(() => import('../components/Terminal'), {
+const Tab = dynamic(() => import('../components/Tab'), {
   ssr: false,
 });
 
 type UserTab = {
   tabId: number;
-  shellName: string | null;
 };
 
 const Page = () => {
@@ -44,7 +41,8 @@ const Page = () => {
         ...userTabs,
         {
           tabId: newTabId,
-          shellName: config.shells.length === 1 ? config.defaultShellName : null,
+          shellName:
+            config.shells.length === 1 ? config.defaultShellName : null,
         },
       ].sort((a, b) => a.tabId - b.tabId),
     );
@@ -179,7 +177,6 @@ const Page = () => {
       setUserTabs([
         {
           tabId: 1,
-          shellName: config.defaultShellName,
         },
       ]);
     }
@@ -189,19 +186,14 @@ const Page = () => {
     return <div />;
   }
 
-  const activeShellName = userTabs.find((t) => t.tabId === tabId)?.shellName || config.defaultShellName;
-  const activeShellConfig = config.shells.find((s) => s.name === activeShellName) || DEFAULT_CONFIG.shells[0];
-  const activeThemeConfig =
-    tabId === 0
-      ? DEFAULT_CONFIG.themes[0]
-      : config.themes.find((t) => t.name === activeShellConfig.themeName) || DEFAULT_CONFIG.themes[0];
-
   return (
     <>
       <TitleBar>
         <div className="tabs">
           <a
-            className={`tab tab-lifted ${tabId === 0 ? 'tab-active' : ''} flex items-center gap-1`}
+            className={`tab tab-lifted ${
+              tabId === 0 ? 'tab-active' : ''
+            } flex items-center gap-1`}
             onClick={() => {
               setTabId(0);
             }}
@@ -211,9 +203,14 @@ const Page = () => {
           {userTabs.map((userTab) => (
             <a
               key={userTab.tabId}
-              className={`tab tab-lifted items-center ${tabId === userTab.tabId ? 'tab-active' : ''}`}
+              className={`tab tab-lifted items-center ${
+                tabId === userTab.tabId ? 'tab-active' : ''
+              }`}
               style={{
-                backgroundColor: tabId === userTab.tabId ? activeThemeConfig.background : undefined,
+                backgroundColor:
+                  tabId === userTab.tabId
+                    ? config.colorScheme.background
+                    : undefined,
                 paddingRight: tabId === userTab.tabId ? 0 : undefined,
               }}
               onClick={() => {
@@ -249,37 +246,23 @@ const Page = () => {
       <div
         className="flex-1 flex overflow-hidden"
         style={{
-          paddingTop: config.tabContentPadding.top,
-          paddingRight: config.tabContentPadding.right,
-          paddingBottom: config.tabContentPadding.bottom,
-          paddingLeft: config.tabContentPadding.left,
-          backgroundColor: activeThemeConfig.background,
+          paddingTop: config.terminalBorderWidth,
+          paddingBottom: config.terminalBorderWidth,
+          paddingLeft: config.terminalBorderWidth,
+          paddingRight: config.terminalBorderWidth,
+          backgroundColor: config.colorScheme.background,
         }}
       >
         <div className="flex-1 relative overflow-hidden">
           {tabId === 0 && <SettingsPage />}
           {userTabs.map((userTab) => {
-            if (userTab.shellName) {
-              return <Terminal key={userTab.tabId} active={tabId === userTab.tabId} shellName={userTab.shellName} />;
-            } else {
-              return (
-                <ShellSelector
-                  key={userTab.tabId}
-                  onShellSelected={(shellName) => {
-                    const newTabs = userTabs.map((t) => {
-                      if (t.tabId === userTab.tabId) {
-                        return {
-                          ...t,
-                          shellName,
-                        };
-                      }
-                      return t;
-                    });
-                    setUserTabs(newTabs);
-                  }}
-                />
-              );
-            }
+            return (
+              <Tab
+                key={userTab.tabId}
+                active={tabId === userTab.tabId}
+                tabId={userTab.tabId}
+              />
+            );
           })}
         </div>
       </div>

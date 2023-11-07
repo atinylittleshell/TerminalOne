@@ -1,11 +1,19 @@
-import { DEFAULT_CONFIG, resolveConfig, ResolvedConfig } from '@terminalone/types';
+import {
+  DEFAULT_CONFIG,
+  resolveConfig,
+  ResolvedConfig,
+} from '@terminalone/types';
 import { BrowserWindow } from 'electron';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs-extra';
 import os from 'os';
 import path from 'path';
 import vm from 'vm';
 
-import { moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import {
+  moduleFunction,
+  NativeBridgeModule,
+  nativeBridgeModule,
+} from '../module';
 import { getAppDirs } from './common';
 import { Logger } from './common/logger';
 
@@ -34,7 +42,10 @@ export class ConfigModule extends NativeBridgeModule {
     const configContent = readFileSync(configPath, 'utf8');
 
     try {
-      const script = new vm.Script(configContent, { filename: 'config.js', displayErrors: true });
+      const script = new vm.Script(configContent, {
+        filename: 'config.js',
+        displayErrors: true,
+      });
       const mod: Record<string, unknown> = {};
       script.runInNewContext({
         module: mod,
@@ -49,7 +60,10 @@ export class ConfigModule extends NativeBridgeModule {
         throw new Error('Invalid config: `module.exports` not set');
       }
 
-      Logger.getInstance().log('info', `Loaded config from ${configPath}}: ${JSON.stringify(mod.exports)}`);
+      Logger.getInstance().log(
+        'info',
+        `Loaded config from ${configPath}}: ${JSON.stringify(mod.exports)}`,
+      );
 
       const resolved = resolveConfig(mod.exports);
       this.config = resolved;
