@@ -21,7 +21,7 @@ describe('config', () => {
 
     expect(() => {
       validateConfig({
-        tabContentPadding: {},
+        terminalContentPadding: {},
       });
     }).toThrowError();
 
@@ -35,7 +35,11 @@ describe('config', () => {
 
   it('should resolve to default config when given no config', () => {
     const resolved = resolveConfig({});
-    expect(resolved).toEqual(DEFAULT_CONFIG);
+    expect(resolved).toEqual({
+      ...DEFAULT_CONFIG,
+      terminalBorderColorActive: DEFAULT_CONFIG.colorScheme.foreground,
+      terminalBorderColorInactive: DEFAULT_CONFIG.colorScheme.background,
+    });
   });
 
   it('should merge custom config with default config', () => {
@@ -45,6 +49,8 @@ describe('config', () => {
     expect(resolved).toEqual({
       ...DEFAULT_CONFIG,
       fontSize: 20,
+      terminalBorderColorActive: DEFAULT_CONFIG.colorScheme.foreground,
+      terminalBorderColorInactive: DEFAULT_CONFIG.colorScheme.background,
     });
   });
 });

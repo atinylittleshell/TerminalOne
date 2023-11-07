@@ -20,10 +20,8 @@ type NativeBridgeModuleMetadata = {
   events: Record<string, ModuleEvent>;
 };
 
-export const MODULE_METADATA: Map<Function, NativeBridgeModuleMetadata> = new Map<
-  Function,
-  NativeBridgeModuleMetadata
->();
+export const MODULE_METADATA: Map<Function, NativeBridgeModuleMetadata> =
+  new Map<Function, NativeBridgeModuleMetadata>();
 
 function ensureModuleMetadata(ctor: Function): NativeBridgeModuleMetadata {
   if (!MODULE_METADATA.has(ctor)) {
@@ -53,11 +51,17 @@ export function getModuleKey(moduleName: string): string {
   return `TerminalOne:${moduleName}`;
 }
 
-export function getModuleFunctionKey(moduleName: string, functionName: string): string {
+export function getModuleFunctionKey(
+  moduleName: string,
+  functionName: string,
+): string {
   return `${getModuleKey(moduleName)}:${functionName}`;
 }
 
-export function getModuleEventKey(moduleName: string, eventName: string): string {
+export function getModuleEventKey(
+  moduleName: string,
+  eventName: string,
+): string {
   return `${getModuleKey(moduleName)}:${eventName}`;
 }
 

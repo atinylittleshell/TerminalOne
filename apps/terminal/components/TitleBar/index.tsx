@@ -21,11 +21,18 @@ function TitleBar(props: PropsWithChildren) {
         window.TerminalOne?.platform === 'darwin' ? 'h-16 pt-8' : 'h-8'
       }`}
     >
-      <div className={`block absolute -z-10 top-0 left-0 right-0 bottom-0 ${styles['title-bar-drag']}`} />
-      <div className={`flex items-center ${styles['title-bar-buttons']}`}>{props.children}</div>
+      <div
+        className={`block absolute -z-10 top-0 left-0 right-0 bottom-0 ${styles['title-bar-drag']}`}
+      />
+      <div className={`flex items-center ${styles['title-bar-buttons']}`}>
+        {props.children}
+      </div>
       <div className="flex-1" />
-      {window.TerminalOne?.platform === 'darwin' || window.TerminalOne?.platform === 'linux' ? null : (
-        <div className={`flex flex-row text-white ${styles['title-bar-buttons']}`}>
+      {window.TerminalOne?.platform === 'darwin' ||
+      window.TerminalOne?.platform === 'linux' ? null : (
+        <div
+          className={`flex flex-row text-white ${styles['title-bar-buttons']}`}
+        >
           <button
             className="btn btn-sm btn-ghost btn-square"
             title="Minimize"
@@ -48,7 +55,11 @@ function TitleBar(props: PropsWithChildren) {
               }
             }}
           >
-            {isMaximized ? <FiMinimize2 size="16" /> : <FiMaximize2 size="16" />}
+            {isMaximized ? (
+              <FiMinimize2 size="16" />
+            ) : (
+              <FiMaximize2 size="16" />
+            )}
           </button>
           <button
             className="btn btn-sm btn-ghost btn-square hover:bg-error"

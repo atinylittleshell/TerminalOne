@@ -1,7 +1,7 @@
 {
   "name": "@terminalone/monorepo",
   "productName": "Terminal One",
-  "version": "0.8.1",
+  "version": "1.0.0",
   "description": "A fast, elegant and intelligent cross-platform terminal.",
   "author": "atinylittleshell <shell@atinylittleshell.me>",
   "license": "MIT",
@@ -36,6 +36,7 @@
     "release:app": "git checkout releases/terminalone/app && git pull && git merge --no-edit --no-ff main && git push && git checkout main",
     "build": "turbo run build",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
     "rebuild:node-pty": "electron-rebuild -f -o node-pty -m apps/app",
     "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps && npm run rebuild:node-pty"
@@ -79,7 +80,7 @@
     "semi": true,
     "trailingComma": "all",
     "singleQuote": true,
-    "printWidth": 120,
+    "printWidth": 80,
     "tabWidth": 2
   },
   "homepage": "https://github.com/atinylittleshell/TerminalOne",
