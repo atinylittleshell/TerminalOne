@@ -250,7 +250,8 @@ const Page = () => {
           paddingBottom: config.terminalBorderWidth,
           paddingLeft: config.terminalBorderWidth,
           paddingRight: config.terminalBorderWidth,
-          backgroundColor: config.colorScheme.background,
+          backgroundColor:
+            tabId === 0 ? undefined : config.colorScheme.background,
         }}
       >
         <div className="flex-1 relative overflow-hidden">
