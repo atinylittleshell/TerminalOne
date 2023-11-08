@@ -130,6 +130,7 @@ const Terminal = ({
         });
 
         // make backend pty size consistent with xterm on the frontend
+        fitAddon.fit();
         window.TerminalOne?.terminal?.resizeTerminal(
           terminalId,
           xterm.cols,
