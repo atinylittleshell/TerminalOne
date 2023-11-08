@@ -6,7 +6,7 @@ import { TerminalTreeNode } from '../TerminalTreeNode';
 const Tab = ({ tabId, active }: { tabId: number; active: boolean }) => {
   return (
     <div
-      className={`w-full h-full relative ${active ? 'visible' : 'invisible'}`}
+      className={`w-full h-full absolute ${active ? 'visible' : 'invisible'}`}
     >
       <TabContextProvider active={active} tabId={tabId}>
         <TerminalTreeNode data={null} />
