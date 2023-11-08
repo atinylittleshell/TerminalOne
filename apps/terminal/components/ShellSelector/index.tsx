@@ -4,7 +4,11 @@ import { useEffect } from 'react';
 
 import { useConfigContext } from '../../hooks/ConfigContext';
 
-const ShellSelector = ({ onShellSelected }: { onShellSelected: (_shellName: string) => void }) => {
+const ShellSelector = ({
+  onShellSelected,
+}: {
+  onShellSelected: (_shellName: string) => void;
+}) => {
   const { config } = useConfigContext();
 
   const shellOptions = config.shells.map((shell, index) => {
@@ -33,7 +37,10 @@ const ShellSelector = ({ onShellSelected }: { onShellSelected: (_shellName: stri
   }, [shellOptions, onShellSelected]);
 
   return (
-    <div className="flex-1 w-full h-full absolute overflow-hidden flex flex-col" tabIndex={1}>
+    <div
+      className="flex-1 w-full h-full absolute overflow-hidden flex flex-col"
+      tabIndex={1}
+    >
       <ul className="menu">
         {shellOptions.map((shell) => {
           return (

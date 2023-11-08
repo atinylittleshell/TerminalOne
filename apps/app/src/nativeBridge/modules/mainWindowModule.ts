@@ -2,7 +2,12 @@ import { BrowserWindow } from 'electron';
 import { existsSync, mkdirSync, readFileSync, writeFile } from 'fs-extra';
 import path from 'path';
 
-import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import {
+  moduleEvent,
+  moduleFunction,
+  NativeBridgeModule,
+  nativeBridgeModule,
+} from '../module';
 import { getAppDirs } from './common';
 
 @nativeBridgeModule('win')
@@ -23,7 +28,10 @@ export class MainWindowModule extends NativeBridgeModule {
   }
 
   @moduleFunction()
-  public async maximize(mainWindow: BrowserWindow, maximize?: boolean): Promise<void> {
+  public async maximize(
+    mainWindow: BrowserWindow,
+    maximize?: boolean,
+  ): Promise<void> {
     if (maximize === undefined) {
       maximize = true;
     }
@@ -41,12 +49,20 @@ export class MainWindowModule extends NativeBridgeModule {
   }
 
   @moduleFunction()
-  public async setWindowSize(mainWindow: BrowserWindow, width: number, height: number) {
+  public async setWindowSize(
+    mainWindow: BrowserWindow,
+    width: number,
+    height: number,
+  ) {
     mainWindow.setSize(width, height);
   }
 
   @moduleFunction()
-  public async setWindowPosition(mainWindow: BrowserWindow, x: number, y: number) {
+  public async setWindowPosition(
+    mainWindow: BrowserWindow,
+    x: number,
+    y: number,
+  ) {
     mainWindow.setPosition(x, y);
   }
 
@@ -77,7 +93,9 @@ export class MainWindowModule extends NativeBridgeModule {
     const configDir = getAppDirs().userData;
     const stateFilePath = path.join(configDir, 'window.json');
     if (existsSync(stateFilePath)) {
-      const stateFromFile = JSON.parse(readFileSync(stateFilePath, { encoding: 'utf8' }));
+      const stateFromFile = JSON.parse(
+        readFileSync(stateFilePath, { encoding: 'utf8' }),
+      );
       latestState = {
         x: stateFromFile.x ?? x,
         y: stateFromFile.y ?? y,
@@ -123,12 +141,20 @@ export class MainWindowModule extends NativeBridgeModule {
   }
 
   @moduleEvent('on')
-  public onWindowResized(_mainWindow: BrowserWindow, _w: number, _h: number): void {
+  public onWindowResized(
+    _mainWindow: BrowserWindow,
+    _w: number,
+    _h: number,
+  ): void {
     return;
   }
 
   @moduleEvent('on')
-  public onWindowMoved(_mainWindow: BrowserWindow, _x: number, _y: number): void {
+  public onWindowMoved(
+    _mainWindow: BrowserWindow,
+    _x: number,
+    _y: number,
+  ): void {
     return;
   }
 }

@@ -8,7 +8,6 @@ const ShellConfigType = t.type({
   name: t.string,
   command: t.string,
   startupDirectory: t.string,
-  themeName: t.string,
 });
 
 export type ShellConfig = t.TypeOf<typeof ShellConfigType>;
@@ -22,8 +21,7 @@ const PaddingType = t.type({
 
 export type Padding = t.TypeOf<typeof PaddingType>;
 
-const ThemeConfigType = t.type({
-  name: t.string,
+const ColorSchemeConfigType = t.type({
   background: t.string,
   foreground: t.string,
   cursor: t.string,
@@ -49,7 +47,7 @@ const ThemeConfigType = t.type({
   brightMagenta: t.string,
 });
 
-export type ThemeConfig = t.TypeOf<typeof ThemeConfigType>;
+export type ColorSchemeConfig = t.TypeOf<typeof ColorSchemeConfigType>;
 
 const Keybinds = {
   createTab: t.string,
@@ -65,6 +63,13 @@ const Keybinds = {
   tab7: t.string,
   tab8: t.string,
   tab9: t.string,
+  splitHorizontal: t.string,
+  splitVertical: t.string,
+  focusPaneLeft: t.string,
+  focusPaneRight: t.string,
+  focusPaneUp: t.string,
+  focusPaneDown: t.string,
+  closePane: t.string,
 };
 
 const ConfigTypeContent = {
@@ -83,8 +88,11 @@ const ConfigTypeContent = {
   fontWeightBold: t.number,
   letterSpacing: t.number,
   lineHeight: t.number,
-  tabContentPadding: PaddingType,
-  themes: t.array(ThemeConfigType),
+  terminalContentPadding: PaddingType,
+  terminalBorderWidth: t.number,
+  terminalBorderColorActive: t.string,
+  terminalBorderColorInactive: t.string,
+  colorScheme: ColorSchemeConfigType,
   shells: t.array(ShellConfigType),
   defaultShellName: t.string,
   keybindLeader: t.string,
@@ -106,40 +114,87 @@ export const validateConfig = (config: unknown): Config => {
   if (result.scrollback !== undefined && result.scrollback < 0) {
     throw Error(`Invalid scrollback value: ${result.scrollback}`);
   }
-  if (result.fontSize !== undefined && (result.fontSize <= 0 || result.fontSize > 128)) {
+  if (
+    result.fontSize !== undefined &&
+    (result.fontSize <= 0 || result.fontSize > 128)
+  ) {
     throw Error(`Invalid font size: ${result.fontSize}`);
   }
-  if (result.fontWeight !== undefined && (result.fontWeight <= 0 || result.fontWeight > 1000)) {
+  if (
+    result.fontWeight !== undefined &&
+    (result.fontWeight <= 0 || result.fontWeight > 1000)
+  ) {
     throw Error(`Invalid font weight: ${result.fontWeight}`);
   }
-  if (result.fontWeightBold !== undefined && (result.fontWeightBold <= 0 || result.fontWeightBold > 1000)) {
+  if (
+    result.fontWeightBold !== undefined &&
+    (result.fontWeightBold <= 0 || result.fontWeightBold > 1000)
+  ) {
     throw Error(`Invalid font weight bold: ${result.fontWeightBold}`);
   }
-  if (result.letterSpacing !== undefined && (result.letterSpacing < 0 || result.letterSpacing > 2)) {
+  if (
+    result.letterSpacing !== undefined &&
+    (result.letterSpacing < 0 || result.letterSpacing > 2)
+  ) {
     throw Error(`Invalid letter spacing: ${result.letterSpacing}`);
   }
-  if (result.lineHeight !== undefined && (result.lineHeight <= 0 || result.lineHeight > 4)) {
+  if (
+    result.lineHeight !== undefined &&
+    (result.lineHeight <= 0 || result.lineHeight > 4)
+  ) {
     throw Error(`Invalid line height: ${result.lineHeight}`);
   }
-  if (result.tabContentPadding !== undefined) {
-    if (result.tabContentPadding.top < 0 || result.tabContentPadding.top > 128) {
-      throw Error(`Invalid tab content padding top: ${result.tabContentPadding.top}`);
+  if (result.terminalContentPadding !== undefined) {
+    if (
+      result.terminalContentPadding.top < 0 ||
+      result.terminalContentPadding.top > 128
+    ) {
+      throw Error(
+        `Invalid terminal content padding top: ${result.terminalContentPadding.top}`,
+      );
     }
-    if (result.tabContentPadding.right < 0 || result.tabContentPadding.right > 128) {
-      throw Error(`Invalid tab content padding right: ${result.tabContentPadding.right}`);
+    if (
+      result.terminalContentPadding.right < 0 ||
+      result.terminalContentPadding.right > 128
+    ) {
+      throw Error(
+        `Invalid terminal content padding right: ${result.terminalContentPadding.right}`,
+      );
     }
-    if (result.tabContentPadding.bottom < 0 || result.tabContentPadding.bottom > 128) {
-      throw Error(`Invalid tab content padding bottom: ${result.tabContentPadding.bottom}`);
+    if (
+      result.terminalContentPadding.bottom < 0 ||
+      result.terminalContentPadding.bottom > 128
+    ) {
+      throw Error(
+        `Invalid terminal content padding bottom: ${result.terminalContentPadding.bottom}`,
+      );
     }
-    if (result.tabContentPadding.left < 0 || result.tabContentPadding.left > 128) {
-      throw Error(`Invalid tab content padding left: ${result.tabContentPadding.left}`);
+    if (
+      result.terminalContentPadding.left < 0 ||
+      result.terminalContentPadding.left > 128
+    ) {
+      throw Error(
+        `Invalid terminal content padding left: ${result.terminalContentPadding.left}`,
+      );
+    }
+    if (
+      result.terminalBorderWidth !== undefined &&
+      (result.terminalBorderWidth < 0 || result.terminalBorderWidth > 128)
+    ) {
+      throw Error(
+        `Invalid terminal border width: ${result.terminalBorderWidth}`,
+      );
     }
   }
   if (
     (result.shells !== undefined || result.defaultShellName !== undefined) &&
-    !(result.shells || []).find((shell) => shell.name === result.defaultShellName)
+    !(result.shells || []).find(
+      (shell) => shell.name === result.defaultShellName,
+    )
   ) {
-    throw Error(`Could not find config for default shell: ${result.defaultShellName}`);
+    throw Error(
+      `Could not find config for default shell: ${result.defaultShellName}`,
+    );
   }
 
   return result;
@@ -151,8 +206,32 @@ export type ResolvedConfig = t.TypeOf<typeof ResolvedConfigType>;
 export const resolveConfig = (config: unknown): ResolvedConfig => {
   const validatedConfig = validateConfig(config);
 
-  return {
+  const resolvedConfig = {
     ...DEFAULT_CONFIG,
     ...validatedConfig,
   };
+
+  // resolve referenced color names
+  if (
+    resolvedConfig.terminalBorderColorActive &&
+    (resolvedConfig.colorScheme as Record<string, string>)[
+      resolvedConfig.terminalBorderColorActive
+    ]
+  ) {
+    resolvedConfig.terminalBorderColorActive = (
+      resolvedConfig.colorScheme as Record<string, string>
+    )[resolvedConfig.terminalBorderColorActive];
+  }
+  if (
+    resolvedConfig.terminalBorderColorInactive &&
+    (resolvedConfig.colorScheme as Record<string, string>)[
+      resolvedConfig.terminalBorderColorInactive
+    ]
+  ) {
+    resolvedConfig.terminalBorderColorInactive = (
+      resolvedConfig.colorScheme as Record<string, string>
+    )[resolvedConfig.terminalBorderColorInactive];
+  }
+
+  return resolvedConfig;
 };

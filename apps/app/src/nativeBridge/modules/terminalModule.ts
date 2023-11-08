@@ -3,7 +3,12 @@ import { IPty } from 'node-pty';
 import os from 'os';
 import { osLocaleSync } from 'os-locale';
 
-import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import {
+  moduleEvent,
+  moduleFunction,
+  NativeBridgeModule,
+  nativeBridgeModule,
+} from '../module';
 import { Logger } from './common/logger';
 
 class PTYInstance {
@@ -11,7 +16,13 @@ class PTYInstance {
 
   public readonly id: string;
 
-  constructor(id: string, cols: number, rows: number, shellCommand: string, startupDirectory: string) {
+  constructor(
+    id: string,
+    cols: number,
+    rows: number,
+    shellCommand: string,
+    startupDirectory: string,
+  ) {
     this.id = id;
 
     const shell =
@@ -35,7 +46,10 @@ class PTYInstance {
       },
     });
 
-    Logger.getInstance().log('info', `Created new terminal with id: ${id}, size: ${cols}x${rows}, shell: ${shell}`);
+    Logger.getInstance().log(
+      'info',
+      `Created new terminal with id: ${id}, size: ${cols}x${rows}, shell: ${shell}`,
+    );
   }
 
   public resize(cols: number, rows: number): void {
@@ -63,7 +77,7 @@ export class TerminalModule extends NativeBridgeModule {
   private ptyInstances: { [id: string]: PTYInstance } = {};
 
   @moduleFunction()
-  public async newTerminal(
+  public async createTerminalIfNotExist(
     _mainWindow: BrowserWindow,
     id: string,
     cols: number,
@@ -71,7 +85,17 @@ export class TerminalModule extends NativeBridgeModule {
     shellCommand: string,
     startupDirectory: string,
   ): Promise<void> {
-    const ptyInstance = new PTYInstance(id, cols, rows, shellCommand, startupDirectory);
+    if (this.ptyInstances[id]) {
+      return;
+    }
+
+    const ptyInstance = new PTYInstance(
+      id,
+      cols,
+      rows,
+      shellCommand,
+      startupDirectory,
+    );
     ptyInstance.onData((data: string) => {
       this.onData(_mainWindow, ptyInstance.id, data);
     });
@@ -80,7 +104,12 @@ export class TerminalModule extends NativeBridgeModule {
   }
 
   @moduleFunction()
-  public async resizeTerminal(_mainWindow: BrowserWindow, id: string, cols: number, rows: number): Promise<void> {
+  public async resizeTerminal(
+    _mainWindow: BrowserWindow,
+    id: string,
+    cols: number,
+    rows: number,
+  ): Promise<void> {
     const ptyInstance = this.ptyInstances[id];
     if (ptyInstance) {
       ptyInstance.resize(cols, rows);
@@ -88,18 +117,28 @@ export class TerminalModule extends NativeBridgeModule {
   }
 
   @moduleFunction()
-  public async killTerminal(_mainWindow: BrowserWindow, id: string): Promise<void> {
+  public async killTerminal(
+    _mainWindow: BrowserWindow,
+    id: string,
+  ): Promise<void> {
     const ptyInstance = this.ptyInstances[id];
     if (ptyInstance) {
       ptyInstance.kill();
       delete this.ptyInstances[id];
     } else {
-      Logger.getInstance().log('warn', `Could not find terminal with id: ${id}`);
+      Logger.getInstance().log(
+        'warn',
+        `Could not find terminal with id: ${id}`,
+      );
     }
   }
 
   @moduleFunction()
-  public async writeTerminal(_mainWindow: BrowserWindow, id: string, data: string): Promise<void> {
+  public async writeTerminal(
+    _mainWindow: BrowserWindow,
+    id: string,
+    data: string,
+  ): Promise<void> {
     const ptyInstance = this.ptyInstances[id];
     if (ptyInstance) {
       ptyInstance.write(data);

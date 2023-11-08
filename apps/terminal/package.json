@@ -6,6 +6,7 @@
     "dev:terminal": "next dev",
     "build": "next build",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "test": "jest --colors"
   },
   "dependencies": {

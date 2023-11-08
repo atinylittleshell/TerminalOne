@@ -7,9 +7,14 @@ import React, { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { useConfigContext } from './ConfigContext';
 
+type KeybindCommandEvent = Record<
+  KeybindCommand,
+  (srcTerminalId: string) => void
+>;
+
 type KeybindContextData = {
-  commands: EventEmitter<KeybindCommand>;
-  handleKey: (event: KeyboardEvent) => boolean;
+  commands: EventEmitter<KeybindCommandEvent>;
+  handleKey: (event: KeyboardEvent, srcTerminalId: string) => boolean;
 };
 
 type KeybindConfig = {
@@ -22,30 +27,46 @@ const KEY_REPLACEMENTS: Record<string, string> = {
 };
 const MODIFIER_KEYS = new Set(['alt', 'ctrl', 'meta', 'shift']);
 
-const keybindCommandEmitter = new EventEmitter<KeybindCommand>();
+const keybindCommandEmitter = new EventEmitter<KeybindCommandEvent>();
 const keyState: Record<string, boolean> = {};
 let lastLeaderKeyEvent: KeyboardEvent | null = null;
 
 const isLeaderActive = (event: KeyboardEvent) => {
-  return lastLeaderKeyEvent && lastLeaderKeyEvent.timeStamp + 1000 > event.timeStamp;
+  return (
+    lastLeaderKeyEvent && lastLeaderKeyEvent.timeStamp + 1000 > event.timeStamp
+  );
 };
 
 const describeKey = (event: KeyboardEvent) => {
   const { altKey, ctrlKey, metaKey, shiftKey, key } = event;
-  const modifiers = [altKey && 'alt', ctrlKey && 'ctrl', metaKey && 'meta', shiftKey && 'shift'].filter(Boolean);
+  const modifiers = [
+    altKey && 'alt',
+    ctrlKey && 'ctrl',
+    metaKey && 'meta',
+    shiftKey && 'shift',
+  ].filter(Boolean);
 
-  return normalizeKeyDescriptor(modifiers.length > 0 ? `${modifiers.join('+')}+${key}` : key);
+  return normalizeKeyDescriptor(
+    modifiers.length > 0 ? `${modifiers.join('+')}+${key}` : key,
+  );
 };
 
 // return value means whether the key event should be propagated to the terminal
-const keyHandler = (event: KeyboardEvent, config: KeybindConfig) => {
+const keyHandler = (
+  event: KeyboardEvent,
+  srcTerminalId: string,
+  config: KeybindConfig,
+) => {
   const rawKey = event.key;
   const type = event.type;
   const key = normalizeSingleKey(rawKey);
   const keyDescriptor = describeKey(event);
 
   const logDebug = (dest: string, reason: string) => {
-    window.TerminalOne?.app.log('debug', `${type}:${keyDescriptor}:${dest} ${reason}`);
+    window.TerminalOne?.app.log(
+      'debug',
+      `${type}:${srcTerminalId}:${keyDescriptor}:${dest} ${reason}`,
+    );
   };
 
   logDebug('RAW', 'user input');
@@ -84,7 +105,7 @@ const keyHandler = (event: KeyboardEvent, config: KeybindConfig) => {
 
       if (command) {
         // the key event maps to a known keybind. we should emit the command and not pass the key to the terminal.
-        keybindCommandEmitter.emit(command);
+        keybindCommandEmitter.emit(command, srcTerminalId);
         lastLeaderKeyEvent = null;
         logDebug('HOST', 'keybind');
         return false;
@@ -127,7 +148,9 @@ const normalizeSingleKey = (rawKey: string) => {
 
 const normalizeKeyDescriptor = (keyDescriptor: string) => {
   const items = keyDescriptor.split('+').map(normalizeSingleKey);
-  const modifiers = _.uniq(items.filter((item) => MODIFIER_KEYS.has(item)).sort());
+  const modifiers = _.uniq(
+    items.filter((item) => MODIFIER_KEYS.has(item)).sort(),
+  );
   const keys = items.filter((item) => !MODIFIER_KEYS.has(item));
   return [...modifiers, ...keys].join('+');
 };
@@ -158,8 +181,8 @@ export const KeybindContextProvider = (props: React.PropsWithChildren) => {
   }, [config]);
 
   const handleKey = useCallback(
-    (event: KeyboardEvent) => {
-      return keyHandler(event, keybindConfig);
+    (event: KeyboardEvent, srcTerminalId: string) => {
+      return keyHandler(event, srcTerminalId, keybindConfig);
     },
     [keybindConfig],
   );
@@ -172,7 +195,11 @@ export const KeybindContextProvider = (props: React.PropsWithChildren) => {
     [handleKey],
   );
 
-  return <KeybindContext.Provider value={value}>{props.children}</KeybindContext.Provider>;
+  return (
+    <KeybindContext.Provider value={value}>
+      {props.children}
+    </KeybindContext.Provider>
+  );
 };
 
 export const useKeybindContext = () => {

@@ -1,7 +1,7 @@
 'use client';
 
 import { DEFAULT_CONFIG } from '@terminalone/types';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { Unicode11Addon } from 'xterm-addon-unicode11';
@@ -10,31 +10,67 @@ import { WebglAddon } from 'xterm-addon-webgl';
 
 import { useConfigContext } from '../../hooks/ConfigContext';
 import { useKeybindContext } from '../../hooks/KeybindContext';
+import { useTabContext } from '../../hooks/TabContext';
+import ShellSelector from '../ShellSelector';
 
-let nextId = 0;
-
-const Terminal = ({ active, shellName }: { active: boolean; shellName: string }) => {
+const Terminal = ({
+  terminalId,
+  useDefaultShell,
+}: {
+  terminalId: string;
+  useDefaultShell: boolean;
+}) => {
   const { config, loading } = useConfigContext();
+  const [shellName, setShellName] = useState<string | null | undefined>(
+    undefined,
+  );
   const { handleKey } = useKeybindContext();
   const terminalRef = useRef<HTMLDivElement>(null);
+  const xtermRef = useRef<XTerm | null>(null);
+  const { root, activeTerminalId, onTerminalActive, onTerminalCreated } =
+    useTabContext();
 
   useEffect(() => {
-    if (!terminalRef.current) {
+    if (loading || shellName !== undefined) {
       return;
     }
+
+    if (useDefaultShell) {
+      setShellName(config.defaultShellName);
+    } else if (config.shells.length === 1) {
+      setShellName(config.shells[0].name);
+    } else {
+      setShellName(null);
+    }
+  }, [config, loading, useDefaultShell, shellName]);
+
+  useEffect(() => {
     if (!window || !window.TerminalOne) {
       return;
     }
-    if (loading) {
+    if (!shellName) {
+      if (shellName === null) {
+        onTerminalActive(null);
+      }
+      return;
+    }
+    if (!terminalRef.current) {
       return;
     }
 
-    const xtermDiv = terminalRef.current;
+    window.TerminalOne?.app.log(
+      'debug',
+      `${terminalId} creating terminal with shell: ${shellName}`,
+    );
+
+    const xtermDiv = terminalRef.current!;
 
     // TODO: refactor this into multiple effects
     const xterm = new XTerm({
       allowProposedApi: true,
     });
+    xtermRef.current = xterm;
+
     xterm.loadAddon(
       new WebLinksAddon((_e, url) => {
         window.TerminalOne?.links.openExternalURL(url);
@@ -52,12 +88,12 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
 
     xterm.open(xtermDiv);
 
-    const terminalId = (nextId++).toString();
-    const activeShellConfig = config.shells.find((s) => s.name === shellName) || DEFAULT_CONFIG.shells[0];
+    const activeShellConfig =
+      config.shells.find((s) => s.name === shellName) ||
+      DEFAULT_CONFIG.shells[0];
     // when the following values are empty, they will be auto determined based on system defaults
     const shellCommand = activeShellConfig.command;
     const startupDirectory = activeShellConfig.startupDirectory;
-    const theme = config.themes.find((t) => t.name === activeShellConfig.themeName) || DEFAULT_CONFIG.themes[0];
 
     xterm.options.cursorBlink = config.cursorBlink;
     xterm.options.cursorStyle = config.cursorStyle;
@@ -69,10 +105,16 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     xterm.options.fontWeightBold = config.fontWeightBold;
     xterm.options.letterSpacing = config.letterSpacing;
     xterm.options.lineHeight = config.lineHeight;
-    xterm.options.theme = theme;
+    xterm.options.theme = config.colorScheme;
 
     window.TerminalOne?.terminal
-      .newTerminal(terminalId, xterm.cols, xterm.rows, shellCommand, startupDirectory)
+      .createTerminalIfNotExist(
+        terminalId,
+        xterm.cols,
+        xterm.rows,
+        shellCommand,
+        startupDirectory,
+      )
       .then(() => {
         xterm.onData((data) => {
           window.TerminalOne?.terminal?.writeTerminal(terminalId, data);
@@ -88,7 +130,11 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
         });
 
         // make backend pty size consistent with xterm on the frontend
-        window.TerminalOne?.terminal?.resizeTerminal(terminalId, xterm.cols, xterm.rows);
+        window.TerminalOne?.terminal?.resizeTerminal(
+          terminalId,
+          xterm.cols,
+          xterm.rows,
+        );
       });
 
     const resizeListener = () => {
@@ -98,9 +144,9 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
 
     const focusListener = () => {
       fitAddon.fit();
-      xterm.focus();
+      onTerminalActive(terminalId);
     };
-    xtermDiv.addEventListener('focus', focusListener);
+    xterm.textarea?.addEventListener('focus', focusListener);
 
     const mouseUpListener = () => {
       if (config.copyOnSelect && xterm.hasSelection()) {
@@ -120,36 +166,82 @@ const Terminal = ({ active, shellName }: { active: boolean; shellName: string })
     xtermDiv.addEventListener('contextmenu', contextMenuListener);
 
     xterm.attachCustomKeyEventHandler((event) => {
-      return handleKey(event);
+      return handleKey(event, terminalId);
     });
+
+    onTerminalCreated(terminalId);
 
     return () => {
       window.removeEventListener('resize', resizeListener);
-      xtermDiv.removeEventListener('focus', focusListener);
+      xterm.textarea?.removeEventListener('focus', focusListener);
       xtermDiv.removeEventListener('mouseup', mouseUpListener);
       xtermDiv.removeEventListener('contextmenu', contextMenuListener);
 
-      window.TerminalOne?.terminal?.killTerminal(terminalId);
       xterm.dispose();
     };
-  }, [terminalRef, shellName, config, loading, handleKey]);
+  }, [
+    terminalRef,
+    shellName,
+    terminalId,
+    config,
+    handleKey,
+    onTerminalActive,
+    onTerminalCreated,
+  ]);
 
   useEffect(() => {
     if (!terminalRef.current) {
       return;
     }
 
-    if (active) {
-      terminalRef.current.focus();
+    window.TerminalOne?.app.log(
+      'debug',
+      `${terminalId} get active terminal id: ${activeTerminalId}`,
+    );
+
+    if (activeTerminalId === terminalId) {
+      xtermRef.current?.focus();
+    } else {
+      xtermRef.current?.blur();
     }
-  }, [terminalRef, active]);
+  }, [terminalRef, xtermRef, activeTerminalId, terminalId]);
+
+  if (shellName === undefined) {
+    return <div />;
+  }
+
+  let child = <ShellSelector onShellSelected={setShellName} />;
+  if (shellName !== null) {
+    child = (
+      <div
+        className="w-full h-full relative overflow-hidden border-none outline-0"
+        tabIndex={1}
+        ref={terminalRef}
+      />
+    );
+  }
 
   return (
     <div
-      className={`flex-1 w-full h-full absolute overflow-hidden ${active ? 'visible' : 'invisible'}`}
-      tabIndex={1}
-      ref={terminalRef}
-    />
+      className="w-full h-full relative overflow-hidden"
+      style={{
+        paddingTop: config.terminalContentPadding.top,
+        paddingRight: config.terminalContentPadding.right,
+        paddingBottom: config.terminalContentPadding.bottom,
+        paddingLeft: config.terminalContentPadding.left,
+        borderWidth: config.terminalBorderWidth,
+        borderColor:
+          // show active border when the terminal is active but is not root.
+          // or when it's on shell selector
+          (terminalId === activeTerminalId &&
+            (root.nodeType !== 'terminal' || root.terminalId !== terminalId)) ||
+          shellName === null
+            ? config.terminalBorderColorActive
+            : config.terminalBorderColorInactive,
+      }}
+    >
+      {child}
+    </div>
   );
 };
 

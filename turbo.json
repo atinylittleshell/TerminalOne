@@ -23,6 +23,7 @@
       "persistent": true
     },
     "lint": {},
+    "lint:fix": {},
     "test": {
       "outputs": [
         "coverage/**"

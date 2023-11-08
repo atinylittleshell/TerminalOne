@@ -1,7 +1,12 @@
 import { LogLevel } from '@terminalone/types';
 import { app, BrowserWindow, session } from 'electron';
 
-import { moduleEvent, moduleFunction, NativeBridgeModule, nativeBridgeModule } from '../module';
+import {
+  moduleEvent,
+  moduleFunction,
+  NativeBridgeModule,
+  nativeBridgeModule,
+} from '../module';
 import { Logger } from './common/logger';
 
 @nativeBridgeModule('app')
@@ -12,7 +17,10 @@ export class ApplicationModule extends NativeBridgeModule {
   }
 
   @moduleFunction()
-  public async setOpenAtLogin(_mainWindow: BrowserWindow, openAtLogin: boolean): Promise<void> {
+  public async setOpenAtLogin(
+    _mainWindow: BrowserWindow,
+    openAtLogin: boolean,
+  ): Promise<void> {
     if (!app.isPackaged) {
       // do not make the dev app launch on startup
       return;
@@ -38,7 +46,11 @@ export class ApplicationModule extends NativeBridgeModule {
   }
 
   @moduleFunction()
-  public async log(_mainWindow: BrowserWindow, level: LogLevel, message: string): Promise<void> {
+  public async log(
+    _mainWindow: BrowserWindow,
+    level: LogLevel,
+    message: string,
+  ): Promise<void> {
     Logger.getInstance().log(level, message);
   }
 
@@ -48,7 +60,11 @@ export class ApplicationModule extends NativeBridgeModule {
   }
 
   @moduleEvent('on')
-  public onLog(_mainWindow: BrowserWindow, _level: LogLevel, _message: string): void {
+  public onLog(
+    _mainWindow: BrowserWindow,
+    _level: LogLevel,
+    _message: string,
+  ): void {
     return;
   }
 

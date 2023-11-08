@@ -6,6 +6,7 @@
   "types": "./index.ts",
   "scripts": {
     "lint": "eslint \"**/*.ts*\"",
+    "lint:fix": "eslint \"**/*.ts*\" --fix",
     "test": "jest --colors"
   },
   "devDependencies": {

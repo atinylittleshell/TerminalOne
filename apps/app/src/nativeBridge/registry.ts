@@ -1,6 +1,16 @@
-import { BrowserWindow, ipcMain, ipcRenderer, IpcRendererEvent } from 'electron';
+import {
+  BrowserWindow,
+  ipcMain,
+  ipcRenderer,
+  IpcRendererEvent,
+} from 'electron';
 
-import { getModuleEventKey, getModuleFunctionKey, MODULE_METADATA, NativeBridgeModule } from './module';
+import {
+  getModuleEventKey,
+  getModuleFunctionKey,
+  MODULE_METADATA,
+  NativeBridgeModule,
+} from './module';
 import { ApplicationModule } from './modules/applicationModule';
 import { ConfigModule } from './modules/configModule';
 import { ExternalLinksModule } from './modules/externalLinksModule';
@@ -10,7 +20,9 @@ import { TerminalModule } from './modules/terminalModule';
 export class NativeBridgeRegistry {
   private modules: NativeBridgeModule[] = [];
 
-  public registerModule<T extends NativeBridgeModule>(moduleClass: new () => T): void {
+  public registerModule<T extends NativeBridgeModule>(
+    moduleClass: new () => T,
+  ): void {
     const mod = new moduleClass();
     this.modules.push(mod);
   }
@@ -29,18 +41,31 @@ export class NativeBridgeRegistry {
 
         Object.values(moduleMetadata.functions).forEach((func) => {
           moduleApi[func.name] = (...args: unknown[]) => {
-            return ipcRenderer.invoke(getModuleFunctionKey(moduleMetadata.name, func.name), ...args);
+            return ipcRenderer.invoke(
+              getModuleFunctionKey(moduleMetadata.name, func.name),
+              ...args,
+            );
           };
         });
 
         Object.values(moduleMetadata.events).forEach((evt) => {
-          moduleApi[evt.name] = (callback: (_event: IpcRendererEvent, ..._args: unknown[]) => void) =>
+          moduleApi[evt.name] = (
+            callback: (_event: IpcRendererEvent, ..._args: unknown[]) => void,
+          ) =>
             evt.type === 'on'
-              ? ipcRenderer.on(getModuleEventKey(moduleMetadata.name, evt.name), callback)
-              : ipcRenderer.once(getModuleEventKey(moduleMetadata.name, evt.name), callback);
+              ? ipcRenderer.on(
+                  getModuleEventKey(moduleMetadata.name, evt.name),
+                  callback,
+                )
+              : ipcRenderer.once(
+                  getModuleEventKey(moduleMetadata.name, evt.name),
+                  callback,
+                );
 
           moduleApi[`removeAll_${evt.name}_listeners`] = () =>
-            ipcRenderer.removeAllListeners(getModuleEventKey(moduleMetadata.name, evt.name));
+            ipcRenderer.removeAllListeners(
+              getModuleEventKey(moduleMetadata.name, evt.name),
+            );
         });
 
         return {
@@ -59,9 +84,12 @@ export class NativeBridgeRegistry {
       }
 
       Object.values(moduleMetadata.functions).forEach((func) => {
-        ipcMain.handle(getModuleFunctionKey(moduleMetadata.name, func.name), async (_event, ...args) => {
-          return func.value.bind(module)(mainWindow, ...args);
-        });
+        ipcMain.handle(
+          getModuleFunctionKey(moduleMetadata.name, func.name),
+          async (_event, ...args) => {
+            return func.value.bind(module)(mainWindow, ...args);
+          },
+        );
       });
 
       module.onRegistered(mainWindow);

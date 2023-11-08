@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --max-warnings 0 --fix",
     "build": "npm run build:app && shx cp -r ../terminal/dist/. dist/terminal/",
     "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js",
     "test": "jest --colors"

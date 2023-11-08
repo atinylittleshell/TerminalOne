@@ -17,10 +17,14 @@ const DEFAULT_CONFIG_CONTEXT_DATA: IConfigContextData = {
   loading: true,
 };
 
-const ConfigContext = createContext<IConfigContextData>(DEFAULT_CONFIG_CONTEXT_DATA);
+const ConfigContext = createContext<IConfigContextData>(
+  DEFAULT_CONFIG_CONTEXT_DATA,
+);
 
 export const ConfigContextProvider = (props: React.PropsWithChildren) => {
-  const [data, setData] = useState<IConfigContextData>(DEFAULT_CONFIG_CONTEXT_DATA);
+  const [data, setData] = useState<IConfigContextData>(
+    DEFAULT_CONFIG_CONTEXT_DATA,
+  );
 
   useEffect(() => {
     Promise.all([
@@ -39,7 +43,11 @@ export const ConfigContextProvider = (props: React.PropsWithChildren) => {
     });
   }, []);
 
-  return <ConfigContext.Provider value={data}>{props.children}</ConfigContext.Provider>;
+  return (
+    <ConfigContext.Provider value={data}>
+      {props.children}
+    </ConfigContext.Provider>
+  );
 };
 
 export const useConfigContext = () => {
