@@ -233,9 +233,8 @@ const Terminal = ({
         borderColor:
           // show active border when the terminal is active but is not root.
           // or when it's on shell selector
-          (terminalId === activeTerminalId &&
-            (root.nodeType !== 'terminal' || root.terminalId !== terminalId)) ||
-          shellName === null
+          (terminalId === activeTerminalId || shellName === null) &&
+          (root.nodeType !== 'terminal' || root.terminalId !== terminalId)
             ? config.terminalBorderColorActive
             : config.terminalBorderColorInactive,
       }}
