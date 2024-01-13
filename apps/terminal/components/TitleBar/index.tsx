@@ -17,7 +17,7 @@ function TitleBar(props: PropsWithChildren) {
 
   return (
     <div
-      className={`flex flex-row item-center relative bg-base-300 ${
+      className={`flex flex-row item-center relative ${
         window.TerminalOne?.platform === 'darwin' ? 'h-16 pt-8' : 'h-8'
       }`}
     >

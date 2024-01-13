@@ -191,9 +191,13 @@ const Page = () => {
       <TitleBar>
         <div className="tabs">
           <a
-            className={`tab tab-lifted ${
+            className={`tab tab-lifted items-center ${
               tabId === 0 ? 'tab-active' : ''
-            } flex items-center gap-1`}
+            }`}
+            style={{
+              backgroundColor:
+                tabId === 0 ? config.colorScheme.background : undefined,
+            }}
             onClick={() => {
               setTabId(0);
             }}
@@ -250,8 +254,7 @@ const Page = () => {
           paddingBottom: config.terminalBorderWidth,
           paddingLeft: config.terminalBorderWidth,
           paddingRight: config.terminalBorderWidth,
-          backgroundColor:
-            tabId === 0 ? undefined : config.colorScheme.background,
+          backgroundColor: config.colorScheme.background,
         }}
       >
         <div className="flex-1 relative overflow-hidden">
