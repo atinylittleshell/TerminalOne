@@ -29,6 +29,7 @@ const MODIFIER_KEYS = new Set(['alt', 'ctrl', 'meta', 'shift']);
 
 const keybindCommandEmitter = new EventEmitter<KeybindCommandEvent>();
 const keyState: Record<string, boolean> = {};
+const queuedCommands: Record<string, KeybindCommand> = {};
 let lastLeaderKeyEvent: KeyboardEvent | null = null;
 
 const isLeaderActive = (event: KeyboardEvent) => {
@@ -84,6 +85,11 @@ const keyHandler = (
   }
 
   if (type === 'keydown') {
+    if (queuedCommands[key]) {
+      logDebug('HOST', 'command queued');
+      return false;
+    }
+
     if (keyDescriptor === config.keybindLeader) {
       if (isLeaderActive(event)) {
         // double leader key press means we should "escape" and cancel the active leader key,
@@ -104,8 +110,8 @@ const keyHandler = (
       const command = config.keybindLookup[keyDescriptor];
 
       if (command) {
-        // the key event maps to a known keybind. we should emit the command and not pass the key to the terminal.
-        keybindCommandEmitter.emit(command, srcTerminalId);
+        // the key event maps to a known keybind. we should queue the command and not pass the key to the terminal.
+        queuedCommands[key] = command;
         lastLeaderKeyEvent = null;
         logDebug('HOST', 'keybind');
         return false;
@@ -129,6 +135,13 @@ const keyHandler = (
   const isSameKeyDown = Boolean(keyState[key]);
   if (type === 'keyup') {
     keyState[key] = false;
+
+    // we've previously queued a command for this key during keydown, and we should now execute it on keyup.
+    if (queuedCommands[key]) {
+      const command = queuedCommands[key];
+      keybindCommandEmitter.emit(command, srcTerminalId);
+      delete queuedCommands[key];
+    }
   }
 
   // if the key was considered pressed down, it means we had passed the keydown event to the terminal.
