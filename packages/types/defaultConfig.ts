@@ -4,6 +4,9 @@ import type { ResolvedConfig } from './config';
  * This is the default configuration values for Terminal One.
  */
 export const DEFAULT_CONFIG: ResolvedConfig = {
+  // Whether to use acrylic effect on the window background. This is only supported on Mac.
+  acrylic: false,
+
   // Number of lines to keep in the scrollback buffer.
   scrollback: 10000,
 
