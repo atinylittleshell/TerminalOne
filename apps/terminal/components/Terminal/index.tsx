@@ -178,7 +178,14 @@ const Terminal = ({
       xtermDiv.removeEventListener('mouseup', mouseUpListener);
       xtermDiv.removeEventListener('contextmenu', contextMenuListener);
 
-      xterm.dispose();
+      try {
+        xterm.dispose();
+      } catch (e) {
+        window.TerminalOne?.app.log(
+          'error',
+          `failed to dispose terminal: ${e}`,
+        );
+      }
     };
   }, [
     terminalRef,
