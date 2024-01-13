@@ -68,6 +68,7 @@ const Terminal = ({
     // TODO: refactor this into multiple effects
     const xterm = new XTerm({
       allowProposedApi: true,
+      allowTransparency: true,
     });
     xtermRef.current = xterm;
 

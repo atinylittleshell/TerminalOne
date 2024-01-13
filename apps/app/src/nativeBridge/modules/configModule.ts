@@ -76,7 +76,7 @@ export class ConfigModule extends NativeBridgeModule {
 
   private applyConfig(config: ResolvedConfig, mainWindow: BrowserWindow): void {
     if (config.acrylic) {
-      mainWindow.setVibrancy('ultra-dark');
+      mainWindow.setVibrancy('under-window');
       mainWindow.setBackgroundColor('#00000000');
     }
   }

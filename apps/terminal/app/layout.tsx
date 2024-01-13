@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <html lang="en" data-theme="black">
-      <body className="h-screen w-screen flex flex-col overflow-hidden bg-black">
+    <html lang="en" data-theme="black" className="bg-transparent">
+      <body className="h-screen w-screen flex flex-col overflow-hidden bg-transparent">
         <ClientSideProviders>{children}</ClientSideProviders>
       </body>
     </html>
