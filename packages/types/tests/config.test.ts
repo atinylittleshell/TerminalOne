@@ -54,12 +54,12 @@ describe('config', () => {
     });
   });
 
-  it('should disable acrylic when not on mac', () => {
+  it('should disable acrylic when not supported', () => {
     const resolved = resolveConfig(
       {
         acrylic: true,
       },
-      'win32',
+      'linux',
     );
     expect(resolved).toEqual({
       ...DEFAULT_CONFIG,
