@@ -27,14 +27,14 @@ function TitleBar(props: PropsWithChildren) {
       <div className={`flex items-center ${styles['title-bar-buttons']}`}>
         {props.children}
       </div>
-      <div className="flex-1" />
+      <div className={`flex-1 tab tab-lifted ${styles['title-bar-drag']}`} />
       {window.TerminalOne?.platform === 'darwin' ||
       window.TerminalOne?.platform === 'linux' ? null : (
         <div
           className={`flex flex-row text-white ${styles['title-bar-buttons']}`}
         >
           <button
-            className="btn btn-sm btn-ghost btn-square"
+            className="btn btn-sm btn-ghost btn-square tab tab-lifted"
             title="Minimize"
             onClick={() => {
               window.TerminalOne?.win.minimize();
@@ -43,7 +43,7 @@ function TitleBar(props: PropsWithChildren) {
             <FiMinus size="16" />
           </button>
           <button
-            className="btn btn-sm btn-ghost btn-square"
+            className="btn btn-sm btn-ghost btn-square tab tab-lifted"
             title="Maximize"
             onClick={() => {
               if (isMaximized) {
@@ -62,7 +62,7 @@ function TitleBar(props: PropsWithChildren) {
             )}
           </button>
           <button
-            className="btn btn-sm btn-ghost btn-square hover:bg-error"
+            className="btn btn-sm btn-ghost btn-square hover:bg-error tab tab-lifted"
             title="Close"
             onClick={async () => {
               flushSync(() => {

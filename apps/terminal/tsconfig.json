@@ -1,5 +1,12 @@
 {
   "extends": "@terminalone/tsconfig/nextjs.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
   "include": [
     "next-env.d.ts",
     "**/*.ts",

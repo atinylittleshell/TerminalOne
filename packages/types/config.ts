@@ -208,6 +208,7 @@ export type ResolvedConfig = t.TypeOf<typeof ResolvedConfigType>;
 export const resolveConfig = (
   config: unknown,
   platform: string | null = null,
+  release: string | null = null,
 ): ResolvedConfig => {
   const validatedConfig = validateConfig(config);
 
@@ -216,8 +217,8 @@ export const resolveConfig = (
     ...validatedConfig,
   };
 
-  // acrylic is only supported on Mac
-  if (resolvedConfig.acrylic && platform !== 'darwin') {
+  // disable acrylic if not supported
+  if (resolvedConfig.acrylic && !isAcrylicSupported(platform, release)) {
     resolvedConfig.acrylic = false;
   }
 
@@ -248,4 +249,18 @@ export const resolveConfig = (
   }
 
   return resolvedConfig;
+};
+
+const isAcrylicSupported = (
+  platform: string | null,
+  release: string | null,
+): boolean => {
+  if (platform === 'darwin') {
+    return true;
+  }
+  if (platform === 'win32' && release) {
+    const [major] = release.split('.');
+    return Number(major) >= 10;
+  }
+  return false;
 };

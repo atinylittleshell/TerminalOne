@@ -22,6 +22,7 @@ async function createWindow() {
     icon: path.join(__dirname, 'public', 'icon.png'),
     backgroundColor: '#000000',
     visualEffectState: 'followWindow',
+    transparent: true,
     width: 800,
     height: 600,
     webPreferences: {
