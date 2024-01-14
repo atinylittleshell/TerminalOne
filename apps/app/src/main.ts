@@ -21,6 +21,7 @@ async function createWindow() {
     titleBarStyle: 'hidden',
     icon: path.join(__dirname, 'public', 'icon.png'),
     backgroundColor: '#000000',
+    visualEffectState: 'followWindow',
     width: 800,
     height: 600,
     webPreferences: {

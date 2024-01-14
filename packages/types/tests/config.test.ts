@@ -53,4 +53,38 @@ describe('config', () => {
       terminalBorderColorInactive: DEFAULT_CONFIG.colorScheme.background,
     });
   });
+
+  it('should disable acrylic when not on mac', () => {
+    const resolved = resolveConfig(
+      {
+        acrylic: true,
+      },
+      'win32',
+    );
+    expect(resolved).toEqual({
+      ...DEFAULT_CONFIG,
+      acrylic: false,
+      terminalBorderColorActive: DEFAULT_CONFIG.colorScheme.foreground,
+      terminalBorderColorInactive: DEFAULT_CONFIG.colorScheme.background,
+    });
+  });
+
+  it('should overwrite background when acrylic is enabled', () => {
+    const resolved = resolveConfig(
+      {
+        acrylic: true,
+      },
+      'darwin',
+    );
+    expect(resolved).toEqual({
+      ...DEFAULT_CONFIG,
+      acrylic: true,
+      colorScheme: {
+        ...DEFAULT_CONFIG.colorScheme,
+        background: '#00000000',
+      },
+      terminalBorderColorActive: DEFAULT_CONFIG.colorScheme.foreground,
+      terminalBorderColorInactive: resolved.colorScheme.background,
+    });
+  });
 });

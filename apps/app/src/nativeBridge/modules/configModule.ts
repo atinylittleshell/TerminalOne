@@ -31,7 +31,7 @@ export class ConfigModule extends NativeBridgeModule {
     return path.join(getAppDirs().userData, 'config.js');
   }
 
-  public onRegistered(_mainWindow: BrowserWindow): void {
+  public onRegistered(mainWindow: BrowserWindow): void {
     const configDir = getAppDirs().userData;
     const configPath = path.join(configDir, 'config.js');
     if (!existsSync(configPath)) {
@@ -65,10 +65,19 @@ export class ConfigModule extends NativeBridgeModule {
         `Loaded config from ${configPath}}: ${JSON.stringify(mod.exports)}`,
       );
 
-      const resolved = resolveConfig(mod.exports);
+      const resolved = resolveConfig(mod.exports, os.platform());
       this.config = resolved;
+
+      this.applyConfig(resolved, mainWindow);
     } catch (err: unknown) {
       Logger.getInstance().log('error', JSON.stringify(err));
+    }
+  }
+
+  private applyConfig(config: ResolvedConfig, mainWindow: BrowserWindow): void {
+    if (config.acrylic) {
+      mainWindow.setVibrancy('under-window');
+      mainWindow.setBackgroundColor('#00000000');
     }
   }
 }
