@@ -1,7 +1,7 @@
 {
   "name": "@terminalone/monorepo",
   "productName": "Terminal One",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A fast, elegant and intelligent cross-platform terminal.",
   "author": "atinylittleshell <shell@atinylittleshell.me>",
   "license": "MIT",
@@ -38,7 +38,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
-    "rebuild:node-pty": "electron-rebuild -f -o node-pty -m apps/app",
+    "rebuild:node-pty": "electron-rebuild -f -o node-pty -m apps/app && shx chmod +x node_modules/node-pty/build/Release/pty.node && shx chmod +x node_modules/node-pty/build/Release/spawn-helper",
     "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps && npm run rebuild:node-pty"
   },
   "main": "apps/app/dist/main.bundle.js",

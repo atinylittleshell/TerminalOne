@@ -6,7 +6,7 @@
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --max-warnings 0 --fix",
     "build": "npm run build:app && shx cp -r ../terminal/dist/. dist/terminal/",
-    "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js",
+    "build:app": "shx rm -rf dist && tsc -p . && webpack --config webpack.config.js && webpack --config webpack.preload.config.js && shx chmod +x ./dist/node_modules/node-pty/build/Release/pty.node && shx chmod +x ./dist/node_modules/node-pty/build/Release/spawn-helper",
     "test": "jest --colors"
   },
   "devDependencies": {
