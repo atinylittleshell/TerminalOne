@@ -189,65 +189,62 @@ const Page = () => {
   return (
     <>
       <TitleBar>
-        <div className="flex w-screen">
-          <div className="tabs">
+        <div className="tabs">
+          <a
+            className={`tab tab-lifted items-center ${
+              tabId === 0 ? 'tab-active' : ''
+            }`}
+            style={{
+              backgroundColor:
+                tabId === 0 ? config.colorScheme.background : undefined,
+            }}
+            onClick={() => {
+              setTabId(0);
+            }}
+          >
+            <FiMenu />
+          </a>
+          {userTabs.map((userTab) => (
             <a
+              key={userTab.tabId}
               className={`tab tab-lifted items-center ${
-                tabId === 0 ? 'tab-active' : ''
+                tabId === userTab.tabId ? 'tab-active' : ''
               }`}
               style={{
                 backgroundColor:
-                  tabId === 0 ? config.colorScheme.background : undefined,
+                  tabId === userTab.tabId
+                    ? config.colorScheme.background
+                    : undefined,
+                paddingRight: tabId === userTab.tabId ? 0 : undefined,
               }}
               onClick={() => {
-                setTabId(0);
+                if (tabId === userTab.tabId) {
+                  return;
+                }
+                setTabId(userTab.tabId);
               }}
             >
-              <FiMenu />
+              {userTab.tabId}
+              {userTab.tabId === tabId && (
+                <button
+                  className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
+                  onClick={() => {
+                    closeTab();
+                  }}
+                >
+                  <FiX />
+                </button>
+              )}
             </a>
-            {userTabs.map((userTab) => (
-              <a
-                key={userTab.tabId}
-                className={`tab tab-lifted items-center ${
-                  tabId === userTab.tabId ? 'tab-active' : ''
-                }`}
-                style={{
-                  backgroundColor:
-                    tabId === userTab.tabId
-                      ? config.colorScheme.background
-                      : undefined,
-                  paddingRight: tabId === userTab.tabId ? 0 : undefined,
-                }}
-                onClick={() => {
-                  if (tabId === userTab.tabId) {
-                    return;
-                  }
-                  setTabId(userTab.tabId);
-                }}
-              >
-                {userTab.tabId}
-                {userTab.tabId === tabId && (
-                  <button
-                    className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
-                    onClick={() => {
-                      closeTab();
-                    }}
-                  >
-                    <FiX />
-                  </button>
-                )}
-              </a>
-            ))}
-            <a
-              className="tab tab-lifted"
-              onClick={() => {
-                createTab();
-              }}
-            >
-              <FiPlus />
-            </a>
-          </div>
-          <div className="flex-1 tab tab-lifted cursor-default" />
+          ))}
+          <a
+            className="tab tab-lifted"
+            onClick={() => {
+              createTab();
+            }}
+          >
+            <FiPlus />
+          </a>
         </div>
       </TitleBar>
       <div

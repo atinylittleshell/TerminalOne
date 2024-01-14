@@ -65,18 +65,34 @@ export class ConfigModule extends NativeBridgeModule {
         `Loaded config from ${configPath}}: ${JSON.stringify(mod.exports)}`,
       );
 
-      const resolved = resolveConfig(mod.exports, os.platform());
+      const resolved = resolveConfig(mod.exports, os.platform(), os.release());
       this.config = resolved;
 
       this.applyConfig(resolved, mainWindow);
     } catch (err: unknown) {
-      Logger.getInstance().log('error', JSON.stringify(err));
+      const e = err as Error;
+      Logger.getInstance().log(
+        'error',
+        JSON.stringify(
+          {
+            name: e.name,
+            message: e.message,
+            stack: e.stack,
+          },
+          null,
+          2,
+        ),
+      );
     }
   }
 
   private applyConfig(config: ResolvedConfig, mainWindow: BrowserWindow): void {
     if (config.acrylic) {
-      mainWindow.setVibrancy('under-window');
+      if (os.platform() === 'darwin') {
+        mainWindow.setVibrancy('under-window');
+      } else {
+        mainWindow.setBackgroundMaterial('acrylic');
+      }
       mainWindow.setBackgroundColor('#00000000');
     }
   }
