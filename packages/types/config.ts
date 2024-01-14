@@ -1,6 +1,7 @@
 import { isLeft } from 'fp-ts/Either';
 import * as t from 'io-ts';
 import { PathReporter } from 'io-ts/PathReporter';
+import _ from 'lodash';
 
 import { DEFAULT_CONFIG } from './defaultConfig';
 
@@ -73,6 +74,7 @@ const Keybinds = {
 };
 
 const ConfigTypeContent = {
+  acrylic: t.boolean,
   cursorBlink: t.boolean,
   cursorStyle: t.keyof({
     block: null,
@@ -203,13 +205,25 @@ export const validateConfig = (config: unknown): Config => {
 const ResolvedConfigType = t.type(ConfigTypeContent);
 export type ResolvedConfig = t.TypeOf<typeof ResolvedConfigType>;
 
-export const resolveConfig = (config: unknown): ResolvedConfig => {
+export const resolveConfig = (
+  config: unknown,
+  platform: string | null = null,
+): ResolvedConfig => {
   const validatedConfig = validateConfig(config);
 
   const resolvedConfig = {
-    ...DEFAULT_CONFIG,
+    ..._.cloneDeep(DEFAULT_CONFIG),
     ...validatedConfig,
   };
+
+  // acrylic is only supported on Mac
+  if (resolvedConfig.acrylic && platform !== 'darwin') {
+    resolvedConfig.acrylic = false;
+  }
+
+  if (resolvedConfig.acrylic) {
+    resolvedConfig.colorScheme.background = '#00000000';
+  }
 
   // resolve referenced color names
   if (
