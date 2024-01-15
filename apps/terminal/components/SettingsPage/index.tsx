@@ -50,7 +50,7 @@ const SettingsPage = () => {
             window.TerminalOne?.links.openFile(configContext.logPath);
           }}
         >
-          {configContext.configPath}
+          {configContext.logPath}
         </a>
       </div>
     </div>
