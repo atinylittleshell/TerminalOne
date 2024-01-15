@@ -18,60 +18,41 @@ const SettingsPage = () => {
 
   return (
     <div
-      className="flex-1 w-full h-full relative flex flex-col items-center gap-4 p-4"
+      className="flex-1 w-full h-full relative flex flex-col p-4"
       style={{
+        fontFamily: configContext.config.fontFamily,
+        fontSize: configContext.config.fontSize,
+        fontWeight: configContext.config.fontWeight,
+        lineHeight: configContext.config.lineHeight,
+        color: configContext.config.colorScheme.foreground,
         backgroundColor: configContext.config.colorScheme.background,
       }}
     >
-      <img src="/logo.png" alt="Terminal One" className="w-48 h-48" />
-      <div className="text-2xl font-bold mb-4">TerminalOne v{appVersion}</div>
-      <div className="form-control w-full max-w-lg">
-        <label className="label">
-          <span className="label-text">Configuration</span>
-        </label>
-        <div className="input-group">
-          <input
-            type="text"
-            readOnly
-            className="input input-bordered w-full"
-            value={configContext.configPath}
-            onFocus={(e) => {
-              e.target.select();
-            }}
-          />
-          <button
-            className="btn btn-primary btn-square"
-            onClick={() => {
-              window.TerminalOne?.links.openFile(configContext.configPath);
-            }}
-          >
-            <FiSettings />
-          </button>
-        </div>
+      <div>TerminalOne v{appVersion}</div>
+      <div>&nbsp;</div>
+      <div>
+        Configuration:&nbsp;
+        <a
+          href="#"
+          className="link"
+          onClick={() => {
+            window.TerminalOne?.links.openFile(configContext.configPath);
+          }}
+        >
+          {configContext.configPath}
+        </a>
       </div>
-      <div className="form-control w-full max-w-lg">
-        <label className="label">
-          <span className="label-text">Logs</span>
-        </label>
-        <div className="input-group">
-          <input
-            type="text"
-            readOnly
-            className="input input-bordered w-full"
-            value={configContext.logPath}
-            onFocus={(e) => {
-              e.target.select();
-            }}
-          />
-          <button
-            className="btn btn-primary btn-square"
-            onClick={() => {
-              window.TerminalOne?.links.openFile(configContext.logPath);
-            }}
-          >
-            <FiFileText />
-          </button>
-        </div>
+      <div>
+        Logs:&nbsp;
+        <a
+          href="#"
+          className="link"
+          onClick={() => {
+            window.TerminalOne?.links.openFile(configContext.logPath);
+          }}
+        >
+          {configContext.configPath}
+        </a>
       </div>
     </div>
   );

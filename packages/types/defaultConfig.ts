@@ -5,7 +5,7 @@ import type { ResolvedConfig } from './config';
  */
 export const DEFAULT_CONFIG: ResolvedConfig = {
   // Whether to use acrylic effect on the window background. This is only supported on Mac and Win 11.
-  acrylic: false,
+  acrylic: true,
 
   // Number of lines to keep in the scrollback buffer.
   scrollback: 10000,
@@ -57,31 +57,35 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   // Border color of each terminal when it is inactive.
   terminalBorderColorInactive: 'background',
 
-  // Configuration for the color scheme
+  // Configuration for the color scheme. Default is https://rosepinetheme.com/.
   colorScheme: {
-    background: '#000000',
-    foreground: '#ffffff',
-    cursor: '#ffffff',
-    cursorAccent: '#000000',
-    selectionBackground: '#ffffff',
-    selectionForeground: '#000000',
-    selectionInactiveBackground: '#ffffff',
-    black: '#000000',
-    white: '#ffffff',
-    red: '#ff0000',
-    green: '#00ff00',
-    blue: '#0000ff',
-    yellow: '#ffff00',
-    cyan: '#00ffff',
-    magenta: '#ff00ff',
-    brightBlack: '#808080',
-    brightWhite: '#ffffff',
-    brightRed: '#ff0000',
-    brightGreen: '#00ff00',
-    brightBlue: '#0000ff',
-    brightYellow: '#ffff00',
-    brightCyan: '#00ffff',
-    brightMagenta: '#ff00ff',
+    cursor: '#56526e',
+    cursorAccent: '#e0def4',
+
+    selectionBackground: '#312f44',
+    selectionForeground: '#e0def4',
+    selectionInactiveBackground: '#312f44',
+
+    background: '#232136',
+    foreground: '#e0def4',
+
+    black: '#393552',
+    blue: '#9ccfd8',
+    cyan: '#ea9a97',
+    green: '#3e8fb0',
+    magenta: '#c4a7e7',
+    red: '#eb6f92',
+    white: '#e0def4',
+    yellow: '#f6c177',
+
+    brightBlack: '#817c9c',
+    brightBlue: '#9ccfd8',
+    brightCyan: '#ea9a97',
+    brightGreen: '#3e8fb0',
+    brightMagenta: '#c4a7e7',
+    brightRed: '#eb6f92',
+    brightWhite: '#e0def4',
+    brightYellow: '#f6c177',
   },
 
   // Configuration for all shells to be used in the terminal.
@@ -90,10 +94,10 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
       // Name of the shell.
       name: 'Default',
 
-      // Command used to launch the shell. Will auto detect system shell when this is empty
+      // Command used to launch the shell. Will auto detect system shell when this is empty.
       command: '',
 
-      // Path to the directory where the shell should be launched. Will auto detect home directory when this is empty
+      // Path to the directory where the shell should be launched. Will auto detect home directory when this is empty.
       startupDirectory: '',
     },
   ],

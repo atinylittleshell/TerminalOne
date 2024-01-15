@@ -36,7 +36,11 @@ export class ConfigModule extends NativeBridgeModule {
     const configPath = path.join(configDir, 'config.js');
     if (!existsSync(configPath)) {
       mkdirSync(configDir, { recursive: true });
-      writeFileSync(configPath, 'module.exports = {};');
+      writeFileSync(
+        configPath,
+        '// see https://github.com/atinylittleshell/TerminalOne/blob/main/packages/types/defaultConfig.ts for supported configuration values\n' +
+          'module.exports = {};',
+      );
     }
 
     const configContent = readFileSync(configPath, 'utf8');
