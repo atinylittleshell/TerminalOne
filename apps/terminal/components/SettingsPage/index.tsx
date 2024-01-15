@@ -2,7 +2,6 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
-import { FiFileText, FiSettings } from 'react-icons/fi';
 
 import { useConfigContext } from '../../hooks/ConfigContext';
 
