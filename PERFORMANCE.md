@@ -9,3 +9,8 @@ while I continue to look for more systematic approaches for benchmarking, here's
 
 https://github.com/atinylittleshell/TerminalOne/assets/3233006/6f7dee53-7c8b-4991-9bdc-3250547a3945
 
+Resource consumption of WezTerm during the scroll
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/4a827bb7-d146-41f0-b57c-532efcaf80df)
+
+Resource consumption of TeminalOne during the scroll
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/80cf67bb-3630-46b2-9f31-c8a78caf723a)
