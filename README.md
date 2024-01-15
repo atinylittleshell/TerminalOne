@@ -1,20 +1,19 @@
 <p align="center">
-    <img width="256" alt="Terminal One Logo" src="https://github.com/kunchenguid/TerminalOne/blob/main/apps/app/assets/icon.png?raw=true">
+    <img width="256" alt="Terminal One" src="https://github.com/kunchenguid/TerminalOne/blob/main/apps/app/assets/screenshot.png?raw=true">
 </p>
 
 <h1 align="center">Terminal One</h1>
 
 <p align="center">
-Everything you want from a terminal - all in one. 
+One terminal is all you need.
 </p>
 
 ## Overview
 
-A fast, elegant and intelligent cross-platform terminal emulator and multiplexer.
+A cross-platform, smooth and elegant terminal emulator and multiplexer.
 
-- Not written in Rust, yet still blazing fast.
-- GPU-accelerated rendering using [Xterm.js](https://xtermjs.org/).
-- Consistent experience across platforms using [Electron](https://www.electronjs.org/).
+- Buttery smooth GPU-accelerated rendering.
+- Consistent experience across Windows, Mac and Linux.
 - Multi-chord key bindings.
 - Built-in tmux-like multiplexer.
 
@@ -36,9 +35,27 @@ module.exports = {
 
 The structure of the configuration object and default values can be found [here](https://github.com/kunchenguid/TerminalOne/blob/main/packages/types/defaultConfig.ts).
 
+## Default Key Bindings
+
+Many default key bindings are deliberately similar to tmux.
+
+| Key Binding    | Action               |
+| -------------- | -------------------- |
+| `Ctrl-b c`     | New tab              |
+| `Ctrl-b &`     | Close tab            |
+| `Ctrl-b p`     | Previous tab         |
+| `Ctrl-b n`     | Next tab             |
+| `Ctrl-b <1-9>` | Jump to tab          |
+| `Ctrl-b %`     | Horizontal split     |
+| `Ctrl-b "`     | Vertical split       |
+| `Ctrl-b h`     | Focus panel on left  |
+| `Ctrl-b l`     | Focus panel on right |
+| `Ctrl-b k`     | Focus panel above    |
+| `Ctrl-b j`     | Focus panel below    |
+
 ## Contributing
 
-[![build](https://github.com/kunchenguid/TerminalOne/actions/workflows/build.yml/badge.svg)](https://github.com/kunchenguid/TerminalOne/actions/workflows/build.yml)
-[![codecov](https://codecov.io/gh/kunchenguid/TerminalOne/branch/main/graph/badge.svg?token=2TEJYGL994)](https://codecov.io/gh/kunchenguid/TerminalOne)
+[![build](https://github.com/atinylittleshell/TerminalOne/actions/workflows/build.yml/badge.svg)](https://github.com/atinylittleshell/TerminalOne/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/atinylittleshell/TerminalOne/branch/main/graph/badge.svg?token=2TEJYGL994)](https://codecov.io/gh/atinylittleshell/TerminalOne)
 
 Terminal One is open-source with MIT license. See [CONTRIBUTING.md](CONTRIBUTING.md) if you'd like to contribute to this project.

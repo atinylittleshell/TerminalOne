@@ -34,23 +34,28 @@ describe('config', () => {
   });
 
   it('should resolve to default config when given no config', () => {
-    const resolved = resolveConfig({});
+    const resolved = resolveConfig({}, 'linux');
     expect(resolved).toEqual({
       ...DEFAULT_CONFIG,
-      terminalBorderColorActive: DEFAULT_CONFIG.colorScheme.foreground,
-      terminalBorderColorInactive: DEFAULT_CONFIG.colorScheme.background,
+      acrylic: false,
+      terminalBorderColorActive: resolved.colorScheme.foreground,
+      terminalBorderColorInactive: resolved.colorScheme.background,
     });
   });
 
   it('should merge custom config with default config', () => {
-    const resolved = resolveConfig({
-      fontSize: 20,
-    });
+    const resolved = resolveConfig(
+      {
+        fontSize: 20,
+      },
+      'linux',
+    );
     expect(resolved).toEqual({
       ...DEFAULT_CONFIG,
+      acrylic: false,
       fontSize: 20,
-      terminalBorderColorActive: DEFAULT_CONFIG.colorScheme.foreground,
-      terminalBorderColorInactive: DEFAULT_CONFIG.colorScheme.background,
+      terminalBorderColorActive: resolved.colorScheme.foreground,
+      terminalBorderColorInactive: resolved.colorScheme.background,
     });
   });
 
@@ -64,8 +69,8 @@ describe('config', () => {
     expect(resolved).toEqual({
       ...DEFAULT_CONFIG,
       acrylic: false,
-      terminalBorderColorActive: DEFAULT_CONFIG.colorScheme.foreground,
-      terminalBorderColorInactive: DEFAULT_CONFIG.colorScheme.background,
+      terminalBorderColorActive: resolved.colorScheme.foreground,
+      terminalBorderColorInactive: resolved.colorScheme.background,
     });
   });
 
@@ -83,7 +88,7 @@ describe('config', () => {
         ...DEFAULT_CONFIG.colorScheme,
         background: '#00000000',
       },
-      terminalBorderColorActive: DEFAULT_CONFIG.colorScheme.foreground,
+      terminalBorderColorActive: resolved.colorScheme.foreground,
       terminalBorderColorInactive: resolved.colorScheme.background,
     });
   });
