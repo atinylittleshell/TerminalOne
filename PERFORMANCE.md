@@ -9,23 +9,33 @@
 
 ## Alacritty
 
+251.74 FPS
+
 ![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/85475db6-1f37-4feb-83d0-6f46d83983e2)
 
 ## WezTerm
+
+225.03 FPS 
 
 ![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/8d28daa7-bac1-417f-8111-fda700707fd2)
 
 ## Kitty
 
+248.05 FPS
+
 ![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/8be07a0b-5cee-45d4-ab1a-049015a853c5)
 
 ## Ubuntu Terminal
+
+194.92 FPS
 
 ![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/95e38d51-da42-49e2-9d47-28e2ca8b8199)
 
 ## TerminalOne
 
-![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/0c3a024f-3778-40d7-8aba-0f1db04dd433)
+236.08 FPS
+
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/0ead3b84-defb-4040-a7c9-d26ebf184b4d)
 
 # E2E experience
 
