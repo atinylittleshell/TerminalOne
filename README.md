@@ -39,19 +39,19 @@ The structure of the configuration object and default values can be found [here]
 
 Many default key bindings are deliberately similar to tmux.
 
-| Key Binding    | Action               |
-| -------------- | -------------------- |
-| `Ctrl-b c`     | New tab              |
-| `Ctrl-b &`     | Close tab            |
-| `Ctrl-b p`     | Previous tab         |
-| `Ctrl-b n`     | Next tab             |
-| `Ctrl-b <1-9>` | Jump to tab          |
-| `Ctrl-b %`     | Horizontal split     |
-| `Ctrl-b "`     | Vertical split       |
-| `Ctrl-b h`     | Focus panel on left  |
-| `Ctrl-b l`     | Focus panel on right |
-| `Ctrl-b k`     | Focus panel above    |
-| `Ctrl-b j`     | Focus panel below    |
+| Key Binding    | Action              |
+| -------------- | ------------------- |
+| `Ctrl-b c`     | New tab             |
+| `Ctrl-b &`     | Close tab           |
+| `Ctrl-b p`     | Previous tab        |
+| `Ctrl-b n`     | Next tab            |
+| `Ctrl-b <1-9>` | Jump to tab         |
+| `Ctrl-b %`     | Horizontal split    |
+| `Ctrl-b "`     | Vertical split      |
+| `Ctrl-b h`     | Focus pane on left  |
+| `Ctrl-b l`     | Focus pane on right |
+| `Ctrl-b k`     | Focus pane above    |
+| `Ctrl-b j`     | Focus pane below    |
 
 ## Contributing
 
