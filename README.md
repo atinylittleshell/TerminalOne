@@ -12,7 +12,7 @@ One terminal is all you need.
 
 A cross-platform, smooth and elegant terminal emulator and multiplexer.
 
-- Buttery smooth GPU-accelerated rendering.
+- Buttery smooth GPU-accelerated rendering. See [performance benchmark](PERFORMANCE.md).
 - Consistent experience across Windows, Mac and Linux.
 - Multi-chord key bindings.
 - Built-in tmux-like multiplexer.
