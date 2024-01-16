@@ -35,7 +35,7 @@
 
 236.08 FPS
 
-![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/0ead3b84-defb-4040-a7c9-d26ebf184b4d)
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/0c3a024f-3778-40d7-8aba-0f1db04dd433)
 
 # E2E experience
 
