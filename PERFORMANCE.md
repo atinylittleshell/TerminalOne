@@ -1,11 +1,50 @@
-Benchmarking the performance of terminal emulators is tricky. There are tools such as https://github.com/alacritty/vtebench but as called out by the author it's not good representation of the actual E2E experience, and the best way is to simple test specific use cases.
+# Performance Benchmark
 
-while I continue to look for more systematic approaches for benchmarking, here's a video looking at smooth scrolling in neovim as a key use case TerminalOne optimizes for: 
+## Methodology
+
+- Benchmark done via https://github.com/const-void/DOOM-fire-zig
+- All terminals are run with defaults immediately after clean installation without custom configurations
+- Benchmarking done on Ubuntu 22.04, 11th Gen Intel i9 3.50GHz, GeForce RTX 3080 Ti
+- For consistency, we start DOOM-fire-zig, let it for 15 seconds and capture the results
+
+## Alacritty
+
+251.74 FPS
+
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/85475db6-1f37-4feb-83d0-6f46d83983e2)
+
+## WezTerm
+
+225.03 FPS 
+
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/8d28daa7-bac1-417f-8111-fda700707fd2)
+
+## Kitty
+
+248.05 FPS
+
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/8be07a0b-5cee-45d4-ab1a-049015a853c5)
+
+## Ubuntu Terminal
+
+194.92 FPS
+
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/95e38d51-da42-49e2-9d47-28e2ca8b8199)
+
+## TerminalOne
+
+236.08 FPS
+
+![image](https://github.com/atinylittleshell/TerminalOne/assets/3233006/0c3a024f-3778-40d7-8aba-0f1db04dd433)
+
+# E2E experience
+
+Here's a video looking at smooth scrolling in Neovim as a key use case TerminalOne optimizes for:
 
 - Scrolling through the same file with the same Neovim setup on the same PC (11th Gen Intel i9 3.50GHz + GeForce RTX 3080 Ti)
-- First half is WezTerm (No criticism intended! WezTerm is an awesome terminal. Using it for comparison since it's commonly raised as a target for benchmarking)
+- First half is WezTerm (No criticism intended! WezTerm is an awesome terminal. Using it for comparison since it's commonly raised as a reference point)
 - Second half is TerminalOne
-- This comparison is mainly to highlight that Javascript doesn't inherently create performance bottlenecks - moer often than not they are created by the application layer not the language
+- This comparison is mainly to highlight that Javascript doesn't inherently create performance bottlenecks - more often than not they are created by the application layer not the language
 
 https://github.com/atinylittleshell/TerminalOne/assets/3233006/6f7dee53-7c8b-4991-9bdc-3250547a3945
 
