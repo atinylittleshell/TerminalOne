@@ -1,7 +1,7 @@
 {
   "name": "@terminalone/monorepo",
   "productName": "Terminal One",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A fast, elegant and intelligent cross-platform terminal.",
   "author": "atinylittleshell <shell@atinylittleshell.me>",
   "license": "MIT",
@@ -66,7 +66,8 @@
           "arm64",
           "x64"
         ]
-      }
+      },
+      "entitlements": "apps/app/assets/entitlements.mac.plist"
     }
   },
   "devDependencies": {
