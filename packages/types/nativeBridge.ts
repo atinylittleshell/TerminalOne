@@ -76,6 +76,9 @@ export type INativeBridge = {
         _data: string,
       ) => void,
     ) => void;
+    onExit: (
+      _callback: (_event: ElectronOpaqueEvent, _id: string) => void,
+    ) => void;
   };
   config: {
     getConfig: () => Promise<ResolvedConfig>;

@@ -70,6 +70,10 @@ class PTYInstance {
   public onData(handler: (_: string) => void): void {
     this.ptyProcess.onData(handler);
   }
+
+  public onExit(handler: () => void): void {
+    this.ptyProcess.onExit(handler);
+  }
 }
 
 @nativeBridgeModule('terminal')
@@ -78,7 +82,7 @@ export class TerminalModule extends NativeBridgeModule {
 
   @moduleFunction()
   public async createTerminalIfNotExist(
-    _mainWindow: BrowserWindow,
+    mainWindow: BrowserWindow,
     id: string,
     cols: number,
     rows: number,
@@ -97,7 +101,10 @@ export class TerminalModule extends NativeBridgeModule {
       startupDirectory,
     );
     ptyInstance.onData((data: string) => {
-      this.onData(_mainWindow, ptyInstance.id, data);
+      this.onData(mainWindow, ptyInstance.id, data);
+    });
+    ptyInstance.onExit(() => {
+      this.onExit(mainWindow, ptyInstance.id);
     });
 
     this.ptyInstances[ptyInstance.id] = ptyInstance;
@@ -147,6 +154,11 @@ export class TerminalModule extends NativeBridgeModule {
 
   @moduleEvent('on')
   public onData(_mainWindow: BrowserWindow, _id: string, _data: string): void {
+    return;
+  }
+
+  @moduleEvent('on')
+  public onExit(_mainWindow: BrowserWindow, _id: string): void {
     return;
   }
 }

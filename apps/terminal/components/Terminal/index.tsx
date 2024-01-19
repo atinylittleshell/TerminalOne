@@ -24,7 +24,7 @@ const Terminal = ({
   const [shellName, setShellName] = useState<string | null | undefined>(
     undefined,
   );
-  const { handleKey } = useKeybindContext();
+  const { handleKey, commands } = useKeybindContext();
   const terminalRef = useRef<HTMLDivElement>(null);
   const xtermRef = useRef<XTerm | null>(null);
   const { root, activeTerminalId, onTerminalActive, onTerminalCreated } =
@@ -129,6 +129,12 @@ const Terminal = ({
           }
           xterm.write(data);
         });
+        window.TerminalOne?.terminal?.onExit((_e, id: string) => {
+          if (id !== terminalId) {
+            return;
+          }
+          commands.emit('closePane', terminalId);
+        });
 
         // make backend pty size consistent with xterm on the frontend
         fitAddon.fit();
@@ -194,6 +200,7 @@ const Terminal = ({
     terminalId,
     config,
     handleKey,
+    commands,
     onTerminalActive,
     onTerminalCreated,
   ]);
