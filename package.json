@@ -58,17 +58,6 @@
       "category": "Development",
       "target": "AppImage",
       "icon": "icon.icns"
-    },
-    "mac": {
-      "target": {
-        "target": "dmg",
-        "arch": [
-          "arm64",
-          "x64"
-        ]
-      },
-      "entitlements": "apps/app/assets/entitlements.mac.plist",
-      "entitlementsInherit": "apps/app/assets/entitlements.mac.plist"
     }
   },
   "devDependencies": {
