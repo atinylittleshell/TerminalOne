@@ -58,14 +58,6 @@
       "category": "Development",
       "target": "AppImage",
       "icon": "icon.icns"
-    },
-    "mac": {
-      "target": {
-        "target": "dmg",
-        "arch": [
-          "x64"
-        ]
-      }
     }
   },
   "devDependencies": {
