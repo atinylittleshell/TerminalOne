@@ -49,11 +49,21 @@ const Page = () => {
     setTabId(newTabId);
   }, [userTabs, config]);
 
-  const closeTab = useCallback(() => {
-    const newTabs = userTabs.filter((t) => t.tabId !== tabId);
-    setUserTabs(newTabs);
-    setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
-  }, [userTabs, tabId]);
+  const closeTab = useCallback(
+    (targetTabId: number) => {
+      const newTabs = userTabs.filter((t) => t.tabId !== targetTabId);
+      if (newTabs.length === 0) {
+        window.TerminalOne?.app.quit();
+      } else {
+        setUserTabs(newTabs);
+        setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
+      }
+    },
+    [userTabs],
+  );
+  const closeCurrentTab = useCallback(() => {
+    closeTab(tabId);
+  }, [closeTab, tabId]);
 
   const nextTab = useCallback(() => {
     const currentTabIndex = userTabs.findIndex((t) => t.tabId === tabId);
@@ -126,7 +136,7 @@ const Page = () => {
 
   useEffect(() => {
     commands.on('createTab', createTab);
-    commands.on('closeTab', closeTab);
+    commands.on('closeTab', closeCurrentTab);
     commands.on('nextTab', nextTab);
     commands.on('previousTab', previousTab);
     commands.on('tab1', switchToTab1);
@@ -141,7 +151,7 @@ const Page = () => {
 
     return () => {
       commands.off('createTab', createTab);
-      commands.off('closeTab', closeTab);
+      commands.off('closeTab', closeCurrentTab);
       commands.off('nextTab', nextTab);
       commands.off('previousTab', previousTab);
       commands.off('tab1', switchToTab1);
@@ -157,7 +167,7 @@ const Page = () => {
   }, [
     commands,
     createTab,
-    closeTab,
+    closeCurrentTab,
     nextTab,
     previousTab,
     switchToTab1,
@@ -229,7 +239,7 @@ const Page = () => {
                 <button
                   className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
                   onClick={() => {
-                    closeTab();
+                    closeTab(tabId);
                   }}
                 >
                   <FiX />
@@ -265,6 +275,9 @@ const Page = () => {
                 key={userTab.tabId}
                 active={tabId === userTab.tabId}
                 tabId={userTab.tabId}
+                close={() => {
+                  closeTab(userTab.tabId);
+                }}
               />
             );
           })}

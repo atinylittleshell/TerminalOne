@@ -35,6 +35,7 @@ const lookupTerminalById = (root: TerminalTreeNodeData, terminalId: string) => {
 const createCloseHandler = (
   root: TerminalTreeNodeData,
   setRoot: (root: TerminalTreeNodeData) => void,
+  closeRoot: () => void,
 ) => {
   return (terminalId: string) => {
     const node = lookupTerminalById(root, terminalId);
@@ -44,6 +45,7 @@ const createCloseHandler = (
 
     const replaceTarget = node.parent;
     if (!replaceTarget) {
+      closeRoot();
       return;
     }
     if (replaceTarget.nodeType === 'terminal') {
@@ -248,6 +250,7 @@ export const TabContextProvider = (
   props: React.PropsWithChildren<{
     active: boolean;
     tabId: number;
+    close: () => void;
   }>,
 ) => {
   const { commands } = useKeybindContext();
@@ -293,7 +296,9 @@ export const TabContextProvider = (
       onTerminalActive,
       'right',
     );
-    const closePane = createCloseHandler(root, setRoot);
+    const closePane = createCloseHandler(root, setRoot, () => {
+      props.close();
+    });
 
     commands.on('splitVertical', splitVertical);
     commands.on('splitHorizontal', splitHorizontal);
@@ -316,7 +321,7 @@ export const TabContextProvider = (
 
       commands.off('closePane', closePane);
     };
-  }, [commands, onTerminalActive, root]);
+  }, [commands, onTerminalActive, root, props]);
 
   return (
     <TabContext.Provider
