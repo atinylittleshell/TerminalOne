@@ -12,6 +12,8 @@ module.exports = {
   },
   externals: {
     electron: 'commonjs electron',
+    'node:os': 'commonjs os',
+    'node:process': 'commonjs process',
   },
   plugins: [
     new webpack.NormalModuleReplacementPlugin(
@@ -51,6 +53,7 @@ module.exports = {
     fallback: {
       assert: false,
       buffer: false,
+      child_process: false,
       console: false,
       constants: false,
       crypto: false,
