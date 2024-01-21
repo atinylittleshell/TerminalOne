@@ -3,7 +3,7 @@ import {
   resolveConfig,
   ResolvedConfig,
 } from '@terminalone/types';
-import { BrowserWindow } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs-extra';
 import os from 'os';
 import path from 'path';
@@ -19,6 +19,7 @@ import { Logger } from './common/logger';
 
 @nativeBridgeModule('config')
 export class ConfigModule extends NativeBridgeModule {
+  private configPath: string = '';
   private config: ResolvedConfig = DEFAULT_CONFIG;
 
   @moduleFunction()
@@ -28,22 +29,40 @@ export class ConfigModule extends NativeBridgeModule {
 
   @moduleFunction()
   public async getConfigPath(_mainWindow: BrowserWindow): Promise<string> {
-    return path.join(getAppDirs().userData, 'config.js');
+    return this.configPath;
   }
 
   public onRegistered(mainWindow: BrowserWindow): void {
-    const configDir = getAppDirs().userData;
-    const configPath = path.join(configDir, 'config.js');
-    if (!existsSync(configPath)) {
+    const configPathCandidates: string[] = [
+      path.join(
+        getAppDirs().home,
+        '.config',
+        app.getName().replace(/\s/g, ''),
+        'config.js',
+      ),
+      path.join(getAppDirs().userData, 'config.js'),
+    ];
+
+    // look for the first existing config file. if not found, use the first candidate
+    this.configPath = configPathCandidates[0];
+    for (const configPathCandidate of configPathCandidates) {
+      if (existsSync(configPathCandidate)) {
+        this.configPath = configPathCandidate;
+        break;
+      }
+    }
+
+    if (!existsSync(this.configPath)) {
+      const configDir = path.dirname(this.configPath);
       mkdirSync(configDir, { recursive: true });
       writeFileSync(
-        configPath,
+        this.configPath,
         '// see https://github.com/atinylittleshell/TerminalOne/blob/main/packages/types/defaultConfig.ts for supported configuration values\n' +
           'module.exports = {};',
       );
     }
 
-    const configContent = readFileSync(configPath, 'utf8');
+    const configContent = readFileSync(this.configPath, 'utf8');
 
     try {
       const script = new vm.Script(configContent, {
@@ -66,7 +85,9 @@ export class ConfigModule extends NativeBridgeModule {
 
       Logger.getInstance().log(
         'info',
-        `Loaded config from ${configPath}}: ${JSON.stringify(mod.exports)}`,
+        `Loaded config from ${this.configPath}}: ${JSON.stringify(
+          mod.exports,
+        )}`,
       );
 
       const resolved = resolveConfig(mod.exports, os.platform(), os.release());
