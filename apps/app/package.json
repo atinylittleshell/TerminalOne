@@ -44,6 +44,7 @@
     "node-loader": "^2.0.0",
     "node-pty": "^1.0.0",
     "os-locale": "^6.0.2",
+    "shell-env": "^4.0.1",
     "vm": "^0.1.0",
     "webpack": "^5.72.0",
     "winston": "^3.8.2"
