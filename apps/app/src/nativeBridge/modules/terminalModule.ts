@@ -36,14 +36,14 @@ class PTYInstance {
       cols: cols,
       rows: rows,
       cwd: startupDirectory || os.homedir() || process.cwd(),
-      env: {
-        ...process.env,
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      env: Object.assign({}, require('shell-env').shellEnvSync(shell), {
         LANG: `${osLocaleSync().replace(/-/, '_')}.UTF-8`,
         TERM: 'xterm-256color',
         COLORTERM: 'truecolor',
         TERM_PROGRAM: app.name,
         TERM_PROGRAM_VERSION: app.getVersion(),
-      },
+      }),
     });
 
     Logger.getInstance().log(
