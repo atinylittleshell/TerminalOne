@@ -1,4 +1,5 @@
 name: build
+
 on:
   push:
     branches:
@@ -17,27 +18,46 @@ jobs:
           - windows
           - ubuntu
         node-version:
-          - '16.x'
+          - '21.x'
 
-    name: build
     runs-on: ${{ matrix.os }}-latest
+
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
       - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/setup-python@v4
+
+      - name: setup python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.10' 
-      - name: install dependencies
-        run: npm ci
+          python-version: '3.10'
+
+      - name: setup rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.os == 'ubuntu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: pnpm install dependencies
+        uses: pnpm/action-setup@v2
+        with:
+          run_install: true
+
       - name: run build
-        run: npm run build
+        run: pnpm build
+
       - name: run lint
-        run: npm run lint
+        run: pnpm lint
+
       - name: run test
-        run: npm run test
+        run: pnpm test
+
       - name: upload coverage reports to codecov
         uses: codecov/codecov-action@v3
