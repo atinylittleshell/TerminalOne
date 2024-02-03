@@ -39,7 +39,7 @@ fn apply_user_config(
   Ok(config)
 }
 
-fn load_config() -> Result<types::Config, String> {
+fn get_config_path() -> std::path::PathBuf {
   let config_path_candidates = vec![
     dirs::home_dir()
       .unwrap()
@@ -52,22 +52,26 @@ fn load_config() -> Result<types::Config, String> {
       .join("config.lua"),
   ];
 
-  let config_path = config_path_candidates
+  config_path_candidates
     .iter()
     .find(|path| path.exists())
-    .unwrap_or(&config_path_candidates[0]);
+    .unwrap_or(&config_path_candidates[0])
+    .to_path_buf()
+}
 
+fn load_config() -> Result<types::Config, String> {
+  let config_path = CONFIG_PATH.to_str().unwrap();
   log::info!("Loading config from {:?}", config_path);
 
   let user_config_content =
     std::fs::read_to_string(config_path).unwrap_or("".to_string());
-
   log::debug!("User config content: {}", user_config_content);
 
   Ok(apply_user_config(&user_config_content)?)
 }
 
 lazy_static! {
+  pub static ref CONFIG_PATH: std::path::PathBuf = get_config_path();
   pub static ref CONFIG: types::Config = load_config().unwrap();
 }
 

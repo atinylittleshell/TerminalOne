@@ -1,4 +1,5 @@
 import { invoke } from '@tauri-apps/api/tauri';
+import { Config } from '../types/config';
 
 export const createTerminalIfNotExist = async (
   terminalId: string,
@@ -30,4 +31,12 @@ export const resizeTerminal = async (
 
 export const killTerminal = async (terminalId: string) => {
   await invoke('kill_terminal', { terminalId });
+};
+
+export const getConfig = async (): Promise<Config> => {
+  return await invoke('get_config');
+};
+
+export const getConfigPath = async (): Promise<string> => {
+  return await invoke('get_config_path');
 };

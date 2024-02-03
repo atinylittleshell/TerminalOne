@@ -17,6 +17,7 @@ fn main() {
       handlers::terminal::kill_terminal,
       handlers::terminal::write_to_terminal,
       handlers::config::get_config,
+      handlers::config::get_config_path,
     ])
     .plugin(
       tauri_plugin_log::Builder::default()

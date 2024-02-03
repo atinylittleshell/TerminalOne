@@ -10,10 +10,12 @@ import {
   writeToTerminal,
 } from '../../utils/backend';
 import { appWindow } from '@tauri-apps/api/window';
+import { useConfigContext } from '../ConfigProvider';
 
 export const Terminal = ({ terminalId }: { terminalId: string }) => {
   let terminalRef: HTMLDivElement | undefined = undefined;
   let xtermRef: XTerm | undefined;
+  const { config } = useConfigContext();
 
   onMount(() => {
     if (!window) {
@@ -42,6 +44,43 @@ export const Terminal = ({ terminalId }: { terminalId: string }) => {
     xterm.unicode.activeVersion = '11';
 
     xterm.open(xtermDiv);
+
+    xterm.options.cursorBlink = config.cursor_blink;
+    xterm.options.cursorStyle = config.cursor_style;
+    xterm.options.cursorWidth = config.cursor_width;
+    xterm.options.scrollback = config.scrollback;
+    xterm.options.fontSize = config.font_size;
+    xterm.options.fontFamily = config.font_family;
+    xterm.options.fontWeight = config.font_weight;
+    xterm.options.fontWeightBold = config.font_weight_bold;
+    xterm.options.letterSpacing = config.letter_spacing;
+    xterm.options.lineHeight = config.line_height;
+    xterm.options.theme = {
+      background: config.color_scheme.background,
+      foreground: config.color_scheme.foreground,
+      cursor: config.color_scheme.cursor,
+      cursorAccent: config.color_scheme.cursor_accent,
+      selectionBackground: config.color_scheme.selection_background,
+      selectionForeground: config.color_scheme.selection_foreground,
+      selectionInactiveBackground:
+        config.color_scheme.selection_inactive_background,
+      black: config.color_scheme.black,
+      red: config.color_scheme.red,
+      green: config.color_scheme.green,
+      yellow: config.color_scheme.yellow,
+      blue: config.color_scheme.blue,
+      magenta: config.color_scheme.magenta,
+      cyan: config.color_scheme.cyan,
+      white: config.color_scheme.white,
+      brightBlack: config.color_scheme.bright_black,
+      brightRed: config.color_scheme.bright_red,
+      brightGreen: config.color_scheme.bright_green,
+      brightYellow: config.color_scheme.bright_yellow,
+      brightBlue: config.color_scheme.bright_blue,
+      brightMagenta: config.color_scheme.bright_magenta,
+      brightCyan: config.color_scheme.bright_cyan,
+      brightWhite: config.color_scheme.bright_white,
+    };
 
     createTerminalIfNotExist(
       terminalId,
