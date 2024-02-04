@@ -10,6 +10,7 @@
   "dependencies": {
     "@tauri-apps/api": "^1.5.3",
     "eventemitter3": "^5.0.1",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.8.11",
     "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log#v1",
     "xterm": "^5.3.0",

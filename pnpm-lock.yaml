@@ -77,6 +77,9 @@ importers:
       eventemitter3:
         specifier: ^5.0.1
         version: 5.0.1
+      solid-icons:
+        specifier: ^1.1.0
+        version: 1.1.0(solid-js@1.8.11)
       solid-js:
         specifier: ^1.8.11
         version: 1.8.11
@@ -3527,6 +3530,14 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
     dev: true
+
+  /solid-icons@1.1.0(solid-js@1.8.11):
+    resolution: {integrity: sha512-IesTfr/F1ElVwH2E1110s2RPXH4pujKfSs+koT8rwuTAdleO5s26lNSpqJV7D1+QHooJj18mcOiz2PIKs0ic+A==}
+    peerDependencies:
+      solid-js: '*'
+    dependencies:
+      solid-js: 1.8.11
+    dev: false
 
   /solid-js@1.8.11:
     resolution: {integrity: sha512-WdwmER+TwBJiN4rVQTVBxocg+9pKlOs41KzPYntrC86xO5sek8TzBYozPEZPL1IRWDouf2lMrvSbIs3CanlPvQ==}

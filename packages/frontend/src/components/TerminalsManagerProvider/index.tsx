@@ -1,5 +1,6 @@
 import { appWindow } from '@tauri-apps/api/window';
 import { createContext, ParentProps, useContext } from 'solid-js';
+import { debug } from 'tauri-plugin-log-api';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { Unicode11Addon } from 'xterm-addon-unicode11';
@@ -8,6 +9,7 @@ import { WebglAddon } from 'xterm-addon-webgl';
 import { Config } from '../../types/config';
 import {
   createTerminalIfNotExist,
+  killTerminal,
   resizeTerminal,
   writeToTerminal,
 } from '../../utils/backend';
@@ -163,8 +165,12 @@ const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
   disposeTerminal: (id: string) => {
     if (terminals.has(id)) {
       const { cleanUp } = terminals.get(id)!;
+
       cleanUp();
       terminals.delete(id);
+      killTerminal(id).then(() => {
+        debug(`Terminal ${id} killed`);
+      });
     }
   },
 };
