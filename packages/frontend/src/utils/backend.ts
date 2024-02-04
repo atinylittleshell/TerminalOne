@@ -40,3 +40,7 @@ export const getConfig = async (): Promise<Config> => {
 export const getConfigPath = async (): Promise<string> => {
   return await invoke('get_config_path');
 };
+
+export const isAcrylicEnabled = async (): Promise<boolean> => {
+  return await invoke('is_acrylic_enabled');
+};

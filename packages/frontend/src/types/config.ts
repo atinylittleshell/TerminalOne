@@ -1,13 +1,13 @@
 export type CursorStyle = 'block' | 'underline' | 'bar';
 
-export interface Padding {
+export type Padding = {
   top: number;
   right: number;
   bottom: number;
   left: number;
-}
+};
 
-export interface ColorSchemeConfig {
+export type ColorSchemeConfig = {
   foreground: string;
   background: string;
   cursor: string;
@@ -31,15 +31,15 @@ export interface ColorSchemeConfig {
   bright_yellow: string;
   bright_cyan: string;
   bright_magenta: string;
-}
+};
 
-export interface ShellConfig {
+export type ShellConfig = {
   name: string;
   command: string;
   startup_directory: string;
-}
+};
 
-export interface KeybindConfig {
+export type KeybindConfig = {
   create_tab: string;
   close_tab: string;
   next_tab: string;
@@ -60,9 +60,9 @@ export interface KeybindConfig {
   focus_pane_up: string;
   focus_pane_down: string;
   close_pane: string;
-}
+};
 
-export interface Config {
+export type Config = {
   acrylic: boolean;
   cursor_blink: boolean;
   cursor_style: CursorStyle;
@@ -84,4 +84,4 @@ export interface Config {
   default_shell_name: string;
   keybind_leader: string;
   keybinds: KeybindConfig;
-}
+};
