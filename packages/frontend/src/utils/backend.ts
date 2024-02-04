@@ -1,4 +1,5 @@
 import { invoke } from '@tauri-apps/api/tauri';
+
 import { Config } from '../types/config';
 
 export const createTerminalIfNotExist = async (

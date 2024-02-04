@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev:frontend": "vite",
-    "build:frontend": "tsc && vite build"
+    "build:frontend": "tsc && vite build",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings 0"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.3",
