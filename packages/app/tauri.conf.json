@@ -62,7 +62,7 @@
         "title": "Terminal One",
         "width": 800,
         "transparent": true,
-        "decorations": false,
+        "decorations": true,
         "titleBarStyle": "Overlay",
         "hiddenTitle": true
       }
