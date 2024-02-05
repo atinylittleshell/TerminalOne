@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.3",
+    "@types/lodash": "^4.14.202",
     "eventemitter3": "^5.0.1",
+    "lodash": "^4.17.21",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.11",
     "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log#v1",

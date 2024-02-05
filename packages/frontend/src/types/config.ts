@@ -1,3 +1,5 @@
+// keep consistent with packages/app/src/config/types.rs
+
 export type CursorStyle = 'block' | 'underline' | 'bar';
 
 export type Padding = {

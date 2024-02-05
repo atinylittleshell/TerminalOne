@@ -1,5 +1,31 @@
 use serde::{Deserialize, Serialize};
 
+// keep consistent with packages/frontend/src/types/config.ts
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct KeybindConfig {
+  pub create_tab: String,
+  pub close_tab: String,
+  pub next_tab: String,
+  pub previous_tab: String,
+  pub tab1: String,
+  pub tab2: String,
+  pub tab3: String,
+  pub tab4: String,
+  pub tab5: String,
+  pub tab6: String,
+  pub tab7: String,
+  pub tab8: String,
+  pub tab9: String,
+  pub split_horizontal: String,
+  pub split_vertical: String,
+  pub focus_pane_left: String,
+  pub focus_pane_right: String,
+  pub focus_pane_up: String,
+  pub focus_pane_down: String,
+  pub close_pane: String,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum CursorStyle {
   #[serde(rename = "block")]
@@ -50,30 +76,6 @@ pub struct ShellConfig {
   pub name: String,
   pub command: String,
   pub startup_directory: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct KeybindConfig {
-  pub create_tab: String,
-  pub close_tab: String,
-  pub next_tab: String,
-  pub previous_tab: String,
-  pub tab1: String,
-  pub tab2: String,
-  pub tab3: String,
-  pub tab4: String,
-  pub tab5: String,
-  pub tab6: String,
-  pub tab7: String,
-  pub tab8: String,
-  pub tab9: String,
-  pub split_horizontal: String,
-  pub split_vertical: String,
-  pub focus_pane_left: String,
-  pub focus_pane_right: String,
-  pub focus_pane_up: String,
-  pub focus_pane_down: String,
-  pub close_pane: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
