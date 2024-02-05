@@ -170,17 +170,19 @@ const KeybindsContext = createContext<KeybindsContextData>({
 });
 
 export const KeybindsProvider = (props: ParentProps) => {
-  const { config } = useConfig();
+  const config = useConfig();
 
   const keybindConfig = createMemo<KeybindsConfig>(() => {
     const result: KeybindsConfig = {
-      keybindLeader: normalizeKeyDescriptor(config.keybind_leader || 'ctrl+b'),
+      keybindLeader: normalizeKeyDescriptor(
+        config.data.keybind_leader || 'ctrl+b',
+      ),
       keybindLookup: {},
     };
 
-    Object.keys(config.keybinds).forEach((commandValue) => {
+    Object.keys(config.data.keybinds).forEach((commandValue) => {
       const command = commandValue as KeybindCommand;
-      const key = config.keybinds[command];
+      const key = config.data.keybinds[command];
       if (!key) return;
 
       result.keybindLookup[normalizeKeyDescriptor(key)] = command;

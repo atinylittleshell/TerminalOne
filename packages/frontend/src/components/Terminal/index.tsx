@@ -5,7 +5,7 @@ import { useTerminalsManager } from '../TerminalsManagerProvider';
 
 export const Terminal = (props: { terminalId: string }) => {
   let containerRef: HTMLDivElement | undefined = undefined;
-  const { config } = useConfig();
+  const config = useConfig();
   const { getOrCreateTerminal } = useTerminalsManager();
 
   createEffect(() => {
@@ -13,7 +13,7 @@ export const Terminal = (props: { terminalId: string }) => {
       return;
     }
 
-    const { terminalDiv } = getOrCreateTerminal(props.terminalId, config);
+    const { terminalDiv } = getOrCreateTerminal(props.terminalId, config.data);
     containerRef.appendChild(terminalDiv);
     terminalDiv.style.visibility = 'visible';
 

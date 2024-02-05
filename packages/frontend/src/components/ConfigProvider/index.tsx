@@ -8,15 +8,15 @@ import { DEFAULT_CONFIG } from './defaultConfig';
 import { resolveConfig } from './resolveConfig';
 
 type ConfigContextData = {
-  config: Config;
-  configPath: string;
+  data: Config;
+  path: string;
   error: string | null;
-  loading?: boolean;
+  loading: boolean;
 };
 
 const DEFAULT_CONTEXT_DATA: ConfigContextData = {
-  config: DEFAULT_CONFIG,
-  configPath: '',
+  data: DEFAULT_CONFIG,
+  path: '',
   error: null,
   loading: true,
 };
@@ -38,8 +38,8 @@ export const ConfigProvider = (props: ParentProps) => {
         debug(`Config loaded on frontend: ${JSON.stringify(cfg, null, 2)}`);
 
         setData({
-          config: cfg,
-          configPath: cfgPath,
+          data: cfg,
+          path: cfgPath,
           error: null,
           loading: false,
         });
@@ -49,8 +49,8 @@ export const ConfigProvider = (props: ParentProps) => {
         error(`Error loading config: ${e.message}`);
 
         setData({
-          config: DEFAULT_CONFIG,
-          configPath: cfgPath,
+          data: DEFAULT_CONFIG,
+          path: cfgPath,
           error: e.message,
           loading: false,
         });

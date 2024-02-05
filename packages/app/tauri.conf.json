@@ -12,7 +12,27 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "clipboard": {
+        "all": true
+      },
+      "os": {
+        "all": true
+      },
+      "process": {
+        "all": false,
+        "exit": true
+      },
+      "window": {
+        "all": false,
+        "maximize": true,
+        "unmaximize": true,
+        "minimize": true,
+        "unminimize": true,
+        "setSize": true,
+        "setPosition": true,
+        "startDragging": true
+      }
     },
     "bundle": {
       "active": true,

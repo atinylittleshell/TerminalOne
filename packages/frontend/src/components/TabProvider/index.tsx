@@ -243,7 +243,7 @@ export const TabProvider = (
     close: () => void;
   }>,
 ) => {
-  const { commands } = useKeybinds();
+  const keybinds = useKeybinds();
 
   const [value, setValue] = createStore<TabContextData>({
     root: {
@@ -295,26 +295,26 @@ export const TabProvider = (
       props.close();
     });
 
-    commands.on('split_vertical', splitVertical);
-    commands.on('split_horizontal', splitHorizontal);
+    keybinds.commands.on('split_vertical', splitVertical);
+    keybinds.commands.on('split_horizontal', splitHorizontal);
 
-    commands.on('focus_pane_up', focusPaneUp);
-    commands.on('focus_pane_down', focusPaneDown);
-    commands.on('focus_pane_left', focusPaneLeft);
-    commands.on('focus_pane_right', focusPaneRight);
+    keybinds.commands.on('focus_pane_up', focusPaneUp);
+    keybinds.commands.on('focus_pane_down', focusPaneDown);
+    keybinds.commands.on('focus_pane_left', focusPaneLeft);
+    keybinds.commands.on('focus_pane_right', focusPaneRight);
 
-    commands.on('close_pane', closePane);
+    keybinds.commands.on('close_pane', closePane);
 
     onCleanup(() => {
-      commands.off('split_vertical', splitVertical);
-      commands.off('split_horizontal', splitHorizontal);
+      keybinds.commands.off('split_vertical', splitVertical);
+      keybinds.commands.off('split_horizontal', splitHorizontal);
 
-      commands.off('focus_pane_up', focusPaneUp);
-      commands.off('focus_pane_down', focusPaneDown);
-      commands.off('focus_pane_left', focusPaneLeft);
-      commands.off('focus_pane_right', focusPaneRight);
+      keybinds.commands.off('focus_pane_up', focusPaneUp);
+      keybinds.commands.off('focus_pane_down', focusPaneDown);
+      keybinds.commands.off('focus_pane_left', focusPaneLeft);
+      keybinds.commands.off('focus_pane_right', focusPaneRight);
 
-      commands.off('close_pane', closePane);
+      keybinds.commands.off('close_pane', closePane);
     });
   });
 
