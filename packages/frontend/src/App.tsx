@@ -1,27 +1,35 @@
 import { Match, Switch } from 'solid-js';
 
 import { useConfig } from './components/ConfigProvider';
+import { SettingsPage } from './components/SettingsPage';
 import { SplashScreen } from './components/SplashScreen';
 import { TabsBar } from './components/TabsBar';
+import { useTabsManager } from './components/TabsManagerProvider';
 
 export function App() {
-  const configContext = useConfig();
+  const config = useConfig();
+  const tabsManager = useTabsManager();
 
   return (
     <Switch>
-      <Match when={configContext.loading}>
+      <Match when={config.loading}>
         <SplashScreen />
       </Match>
-      <Match when={!configContext.loading}>
+      <Match when={!config.loading}>
         <div
           class="w-screen h-screen relative overflow-hidden flex flex-col"
           style={{
-            'background-color': configContext.data.color_scheme.background,
-            color: configContext.data.color_scheme.foreground,
-            'font-family': configContext.data.font_family,
+            'background-color': config.data.color_scheme.background,
+            color: config.data.color_scheme.foreground,
+            'font-family': config.data.font_family,
           }}
         >
           <TabsBar />
+          <Switch>
+            <Match when={!tabsManager.data.activeTabId}>
+              <SettingsPage />
+            </Match>
+          </Switch>
         </div>
       </Match>
     </Switch>

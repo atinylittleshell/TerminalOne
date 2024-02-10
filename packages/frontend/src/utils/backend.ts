@@ -45,3 +45,7 @@ export const getConfigPath = async (): Promise<string> => {
 export const isAcrylicEnabled = async (): Promise<boolean> => {
   return await invoke('is_acrylic_enabled');
 };
+
+export const getLogDir = async (): Promise<string> => {
+  return await invoke('get_log_dir');
+};

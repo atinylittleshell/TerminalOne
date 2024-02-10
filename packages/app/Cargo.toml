@@ -28,7 +28,7 @@ mlua = { version = "0.9.5", features = [
   "serialize",
 ] }
 portable-pty = { version = "0.8.1" }
-tauri = { version = "1.5.4", features = [ "window-maximize", "window-unminimize", "os-all", "window-unmaximize", "clipboard-all", "window-set-position", "window-set-size", "process-exit", "window-minimize", "window-start-dragging", "macos-private-api"] }
+tauri = { version = "1.5.4", features = [ "path-all", "shell-open", "window-maximize", "window-unminimize", "os-all", "window-unmaximize", "clipboard-all", "window-set-position", "window-set-size", "process-exit", "window-minimize", "window-start-dragging", "macos-private-api"] }
 tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 window-vibrancy = { version = "0.4.3" }

@@ -32,6 +32,13 @@
         "setSize": true,
         "setPosition": true,
         "startDragging": true
+      },
+      "shell": {
+        "all": false,
+        "open": ".+"
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {

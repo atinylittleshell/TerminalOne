@@ -4,6 +4,7 @@
 #[macro_use]
 extern crate lazy_static;
 
+use config::CONFIG_PATH;
 use tauri_plugin_log::LogTarget;
 
 mod config;
@@ -14,6 +15,7 @@ fn main() {
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       handlers::app::is_acrylic_enabled,
+      handlers::app::get_log_dir,
       handlers::terminal::create_terminal_if_not_exist,
       handlers::terminal::resize_terminal,
       handlers::terminal::kill_terminal,
@@ -23,7 +25,10 @@ fn main() {
     ])
     .plugin(
       tauri_plugin_log::Builder::default()
-        .targets([LogTarget::LogDir, LogTarget::Stdout])
+        .targets([
+          LogTarget::Folder(CONFIG_PATH.parent().unwrap().to_path_buf()),
+          LogTarget::Stdout,
+        ])
         .build(),
     )
     .plugin(tauri_plugin_window_state::Builder::default().build())

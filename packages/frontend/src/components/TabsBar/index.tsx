@@ -58,20 +58,24 @@ export const TabsBar = () => {
         <FiPlus />
       </button>
       <div class="flex-grow" />
-      <button
-        class="p-1 opacity-50 hover:opacity-100"
+      <div
+        class="flex flex-row items-center rounded-md"
         style={{
           'background-color':
             tabsManager.data.activeTabId === 0
-              ? config.data.color_scheme.background
-              : undefined,
-        }}
-        onClick={() => {
-          tabsManager.switchToTab(0);
+              ? config.data.color_scheme.selection_background
+              : 'transparent',
         }}
       >
-        <FiMenu />
-      </button>
+        <button
+          class={`px-2 py-1 ${tabsManager.data.activeTabId === 0 ? 'opacity-100' : 'opacity-50'} hover:opacity-100`}
+          onClick={() => {
+            tabsManager.switchToTab(0);
+          }}
+        >
+          <FiMenu />
+        </button>
+      </div>
     </div>
   );
 };

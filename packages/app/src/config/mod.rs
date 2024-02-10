@@ -63,6 +63,17 @@ fn load_config() -> Result<types::Config, String> {
   let config_path = CONFIG_PATH.to_str().unwrap();
   log::info!("Loading config from {:?}", config_path);
 
+  let config_dir = CONFIG_PATH.parent().unwrap();
+  if !config_dir.exists() {
+    log::info!("Creating config directory: {:?}", config_dir);
+    std::fs::create_dir_all(config_dir).unwrap();
+  }
+
+  if !CONFIG_PATH.exists() {
+    log::info!("Creating default config: {:?}", config_path);
+    std::fs::write(config_path, "").unwrap();
+  }
+
   let user_config_content =
     std::fs::read_to_string(config_path).unwrap_or("".to_string());
   log::debug!("User config content: {}", user_config_content);
