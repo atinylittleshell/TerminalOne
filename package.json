@@ -38,7 +38,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
-    "rebuild:node-pty": "electron-rebuild -f -o node-pty -m apps/app",
+    "rebuild:node-pty": "electron-rebuild -f -o node-pty -m packages/app",
     "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps && npm run rebuild:node-pty"
   },
   "main": "apps/app/dist/main.bundle.js",
@@ -86,7 +86,6 @@
   "homepage": "https://github.com/atinylittleshell/TerminalOne",
   "packageManager": "npm@9.2.0",
   "workspaces": [
-    "apps/*",
     "packages/*"
   ],
   "dependencies": {
