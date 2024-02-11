@@ -24,6 +24,8 @@ export const TabsBar = () => {
             <button
               class={`py-1 px-4 ${tabsManager.data.activeTabId === tab.id ? 'opacity-100' : 'opacity-50'} hover:opacity-100 flex-row items-center`}
               style={{
+                'font-size': '14px',
+                'line-height': '16px',
                 'padding-right':
                   tabsManager.data.activeTabId === tab.id ? '8px' : undefined,
               }}

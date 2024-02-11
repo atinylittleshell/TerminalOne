@@ -2,6 +2,7 @@ extern crate dirs;
 
 use std::{
   collections::HashMap,
+  env,
   path::PathBuf,
   sync::{Arc, Mutex},
   thread,
@@ -183,13 +184,22 @@ pub fn create_terminal_if_not_exist(
   shell_command: String,
   startup_directory: String,
 ) {
+  let shell = if shell_command.is_empty() {
+    if cfg!(windows) {
+      env::var("COMSPEC").unwrap_or("cmd.exe".to_string())
+    } else {
+      env::var("SHELL").unwrap_or("/bin/bash".to_string())
+    }
+  } else {
+    shell_command
+  };
   let mut instances = PTY_INSTANCES.lock().unwrap();
   if !instances.contains_key(&terminal_id) {
     let mut instance = PTYInstance::new(
       &terminal_id,
       cols,
       rows,
-      &shell_command,
+      &shell,
       if startup_directory.is_empty() {
         dirs::home_dir().expect("Failed to get home directory")
       } else {

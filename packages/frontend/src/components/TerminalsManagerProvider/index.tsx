@@ -1,9 +1,12 @@
+import { clipboard } from '@tauri-apps/api';
 import { appWindow } from '@tauri-apps/api/window';
+import EventEmitter from 'eventemitter3';
 import { createContext, ParentProps, useContext } from 'solid-js';
 import { debug } from 'tauri-plugin-log-api';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { Unicode11Addon } from 'xterm-addon-unicode11';
+import { WebLinksAddon } from 'xterm-addon-web-links';
 import { WebglAddon } from 'xterm-addon-webgl';
 
 import { Config } from '../../types/config';
@@ -13,25 +16,43 @@ import {
   resizeTerminal,
   writeToTerminal,
 } from '../../utils/backend';
+import { DEFAULT_CONFIG } from '../ConfigProvider/defaultConfig';
+
+type TerminalEventMap = {
+  active: undefined;
+};
 
 type TerminalContext = {
   terminal: XTerm;
   terminalDiv: HTMLDivElement;
   cleanUp: () => void;
+  events: EventEmitter<TerminalEventMap>;
 };
 
 type TerminalsManagerContextData = {
-  getOrCreateTerminal: (id: string, config: Config) => TerminalContext;
+  getOrCreateTerminal: (
+    id: string,
+    config: Config,
+    shellName: string,
+    handleKey: (event: KeyboardEvent, srcTerminalId: string) => boolean,
+  ) => TerminalContext;
   disposeTerminal: (id: string) => void;
 };
 
 const terminals = new Map<string, TerminalContext>();
 
-const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
-  getOrCreateTerminal: (id: string, config: Config) => {
+const CONTEXT_DATA: TerminalsManagerContextData = {
+  getOrCreateTerminal: (
+    id: string,
+    config: Config,
+    shellName: string,
+    handleKey: (event: KeyboardEvent, srcTerminalId: string) => boolean,
+  ) => {
     if (terminals.has(id)) {
       return terminals.get(id)!;
     }
+
+    const events = new EventEmitter<TerminalEventMap>();
 
     const terminalDiv = document.createElement('div');
     terminalDiv.tabIndex = 1;
@@ -50,6 +71,12 @@ const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
       allowTransparency: true,
     });
 
+    terminal.loadAddon(
+      new WebLinksAddon((_e, url) => {
+        open(url);
+      }),
+    );
+
     const webglAddon = new WebglAddon();
     terminal.loadAddon(webglAddon);
 
@@ -60,6 +87,13 @@ const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
     terminal.unicode.activeVersion = '11';
 
     terminal.open(terminalDiv);
+
+    const activeShellConfig =
+      config.shells.find((s) => s.name === shellName) ||
+      DEFAULT_CONFIG.shells[0];
+    // when the following values are empty, they will be auto determined based on system defaults
+    const shellCommand = activeShellConfig.command;
+    const startupDirectory = activeShellConfig.startup_directory;
 
     terminal.options.cursorBlink = config.cursor_blink;
     terminal.options.cursorStyle = config.cursor_style;
@@ -102,8 +136,8 @@ const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
       id,
       terminal.cols,
       terminal.rows,
-      '/bin/bash',
-      '',
+      shellCommand,
+      startupDirectory,
     ).then(() => {
       terminal.onData((data) => {
         writeToTerminal(id, data);
@@ -123,9 +157,13 @@ const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
         terminal.write(payload.data);
       });
 
+      // onExit
+
       // make backend pty size consistent with xterm on the frontend
       fitAddon.fit();
       resizeTerminal(id, terminal.cols, terminal.rows);
+
+      events.emit('active');
     });
 
     const resizeListener = () => {
@@ -135,17 +173,22 @@ const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
 
     const focusListener = () => {
       fitAddon.fit();
+      events.emit('active');
     };
     terminal.textarea?.addEventListener('focus', focusListener);
 
     const contextMenuListener = () => {
-      navigator.clipboard.readText().then((text) => {
+      clipboard.readText().then((text) => {
         if (text) {
           terminal.paste(text);
         }
       });
     };
     terminalDiv.addEventListener('contextmenu', contextMenuListener);
+
+    terminal.attachCustomKeyEventHandler((event) => {
+      return handleKey(event, id);
+    });
 
     terminals.set(id, {
       terminal,
@@ -158,6 +201,7 @@ const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
         terminal.dispose();
         terminalDiv.remove();
       },
+      events,
     });
 
     return terminals.get(id)!;
@@ -176,11 +220,11 @@ const DEFAULT_CONTEXT_DATA: TerminalsManagerContextData = {
 };
 
 const TerminalsManagerContext =
-  createContext<TerminalsManagerContextData>(DEFAULT_CONTEXT_DATA);
+  createContext<TerminalsManagerContextData>(CONTEXT_DATA);
 
 export const TerminalsManagerProvider = (props: ParentProps) => {
   return (
-    <TerminalsManagerContext.Provider value={DEFAULT_CONTEXT_DATA}>
+    <TerminalsManagerContext.Provider value={CONTEXT_DATA}>
       {props.children}
     </TerminalsManagerContext.Provider>
   );

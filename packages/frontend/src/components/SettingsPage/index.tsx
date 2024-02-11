@@ -36,7 +36,7 @@ export const SettingsPage = () => {
       <div>
         <a
           href="#"
-          class="link"
+          class="hover:underline"
           onClick={() => {
             open(configDir());
           }}

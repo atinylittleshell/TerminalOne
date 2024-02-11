@@ -224,16 +224,26 @@ const createFocusPaneHandler = (
 interface TabContextData {
   root: TerminalTreeNodeData;
   activeTerminalId: string | null;
+  lastActiveTerminalId: string | null;
 }
 
-const TabContext = createContext<TabContextData>({
-  root: {
-    nodeType: 'terminal',
-    parent: null,
-    terminalId: '0',
-    useDefaultShell: true,
+type TabContext = {
+  data: TabContextData;
+  onTerminalActive: (terminalId: string | null) => void;
+};
+
+const TabContext = createContext<TabContext>({
+  data: {
+    root: {
+      nodeType: 'terminal',
+      parent: null,
+      terminalId: '0',
+      useDefaultShell: true,
+    },
+    activeTerminalId: null,
+    lastActiveTerminalId: null,
   },
-  activeTerminalId: null,
+  onTerminalActive: () => {},
 });
 
 export const TabProvider = (
@@ -249,10 +259,19 @@ export const TabProvider = (
     root: {
       nodeType: 'terminal',
       parent: null,
-      terminalId: '0',
+      terminalId: (nextTerminalId++).toFixed(),
       useDefaultShell: true,
     },
     activeTerminalId: null,
+    lastActiveTerminalId: null,
+  });
+
+  createEffect(() => {
+    if (props.active) {
+      setValue('activeTerminalId', value.lastActiveTerminalId);
+    } else {
+      setValue('activeTerminalId', null);
+    }
   });
 
   const setRoot = (newRoot: TerminalTreeNodeData) => {
@@ -260,7 +279,7 @@ export const TabProvider = (
   };
 
   const onTerminalActive = (terminalId: string | null) => {
-    setValue('activeTerminalId', terminalId);
+    setValue('lastActiveTerminalId', terminalId);
   };
 
   createEffect(() => {
@@ -319,7 +338,14 @@ export const TabProvider = (
   });
 
   return (
-    <TabContext.Provider value={value}>{props.children}</TabContext.Provider>
+    <TabContext.Provider
+      value={{
+        data: value,
+        onTerminalActive,
+      }}
+    >
+      {props.children}
+    </TabContext.Provider>
   );
 };
 
