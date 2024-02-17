@@ -1,7 +1,7 @@
 {
   "name": "@terminalone/monorepo",
   "productName": "Terminal One",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A fast, elegant and intelligent cross-platform terminal.",
   "author": "atinylittleshell <shell@atinylittleshell.me>",
   "license": "MIT",
