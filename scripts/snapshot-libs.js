@@ -6,7 +6,6 @@ require('xterm-addon-unicode11');
 // eslint-disable-next-line no-constant-condition
 if (false) {
   require('@tailwindcss/typography');
-  require('next');
   require('react');
   require('react-dom');
   require('react-icons');
