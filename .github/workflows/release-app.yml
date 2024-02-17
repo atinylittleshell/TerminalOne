@@ -7,8 +7,9 @@ jobs:
   build_on_win:
     runs-on: windows-latest
     env:
-      CI: false
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CSC_LINK: ${{ secrets.CSC_LINK }}
+      CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
     steps:
       - name: setup python
         uses: actions/setup-python@v2
@@ -35,8 +36,11 @@ jobs:
   build_on_mac:
     runs-on: macos-latest
     env:
-      CI: false
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CSC_LINK: ${{ secrets.CSC_LINK }}
+      CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
     steps:
       - name: setup python
         uses: actions/setup-python@v2
@@ -59,7 +63,6 @@ jobs:
   build_on_linux:
     runs-on: ubuntu-latest
     env:
-      CI: false
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: setup python
