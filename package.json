@@ -1,7 +1,7 @@
 {
   "name": "@terminalone/monorepo",
   "productName": "Terminal One",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "A fast, elegant and intelligent cross-platform terminal.",
   "author": "atinylittleshell <shell@atinylittleshell.me>",
   "license": "MIT",
@@ -38,7 +38,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
-    "rebuild:node-pty": "electron-rebuild -f -o node-pty -m apps/app",
+    "rebuild:node-pty": "electron-rebuild -f -o node-pty -m packages/app",
     "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps && npm run rebuild:node-pty"
   },
   "main": "apps/app/dist/main.bundle.js",
@@ -47,6 +47,7 @@
     "productName": "Terminal One",
     "artifactName": "TerminalOne-${version}-${arch}.${ext}",
     "extends": null,
+    "afterSign": "./scripts/notarize.js",
     "files": [
       "apps/app/dist/**/*"
     ],
@@ -55,12 +56,43 @@
       "buildResources": "apps/app/assets"
     },
     "linux": {
-      "category": "Development",
-      "target": "AppImage",
+      "category": "TerminalEmulator",
+      "target": [
+        "deb",
+        "AppImage",
+        "rpm",
+        "snap",
+        "pacman"
+      ],
       "icon": "icon.icns"
+    },
+    "mac": {
+      "target": {
+        "target": "default",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      },
+      "category": "public.app-category.developer-tools",
+      "entitlements": "./scripts/entitlements.plist",
+      "entitlementsInherit": "./scripts/entitlements.plist",
+      "darkModeSupport": true
+    },
+    "deb": {
+      "compression": "bzip2",
+      "afterInstall": "./scripts/linux_install.tpl"
+    },
+    "rpm": {
+      "afterInstall": "./scripts/linux_install.tpl"
+    },
+    "snap": {
+      "confinement": "classic",
+      "publish": "github"
     }
   },
   "devDependencies": {
+    "@electron/notarize": "^2.3.0",
     "@electron/rebuild": "^3.5.0",
     "@terminalone/eslint-config-custom": "*",
     "concurrently": "^8.0.1",
@@ -86,7 +118,6 @@
   "homepage": "https://github.com/atinylittleshell/TerminalOne",
   "packageManager": "npm@9.2.0",
   "workspaces": [
-    "apps/*",
     "packages/*"
   ],
   "dependencies": {
