@@ -57,10 +57,7 @@
     },
     "linux": {
       "category": "TerminalEmulator",
-      "target": [
-        "AppImage",
-        "snap"
-      ],
+      "target": "AppImage",
       "icon": "icon.icns"
     },
     "mac": {
@@ -75,10 +72,6 @@
       "entitlements": "./scripts/entitlements.plist",
       "entitlementsInherit": "./scripts/entitlements.plist",
       "darkModeSupport": true
-    },
-    "snap": {
-      "confinement": "classic",
-      "publish": "github"
     }
   },
   "devDependencies": {
