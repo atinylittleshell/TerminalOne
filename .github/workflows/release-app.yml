@@ -57,8 +57,10 @@ jobs:
         run: npm cache clean -f
       - name: install dependencies
         run: npm ci
-      - name: build for mac
-        run: npm run publish:app:mac
+      - name: build for mac x64
+        run: npm run publish:app:mac:x64
+      - name: build for mac arm64
+        run: npm run publish:app:mac:arm64
   build_on_linux:
     runs-on: ubuntu-latest
     env:
