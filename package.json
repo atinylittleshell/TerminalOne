@@ -23,7 +23,7 @@
   ],
   "engineStrict": true,
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "dev:app": "cross-env NODE_ENV=development BROWSER=none concurrently -k \"turbo run dev:terminal\" \"wait-on -d 3000 -i 5000 http://localhost:3000 && turbo run build:app && electron .\"",

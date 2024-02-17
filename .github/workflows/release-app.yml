@@ -18,9 +18,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18.x
       - name: install windows build tools
         run: npm i -g windows-build-tools@4.0.0
       - name: install node-gyp
@@ -50,9 +50,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18.x
       - name: install node-gyp
         run: npm i -g node-gyp@latest
       - name: clean npm cache
@@ -73,9 +73,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18.x
       - name: install node-gyp
         run: npm i -g node-gyp@latest
       - name: clean npm cache
