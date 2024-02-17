@@ -7,6 +7,7 @@ exports.default = async function notarizing(context) {
   if (
     electronPlatformName !== 'darwin' ||
     !process.env.APPLE_ID ||
+    !process.env.APPLE_TEAM_ID ||
     !process.env.APPLE_PASSWORD
   ) {
     return;
@@ -18,5 +19,6 @@ exports.default = async function notarizing(context) {
     appPath: `${appOutDir}/${appName}.app`,
     appleId: process.env.APPLE_ID,
     appleIdPassword: process.env.APPLE_PASSWORD,
+    teamId: process.env.APPLE_TEAM_ID,
   });
 };
