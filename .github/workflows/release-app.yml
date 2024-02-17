@@ -30,7 +30,7 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: build for windows
-        run: npm run publish:app:windows
+        run: npm run publish:app:windows:x64
   build_on_mac:
     runs-on: macos-latest
     env:
@@ -83,4 +83,4 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: build for linux
-        run: npm run publish:app:linux
+        run: npm run publish:app:linux:x64
