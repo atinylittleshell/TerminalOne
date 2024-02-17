@@ -41,7 +41,7 @@
     "rebuild:node-pty": "electron-rebuild -f -o node-pty -m packages/app",
     "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps && npm run rebuild:node-pty"
   },
-  "main": "apps/app/dist/main.bundle.js",
+  "main": "packages/app/dist/main.bundle.js",
   "build": {
     "appId": "io.terminalone.app",
     "productName": "Terminal One",
@@ -49,11 +49,11 @@
     "extends": null,
     "afterSign": "./scripts/notarize.js",
     "files": [
-      "apps/app/dist/**/*"
+      "packages/app/dist/**/*"
     ],
     "includeSubNodeModules": true,
     "directories": {
-      "buildResources": "apps/app/assets"
+      "buildResources": "packages/app/assets"
     },
     "linux": {
       "category": "TerminalEmulator",

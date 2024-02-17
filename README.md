@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="Terminal One" src="https://github.com/kunchenguid/TerminalOne/blob/main/apps/app/assets/screenshot.png?raw=true">
+    <img alt="Terminal One" src="https://github.com/kunchenguid/TerminalOne/blob/main/packages/app/assets/screenshot.png?raw=true">
 </p>
 
 <h1 align="center">Terminal One</h1>
