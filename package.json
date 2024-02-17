@@ -58,11 +58,8 @@
     "linux": {
       "category": "TerminalEmulator",
       "target": [
-        "deb",
         "AppImage",
-        "rpm",
-        "snap",
-        "pacman"
+        "snap"
       ],
       "icon": "icon.icns"
     },
@@ -78,13 +75,6 @@
       "entitlements": "./scripts/entitlements.plist",
       "entitlementsInherit": "./scripts/entitlements.plist",
       "darkModeSupport": true
-    },
-    "deb": {
-      "compression": "bzip2",
-      "afterInstall": "./scripts/linux_install.tpl"
-    },
-    "rpm": {
-      "afterInstall": "./scripts/linux_install.tpl"
     },
     "snap": {
       "confinement": "classic",
