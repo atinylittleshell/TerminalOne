@@ -26,7 +26,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "dev:app": "cross-env NODE_ENV=development BROWSER=none concurrently -k \"turbo run dev:terminal\" \"wait-on -d 3000 -i 5000 http://localhost:3000 && turbo run build:app && electron .\"",
+    "dev:app": "cross-env NODE_ENV=development BROWSER=none concurrently -k \"turbo run dev:frontend\" \"wait-on -d 3000 -i 5000 http://localhost:3000 && turbo run build:app && electron .\"",
     "build:app:windows": "shx rm -rf dist && npm run build && electron-builder --win --publish=never",
     "build:app:mac": "shx rm -rf dist && npm run build && electron-builder --mac --publish=never",
     "build:app:linux": "shx rm -rf dist && npm run build && electron-builder --linux --publish=never",
@@ -37,7 +37,6 @@
     "release:app": "git checkout releases/terminalone/app && git pull && git merge --no-edit --no-ff main && git push && git checkout main",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
     "rebuild:node-pty": "electron-rebuild -f -o node-pty -m packages/app",
     "rebuild:node-pty:x64": "electron-rebuild -f --arch=x64 -o node-pty -m packages/app",

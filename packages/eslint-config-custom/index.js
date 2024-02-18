@@ -1,6 +1,5 @@
 module.exports = {
   extends: [
-    'next',
     'turbo',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -8,7 +7,6 @@ module.exports = {
   ],
   plugins: ['simple-import-sort'],
   rules: {
-    '@next/next/no-html-link-for-pages': 'off',
     'simple-import-sort/imports': 'warn',
     '@typescript-eslint/no-unused-vars': [
       'error',
@@ -19,15 +17,11 @@ module.exports = {
       },
     ],
   },
-  parserOptions: {
-    babelOptions: {
-      presets: [require.resolve('next/babel')],
-    },
-  },
+  parser: '@typescript-eslint/parser',
   env: {
     browser: true,
     node: true,
     jest: true,
   },
-  ignorePatterns: ['node_modules', '.next', '.turbo', 'dist', 'public', 'coverage'],
+  ignorePatterns: ['node_modules', '.turbo', 'dist', 'public', 'coverage'],
 };

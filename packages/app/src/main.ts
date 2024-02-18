@@ -11,7 +11,7 @@ import { Logger } from './nativeBridge/modules/common/logger';
 import { nativeBridgeRegistry } from './nativeBridge/registry';
 
 if (!app || app.isPackaged) {
-  serve({ directory: path.join(__dirname, 'terminal') });
+  serve({ directory: path.join(__dirname, 'frontend') });
 } else {
   app.setName('Terminal One Dev');
 }
