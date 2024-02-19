@@ -4,7 +4,7 @@ on:
     branches:
       - releases/terminalone/app
 jobs:
-  build_on_win:
+  build_win_x64:
     runs-on: windows-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -31,7 +31,7 @@ jobs:
         run: npm ci
       - name: build for windows
         run: npm run publish:app:windows:x64
-  build_on_mac:
+  build_mac_x64:
     runs-on: macos-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -59,9 +59,35 @@ jobs:
         run: npm ci
       - name: build for mac x64
         run: npm run publish:app:mac:x64
+  build_mac_arm64:
+    runs-on: macos-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CSC_LINK: ${{ secrets.CSC_LINK }}
+      CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+    steps:
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.7
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      - name: install node-gyp
+        run: npm i -g node-gyp@latest
+      - name: clean npm cache
+        run: npm cache clean -f
+      - name: install dependencies
+        run: npm ci
       - name: build for mac arm64
         run: npm run publish:app:mac:arm64
-  build_on_linux:
+  build_linux_x64:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
