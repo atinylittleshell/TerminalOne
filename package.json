@@ -40,8 +40,8 @@
     "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
     "rebuild:node-pty": "electron-rebuild -f -o node-pty -m packages/app",
-    "rebuild:node-pty:x64": "electron-rebuild -f --arch=x64 -o node-pty -m packages/app",
-    "rebuild:node-pty:arm64": "electron-rebuild -f --arch=arm64 -o node-pty -m packages/app",
+    "rebuild:node-pty:x64": "electron-rebuild -f -a x64 -o node-pty -m packages/app",
+    "rebuild:node-pty:arm64": "electron-rebuild -f -a arm64 -o node-pty -m packages/app",
     "prepare": "node -e \"process.env.NODE_ENV != 'production' && process.exit(1)\" || electron-builder install-app-deps && npm run rebuild:node-pty"
   },
   "main": "packages/app/dist/main.bundle.js",
