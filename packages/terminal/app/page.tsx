@@ -27,6 +27,7 @@ const Page = () => {
 
   const [tabId, setTabId] = useState<number>(0);
   const [userTabs, setUserTabs] = useState<UserTab[]>([]);
+  const [tabTitles, setTabTitles] = useState<{ [key: number]: string }>({});
 
   const createTab = useCallback(() => {
     let newTabId = (_.max(userTabs.map((t) => t.tabId)) || 0) + 1;
@@ -46,6 +47,10 @@ const Page = () => {
         },
       ].sort((a, b) => a.tabId - b.tabId),
     );
+    setTabTitles((prevTabTitles) => ({
+      ...prevTabTitles,
+      [newTabId]: `Tab ${newTabId}`,
+    }));
     setTabId(newTabId);
   }, [userTabs, config]);
 
@@ -58,6 +63,11 @@ const Page = () => {
         setUserTabs(newTabs);
         setTabId(_.max(newTabs.map((t) => t.tabId)) || 0);
       }
+      setTabTitles((prevTabTitles) => {
+        const newTabTitles = { ...prevTabTitles };
+        delete newTabTitles[targetTabId];
+        return newTabTitles;
+      });
     },
     [userTabs],
   );
@@ -189,6 +199,7 @@ const Page = () => {
           tabId: 1,
         },
       ]);
+      setTabTitles({ 1: 'Tab 1' });
     }
   }, [loading, config, userTabs]);
 
@@ -234,7 +245,7 @@ const Page = () => {
                 setTabId(userTab.tabId);
               }}
             >
-              {userTab.tabId}
+              {tabTitles[userTab.tabId] || userTab.tabId}
               {userTab.tabId === tabId && (
                 <button
                   className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
@@ -275,6 +286,7 @@ const Page = () => {
                 key={userTab.tabId}
                 active={tabId === userTab.tabId}
                 tabId={userTab.tabId}
+                tabName={tabTitles[userTab.tabId]}
                 close={() => {
                   closeTab(userTab.tabId);
                 }}
