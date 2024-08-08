@@ -223,11 +223,24 @@ const createFocusPaneHandler = (
   };
 };
 
+const createRenameHandler = (
+  tabNames: { [key: number]: string },
+  setTabNames: (tabNames: { [key: number]: string }) => void,
+) => {
+  return (tabId: number, newName: string) => {
+    setTabNames({
+      ...tabNames,
+      [tabId]: newName,
+    });
+  };
+};
+
 interface TabContextData {
   root: TerminalTreeNodeData;
   activeTerminalId: string | null;
   onTerminalActive: (id: string | null) => void;
   onTerminalCreated: (id: string) => void;
+  renameTab: (tabId: number, newName: string) => void;
 }
 
 const TabContext = createContext<TabContextData>({
@@ -242,6 +255,9 @@ const TabContext = createContext<TabContextData>({
     return;
   },
   onTerminalCreated: () => {
+    return;
+  },
+  renameTab: () => {
     return;
   },
 });
@@ -275,6 +291,12 @@ export const TabContextProvider = (
   const onTerminalCreated = useCallback((id: string) => {
     setLastActiveTerminalId(id);
   }, []);
+
+  const [tabNames, setTabNames] = useState<{ [key: number]: string }>({});
+  const renameTab = useCallback(
+    createRenameHandler(tabNames, setTabNames),
+    [tabNames],
+  );
 
   useEffect(() => {
     const splitVertical = createSplitHandler(root, setRoot, 'vertical');
@@ -330,6 +352,7 @@ export const TabContextProvider = (
         activeTerminalId,
         onTerminalActive,
         onTerminalCreated,
+        renameTab,
       }}
     >
       {props.children}

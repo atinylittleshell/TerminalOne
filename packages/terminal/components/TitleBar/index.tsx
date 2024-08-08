@@ -6,7 +6,7 @@ import { FiMaximize2, FiMinimize2, FiMinus, FiX } from 'react-icons/fi';
 
 import styles from './index.module.css';
 
-function TitleBar(props: PropsWithChildren) {
+function TitleBar(props: PropsWithChildren<{ tabName?: string }>) {
   const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,9 @@ function TitleBar(props: PropsWithChildren) {
       <div className={`flex items-center ${styles['title-bar-buttons']}`}>
         {props.children}
       </div>
-      <div className={`flex-1 tab tab-lifted ${styles['title-bar-drag']}`} />
+      <div className={`flex-1 tab tab-lifted ${styles['title-bar-drag']}`}>
+        {props.tabName}
+      </div>
       {window.TerminalOne?.platform === 'darwin' ||
       window.TerminalOne?.platform === 'linux' ? null : (
         <div
