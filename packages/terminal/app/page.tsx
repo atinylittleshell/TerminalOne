@@ -4,7 +4,7 @@
 import _ from 'lodash';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from 'react';
-import { FiMenu, FiPlus, FiX } from 'react-icons/fi';
+import { FiMenu, FiPlus, FiX, FiEdit2 } from 'react-icons/fi';
 
 import SettingsPage from '../components/SettingsPage';
 import { useConfigContext } from '../hooks/ConfigContext';
@@ -19,6 +19,7 @@ const Tab = dynamic(() => import('../components/Tab'), {
 
 type UserTab = {
   tabId: number;
+  tabName: string;
 };
 
 const Page = () => {
@@ -41,6 +42,7 @@ const Page = () => {
         ...userTabs,
         {
           tabId: newTabId,
+          tabName: `Tab ${newTabId}`,
           shellName:
             config.shells.length === 1 ? config.defaultShellName : null,
         },
@@ -134,6 +136,16 @@ const Page = () => {
     switchToTab(9);
   }, [switchToTab]);
 
+  const renameTab = useCallback(
+    (targetTabId: number, newTabName: string) => {
+      const newTabs = userTabs.map((t) =>
+        t.tabId === targetTabId ? { ...t, tabName: newTabName } : t,
+      );
+      setUserTabs(newTabs);
+    },
+    [userTabs],
+  );
+
   useEffect(() => {
     commands.on('createTab', createTab);
     commands.on('closeTab', closeCurrentTab);
@@ -187,6 +199,7 @@ const Page = () => {
       setUserTabs([
         {
           tabId: 1,
+          tabName: 'Tab 1',
         },
       ]);
     }
@@ -234,16 +247,32 @@ const Page = () => {
                 setTabId(userTab.tabId);
               }}
             >
-              {userTab.tabId}
+              {userTab.tabName}
               {userTab.tabId === tabId && (
-                <button
-                  className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
-                  onClick={() => {
-                    closeTab(tabId);
-                  }}
-                >
-                  <FiX />
-                </button>
+                <>
+                  <button
+                    className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
+                    onClick={() => {
+                      closeTab(tabId);
+                    }}
+                  >
+                    <FiX />
+                  </button>
+                  <button
+                    className="btn btn-ghost btn-square btn-xs opacity-50 hover:bg-transparent hover:opacity-100 ml-2"
+                    onClick={() => {
+                      const newTabName = prompt(
+                        'Enter new tab name:',
+                        userTab.tabName,
+                      );
+                      if (newTabName) {
+                        renameTab(tabId, newTabName);
+                      }
+                    }}
+                  >
+                    <FiEdit2 />
+                  </button>
+                </>
               )}
             </a>
           ))}
@@ -275,6 +304,7 @@ const Page = () => {
                 key={userTab.tabId}
                 active={tabId === userTab.tabId}
                 tabId={userTab.tabId}
+                tabName={userTab.tabName}
                 close={() => {
                   closeTab(userTab.tabId);
                 }}

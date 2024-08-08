@@ -21,6 +21,7 @@ import { Logger } from './common/logger';
 export class ConfigModule extends NativeBridgeModule {
   private configPath: string = '';
   private config: ResolvedConfig = DEFAULT_CONFIG;
+  private tabNames: Record<number, string> = {};
 
   @moduleFunction()
   public async getConfig(_mainWindow: BrowserWindow): Promise<ResolvedConfig> {
@@ -30,6 +31,15 @@ export class ConfigModule extends NativeBridgeModule {
   @moduleFunction()
   public async getConfigPath(_mainWindow: BrowserWindow): Promise<string> {
     return this.configPath;
+  }
+
+  @moduleFunction()
+  public async renameTab(
+    _mainWindow: BrowserWindow,
+    tabId: number,
+    newTabName: string,
+  ): Promise<void> {
+    this.tabNames[tabId] = newTabName;
   }
 
   public onRegistered(mainWindow: BrowserWindow): void {
