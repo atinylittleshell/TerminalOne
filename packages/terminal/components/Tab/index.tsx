@@ -5,10 +5,12 @@ import { TerminalTreeNode } from '../TerminalTreeNode';
 
 const Tab = ({
   tabId,
+  tabName,
   active,
   close,
 }: {
   tabId: number;
+  tabName: string;
   active: boolean;
   close: () => void;
 }) => {

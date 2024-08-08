@@ -59,6 +59,15 @@ export class ApplicationModule extends NativeBridgeModule {
     return Logger.getInstance().getLogPath();
   }
 
+  @moduleFunction()
+  public async renameTab(
+    _mainWindow: BrowserWindow,
+    tabId: number,
+    newTabName: string,
+  ): Promise<void> {
+    // Implement the logic to rename the tab
+  }
+
   @moduleEvent('on')
   public onLog(
     _mainWindow: BrowserWindow,

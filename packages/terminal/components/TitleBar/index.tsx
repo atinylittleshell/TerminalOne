@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
-import { FiMaximize2, FiMinimize2, FiMinus, FiX } from 'react-icons/fi';
+import { FiMaximize2, FiMinimize2, FiMinus, FiX, FiEdit2 } from 'react-icons/fi';
 
 import styles from './index.module.css';
 
@@ -71,6 +71,18 @@ function TitleBar(props: PropsWithChildren) {
             }}
           >
             <FiX size="16" />
+          </button>
+          <button
+            className="btn btn-sm btn-ghost btn-square tab tab-lifted"
+            title="Rename Tab"
+            onClick={() => {
+              const newTabName = prompt('Enter new tab name:');
+              if (newTabName) {
+                window.TerminalOne?.app.renameTab(newTabName);
+              }
+            }}
+          >
+            <FiEdit2 size="16" />
           </button>
         </div>
       )}
