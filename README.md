@@ -1,3 +1,9 @@
+## Archived
+
+Most of the original requirements that drove the development of TerminalOne are now made possible in other terminal emulators. I've decided to stop further development, but will leave the source code available as archive.
+
+## Terminal One
+
 <p align="center">
     <img alt="Terminal One" src="https://github.com/kunchenguid/TerminalOne/blob/main/packages/app/assets/screenshot.png?raw=true">
 </p>
